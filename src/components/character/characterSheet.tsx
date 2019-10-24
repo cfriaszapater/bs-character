@@ -55,6 +55,19 @@ export default class CharacterSheet extends React.Component<
                 <div>D: {character.attributes.D}</div>
                 <div>E: {character.attributes.E}</div>
               </div>
+              <div id="attribute-bars" className="col-1">
+                {/* TODO HorizontalBar component */}
+                <div className="horizontal-bar-container">
+                  <div
+                    style={{
+                      backgroundColor: "grey",
+                      width: (character.attributes.T * 100) / 5
+                    }}
+                  >
+                    &nbsp;
+                  </div>
+                </div>
+              </div>
               <div id="characteristics" className="col">
                 <div>Ini: {character.characteristics.initiative}</div>
                 <div>Sta: {character.characteristics.stamina}</div>
