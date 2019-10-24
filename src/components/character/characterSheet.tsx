@@ -74,13 +74,13 @@ export default class CharacterSheet extends React.Component<
                 </div>
                 <div className="row">
                   <div className="col">
-                    Blu: {character.defenseCharacteristics.bludgeoning}
+                    Blu: {character.defenseCharacteristics.blunt}
                   </div>
                   <div className="col">
                     Cut: {character.defenseCharacteristics.cut}
                   </div>
                   <div className="col">
-                    Pie: {character.defenseCharacteristics.piercing}
+                    Pen: {character.defenseCharacteristics.penetrating}
                   </div>
                 </div>
               </div>

@@ -67,9 +67,9 @@ async function getCharacter(): Promise<Character> {
           structure: 1,
           weight: 1,
           coverage: 1,
-          bludgeoning: 0,
+          blunt: 0,
           cut: 0,
-          piercing: 2
+          penetrating: 2
         },
         body: {
           type: "armor",
@@ -79,9 +79,9 @@ async function getCharacter(): Promise<Character> {
           weight: 11,
           dodge: 2,
           coverage: 5,
-          bludgeoning: 2,
+          blunt: 2,
           cut: 3,
-          piercing: 3
+          penetrating: 3
         },
         bag: [
           {
@@ -100,9 +100,9 @@ async function getCharacter(): Promise<Character> {
       defenseCharacteristics: {
         dodge: 2,
         coverage: 6,
-        bludgeoning: 2,
+        blunt: 2,
         cut: 3,
-        piercing: 5
+        penetrating: 5
       }
     });
   });

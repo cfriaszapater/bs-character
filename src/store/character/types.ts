@@ -29,9 +29,9 @@ export interface Character {
   defenseCharacteristics: {
     dodge: number;
     coverage: number;
-    bludgeoning: number;
+    blunt: number;
     cut: number;
-    piercing: number;
+    penetrating: number;
   };
 }
 
