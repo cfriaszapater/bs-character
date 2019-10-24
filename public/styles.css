@@ -1,4 +1,4 @@
-div.attributes-container {
+div.grouped-container {
   border: 1px solid gray;
 }
 
@@ -7,5 +7,9 @@ div.num {
 }
 
 div.innergrid:not(:last-child) {
+  border-bottom: 1px solid lightgray;
+}
+
+div.innergrid-with-bottom {
   border-bottom: 1px solid lightgray;
 }

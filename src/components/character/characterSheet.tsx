@@ -4,7 +4,7 @@ import { ThunkDispatch } from "redux-thunk";
 import { fetchCharacter } from "../../store/character/characterActions";
 import { Character, CharacterSheetState } from "../../store/character/types";
 import Attribute from "./attribute";
-import HorizontalPercentageBar from "./horizontalPercentageBar";
+import Characteristic from "./characteristic";
 
 interface CharacterSheetProps {
   character: Character | null;
@@ -46,7 +46,7 @@ export default class CharacterSheet extends React.Component<
             </div>
             <div id="equipment" className="row"></div>
             <div id="attribs-and-characteristics" className="row">
-              <div id="attributes" className="col-2 attributes-container">
+              <div id="attributes" className="col-2 grouped-container">
                 <Attribute name="T" value={character.attributes.T} />
                 <Attribute name="A" value={character.attributes.A} />
                 <Attribute name="S" value={character.attributes.S} />
@@ -57,14 +57,32 @@ export default class CharacterSheet extends React.Component<
                 <Attribute name="D" value={character.attributes.D} />
                 <Attribute name="E" value={character.attributes.E} />
               </div>
-              <div id="characteristics" className="col">
-                <div>Ini: {character.characteristics.initiative}</div>
-                <div>Sta: {character.characteristics.stamina}</div>
-                <div>Imp: {character.characteristics.impact}</div>
-                <div>Da: {character.characteristics.damage}</div>
-                <div>HP: {character.characteristics.health}</div>
+              <div id="characteristics" className="col-3 grouped-container">
+                <Characteristic
+                  name="Ini"
+                  value={character.characteristics.initiative}
+                />
+                <Characteristic
+                  name="Sta"
+                  value={character.characteristics.stamina}
+                />
+                <Characteristic
+                  name="Imp"
+                  value={character.characteristics.impact}
+                />
+                <Characteristic
+                  name="Da"
+                  value={character.characteristics.damage}
+                />
+                <Characteristic
+                  name="HP"
+                  value={character.characteristics.health}
+                />
               </div>
-              <div id="defenseCharacteristics" className="col">
+              <div
+                id="defenseCharacteristics"
+                className="col grouped-container"
+              >
                 <div className="row">
                   <div className="col">
                     Dod: {character.defenseCharacteristics.dodge}

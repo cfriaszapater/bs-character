@@ -1,8 +1,6 @@
 import React from "react";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
 
-const maxAttributeValue = 5;
-
 export default function Attribute(props: { name: string; value: number }) {
   const color = colorForAttribute(props.name);
   return (
@@ -10,11 +8,20 @@ export default function Attribute(props: { name: string; value: number }) {
       <div className="col-1">{props.name} </div>
       <div className="col-1 num">{props.value}</div>
       <HorizontalPercentageBar
-        width={(props.value * 100) / maxAttributeValue}
+        width={percentageForAttribute(props)}
         backgroundColor={color}
       />
     </div>
   );
+}
+
+const maxAttributeValue = 5;
+
+function percentageForAttribute(props: {
+  name: string;
+  value: number;
+}): number {
+  return props.value / maxAttributeValue;
 }
 
 function colorForAttribute(key: string) {

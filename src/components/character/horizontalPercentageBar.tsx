@@ -9,7 +9,7 @@ export default function HorizontalPercentageBar(props: {
       <div
         style={{
           backgroundColor: props.backgroundColor,
-          width: props.width + "%"
+          width: props.width * 100 + "%"
         }}
       >
         &nbsp;
