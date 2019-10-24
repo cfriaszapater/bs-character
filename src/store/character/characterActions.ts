@@ -39,17 +39,70 @@ export const fetchCharacter = () => async (
 async function getCharacter(): Promise<Character> {
   return new Promise(resolve => {
     resolve({
-      name: "jarl",
+      name: "Jarl",
       attributes: {
-        R: 0,
-        A: 0,
-        F: 0,
-        V: 0,
-        I: 0,
-        L: 0,
-        P: 0,
-        D: 0,
-        E: 0
+        T: 2,
+        A: 2,
+        S: 3,
+        W: 3,
+        I: 2,
+        L: 2,
+        P: 2,
+        D: 2,
+        E: 1
+      },
+      equipment: {
+        hand1: {
+          type: "weapon",
+          id: "long-sword",
+          level: 1,
+          reach: 2,
+          structure: 3,
+          weight: 2
+        },
+        hand2: {
+          type: "shield",
+          id: "round-shield",
+          level: 1,
+          structure: 1,
+          weight: 1,
+          coverage: 1,
+          bludgeoning: 0,
+          cut: 0,
+          piercing: 2
+        },
+        body: {
+          type: "armor",
+          id: "chainmail",
+          level: 1,
+          structure: 3,
+          weight: 11,
+          dodge: 2,
+          coverage: 5,
+          bludgeoning: 2,
+          cut: 3,
+          piercing: 3
+        },
+        bag: [
+          {
+            type: "miscelaneous",
+            id: "flask"
+          }
+        ]
+      },
+      characteristics: {
+        initiative: 6,
+        stamina: 10,
+        impact: 4,
+        damage: 5,
+        health: 15
+      },
+      defenseCharacteristics: {
+        dodge: 2,
+        coverage: 6,
+        bludgeoning: 2,
+        cut: 3,
+        piercing: 5
       }
     });
   });
