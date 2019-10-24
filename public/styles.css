@@ -1,3 +1,11 @@
-div.horizontal-bar-container {
-  border: 1px solid;
+div.attributes-container {
+  border: 1px solid gray;
+}
+
+div.num {
+  text-align: right;
+}
+
+div.innergrid:not(:last-child) {
+  border-bottom: 1px solid lightgray;
 }

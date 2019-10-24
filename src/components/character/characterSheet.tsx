@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import { fetchCharacter } from "../../store/character/characterActions";
 import { Character, CharacterSheetState } from "../../store/character/types";
+import Attribute from "./attribute";
+import HorizontalPercentageBar from "./horizontalPercentageBar";
 
 interface CharacterSheetProps {
   character: Character | null;
@@ -44,29 +46,16 @@ export default class CharacterSheet extends React.Component<
             </div>
             <div id="equipment" className="row"></div>
             <div id="attribs-and-characteristics" className="row">
-              <div id="attributes" className="col-1">
-                <div>T: {character.attributes.T}</div>
-                <div>A: {character.attributes.A}</div>
-                <div>S: {character.attributes.S}</div>
-                <div>W: {character.attributes.W}</div>
-                <div>I: {character.attributes.I}</div>
-                <div>L: {character.attributes.L}</div>
-                <div>P: {character.attributes.P}</div>
-                <div>D: {character.attributes.D}</div>
-                <div>E: {character.attributes.E}</div>
-              </div>
-              <div id="attribute-bars" className="col-1">
-                {/* TODO HorizontalBar component */}
-                <div className="horizontal-bar-container">
-                  <div
-                    style={{
-                      backgroundColor: "grey",
-                      width: (character.attributes.T * 100) / 5
-                    }}
-                  >
-                    &nbsp;
-                  </div>
-                </div>
+              <div id="attributes" className="col-2 attributes-container">
+                <Attribute name="T" value={character.attributes.T} />
+                <Attribute name="A" value={character.attributes.A} />
+                <Attribute name="S" value={character.attributes.S} />
+                <Attribute name="W" value={character.attributes.W} />
+                <Attribute name="I" value={character.attributes.I} />
+                <Attribute name="L" value={character.attributes.L} />
+                <Attribute name="P" value={character.attributes.P} />
+                <Attribute name="D" value={character.attributes.D} />
+                <Attribute name="E" value={character.attributes.E} />
               </div>
               <div id="characteristics" className="col">
                 <div>Ini: {character.characteristics.initiative}</div>
