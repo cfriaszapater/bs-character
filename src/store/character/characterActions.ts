@@ -49,7 +49,7 @@ async function getCharacter(): Promise<Character> {
         L: 2,
         P: 2,
         D: 2,
-        E: 1
+        E: 5
       },
       equipment: {
         hand1: {
