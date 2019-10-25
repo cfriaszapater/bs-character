@@ -7,8 +7,8 @@ import {
   strengthColor,
   willColor
 } from "./colors";
+import { fractionForCharacteristic } from "./fractionForCharacteristic";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
-import { percentageForCharacteristic } from "./percentageForCharacteristic";
 
 export function CharacteristicsView(props: {
   characteristics: Characteristics;
@@ -26,32 +26,62 @@ export function CharacteristicsView(props: {
 }
 
 function Initiative(props: { value: number }) {
-  return Characteristic("Ini", props.value, defaultColor);
+  return Characteristic(
+    "Da",
+    props.value,
+    fractionForCharacteristic(props.value, 3, 11),
+    defaultColor
+  );
 }
 
 function Stamina(props: { value: number }) {
-  return Characteristic("Sta", props.value, staminaColor);
+  return Characteristic(
+    "Da",
+    props.value,
+    fractionForCharacteristic(props.value, 0, 20),
+    staminaColor
+  );
 }
 
 function Impact(props: { value: number }) {
-  return Characteristic("Imp", props.value, agilityColor);
+  return Characteristic(
+    "Da",
+    props.value,
+    fractionForCharacteristic(props.value, 2, 5),
+    agilityColor
+  );
 }
 
 function Damage(props: { value: number }) {
-  return Characteristic("Da", props.value, strengthColor);
+  return Characteristic(
+    "Da",
+    props.value,
+    fractionForCharacteristic(props.value, 2, 8),
+    strengthColor
+  );
 }
 
 function Health(props: { value: number }) {
-  return Characteristic("HP", props.value, willColor);
+  return Characteristic(
+    "HP",
+    props.value,
+    fractionForCharacteristic(props.value, 0, 20),
+    willColor
+  );
 }
 
-function Characteristic(name: string, value: number, color: string) {
+function Characteristic(
+  name: string,
+  value: number,
+  fractionValue: number,
+  color: string
+) {
   return (
     <div className="row innergrid-with-bottom">
       <div className="col-2">{name} </div>
       <div className="col-2 num">{value}</div>
       <HorizontalPercentageBar
-        width={percentageForCharacteristic(name, value)}
+        widthFraction={fractionValue}
         backgroundColor={color}
       />
     </div>

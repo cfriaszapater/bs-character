@@ -62,7 +62,7 @@ function Attribute(name: string, value: number, color: string) {
       <div className="col-1">{name} </div>
       <div className="col-1 num">{value}</div>
       <HorizontalPercentageBar
-        width={percentageForAttribute(value)}
+        widthFraction={percentageForAttribute(value)}
         backgroundColor={color}
       />
     </div>

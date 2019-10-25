@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function HorizontalPercentageBar(props: {
-  width: number;
+  widthFraction: number;
   backgroundColor: string;
 }) {
   return (
@@ -9,7 +9,7 @@ export default function HorizontalPercentageBar(props: {
       <div
         style={{
           backgroundColor: props.backgroundColor,
-          width: props.width * 100 + "%"
+          width: props.widthFraction * 100 + "%"
         }}
       >
         &nbsp;
