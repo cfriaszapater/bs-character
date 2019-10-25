@@ -4,18 +4,18 @@ import {
   FETCH_CHARACTER_FAILURE,
   FETCH_CHARACTER_SUCCESS
 } from "./characterActions";
-import { CharacterSheetState } from "./types";
+import { CharacterViewState } from "./types";
 
-export const initialState: CharacterSheetState = {
+export const initialState: CharacterViewState = {
   character: null,
   error: null,
   loading: false
 };
 
 export function characterReducer(
-  state: CharacterSheetState = initialState,
+  state: CharacterViewState = initialState,
   action: CharacterActions
-): CharacterSheetState {
+): CharacterViewState {
   switch (action.type) {
     case FETCH_CHARACTER_BEGIN:
       // Mark the state as "loading" so we can show a spinner or something

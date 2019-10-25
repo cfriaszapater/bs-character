@@ -1,13 +1,13 @@
 export interface Attributes {
-  T: number;
-  A: number;
-  S: number;
-  W: number;
-  I: number;
-  L: number;
-  P: number;
-  D: number;
-  E: number;
+  endurance: number;
+  agility: number;
+  strength: number;
+  will: number;
+  intelligence: number;
+  leadership: number;
+  power: number;
+  defense: number;
+  extension: number;
 }
 
 export interface Character {
@@ -35,7 +35,7 @@ export interface Character {
   };
 }
 
-export interface CharacterSheetState {
+export interface CharacterViewState {
   character: Character | null;
   loading: boolean;
   error: Error | null;

@@ -41,15 +41,15 @@ async function getCharacter(): Promise<Character> {
     resolve({
       name: "Jarl",
       attributes: {
-        T: 2,
-        A: 2,
-        S: 3,
-        W: 3,
-        I: 2,
-        L: 2,
-        P: 2,
-        D: 2,
-        E: 5
+        endurance: 2,
+        agility: 2,
+        strength: 3,
+        will: 3,
+        intelligence: 2,
+        leadership: 2,
+        power: 2,
+        defense: 2,
+        extension: 5
       },
       equipment: {
         hand1: {

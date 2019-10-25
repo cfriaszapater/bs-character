@@ -2,30 +2,20 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import { fetchCharacter } from "../../store/character/characterActions";
-import { Character, CharacterSheetState } from "../../store/character/types";
-import {
-  Agility,
-  Defense,
-  Extension,
-  Intelligence,
-  Leadership,
-  Power,
-  Strength,
-  Tenacity,
-  Will
-} from "./attribute";
+import { Character, CharacterViewState } from "../../store/character/types";
+import { AttributesView } from "./attributesView";
 import Characteristic from "./characteristic";
 
-interface CharacterSheetProps {
+interface CharacterViewProps {
   character: Character | null;
   loading: boolean;
   error: Error | null;
   dispatch: ThunkDispatch<{}, {}, any>;
 }
 
-export default class CharacterSheet extends React.Component<
-  CharacterSheetProps,
-  CharacterSheetState
+export default class CharacterView extends React.Component<
+  CharacterViewProps,
+  CharacterViewState
 > {
   public componentDidMount() {
     this.props.dispatch(fetchCharacter());
@@ -56,17 +46,7 @@ export default class CharacterSheet extends React.Component<
             </div>
             <div id="equipment" className="row"></div>
             <div id="attribs-and-characteristics" className="row">
-              <div id="attributes" className="col-2 grouped-container">
-                <Tenacity value={character.attributes.T} />
-                <Agility value={character.attributes.A} />
-                <Strength value={character.attributes.S} />
-                <Will value={character.attributes.W} />
-                <Intelligence value={character.attributes.I} />
-                <Leadership value={character.attributes.L} />
-                <Power value={character.attributes.P} />
-                <Defense value={character.attributes.D} />
-                <Extension value={character.attributes.E} />
-              </div>
+              <AttributesView attributes={character.attributes} />
               <div id="characteristics" className="col-3 grouped-container">
                 <Characteristic
                   name="Ini"

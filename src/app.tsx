@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Route, Router } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
-import CharacterSheet from "./components/character/characterSheet";
+import CharacterView from "./components/character/characterView";
 import { LoginPage } from "./components/login/loginPage";
 import { PrivateRoute } from "./components/privateRoute";
 import { RegisterPage } from "./components/register/registerPage";
@@ -34,7 +34,7 @@ class App extends React.Component<AppProps> {
             <PrivateRoute
               exact
               path="/"
-              component={CharacterSheet}
+              component={CharacterView}
               character={this.props.character}
               loading={this.props.loading}
               error={this.props.error}
