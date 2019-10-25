@@ -80,10 +80,13 @@ export function givenTestCharacter(): Character {
     },
     characteristics: {
       initiative: 6,
+      currentInitiative: 5,
       stamina: 10,
+      currentStamina: 9,
       impact: 4,
       damage: 5,
-      health: 15
+      health: 15,
+      currentHealth: 14
     },
     defenseCharacteristics: {
       dodge: 2,

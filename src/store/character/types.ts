@@ -20,10 +20,13 @@ export interface Character {
 
 export interface Characteristics {
   initiative: number;
+  currentInitiative: number;
   stamina: number;
+  currentStamina: number;
   impact: number;
   damage: number;
   health: number;
+  currentHealth: number;
 }
 
 export interface DefenseCharacteristics {

@@ -9,7 +9,7 @@ import {
 } from "./colors";
 import { fractionForCharacteristic } from "./fractionForCharacteristic";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
-import { cellStyle, cellNumStyle } from "./styles";
+import { cellNumStyle, cellStyle } from "./styles";
 
 export function CharacteristicsView(props: {
   characteristics: Characteristics;
@@ -17,29 +17,40 @@ export function CharacteristicsView(props: {
   const { characteristics } = props;
   return (
     <div id="characteristics" className="col-3 grouped-container">
-      <Initiative value={characteristics.initiative} />
-      <Stamina value={characteristics.stamina} />
+      <Initiative
+        currentValue={characteristics.currentInitiative}
+        value={characteristics.initiative}
+      />
+      <Stamina
+        currrentValue={characteristics.currentStamina}
+        value={characteristics.stamina}
+      />
       <Impact value={characteristics.impact} />
       <Damage value={characteristics.damage} />
-      <Health value={characteristics.health} />
+      <Health
+        currentValue={characteristics.currentHealth}
+        value={characteristics.health}
+      />
     </div>
   );
 }
 
-function Initiative(props: { value: number }) {
-  return Characteristic(
+function Initiative(props: { currentValue: number; value: number }) {
+  return VariableCharacteristic(
     "Ini",
+    props.currentValue,
+    fractionForCharacteristic(props.currentValue, 3, 11),
     props.value,
-    fractionForCharacteristic(props.value, 3, 11),
     defaultColor
   );
 }
 
-function Stamina(props: { value: number }) {
-  return Characteristic(
+function Stamina(props: { currrentValue: number; value: number }) {
+  return VariableCharacteristic(
     "Sta",
+    props.currrentValue,
+    fractionForCharacteristic(props.currrentValue, 0, 20),
     props.value,
-    fractionForCharacteristic(props.value, 0, 20),
     staminaColor
   );
 }
@@ -62,11 +73,12 @@ function Damage(props: { value: number }) {
   );
 }
 
-function Health(props: { value: number }) {
-  return Characteristic(
+function Health(props: { currentValue: number; value: number }) {
+  return VariableCharacteristic(
     "HP",
+    props.currentValue,
+    fractionForCharacteristic(props.currentValue, 0, 20),
     props.value,
-    fractionForCharacteristic(props.value, 0, 20),
     willColor
   );
 }
@@ -81,6 +93,27 @@ function Characteristic(
     <div className="row innergrid-with-bottom">
       <div className={cellStyle()}>{name} </div>
       <div className={cellNumStyle()}>{value}</div>
+      <HorizontalPercentageBar
+        widthFraction={fractionValue}
+        backgroundColor={color}
+      />
+    </div>
+  );
+}
+
+function VariableCharacteristic(
+  name: string,
+  currentValue: number,
+  fractionValue: number,
+  value: number,
+  color: string
+) {
+  return (
+    <div className="row innergrid-with-bottom">
+      <div className={cellStyle()}>{name} </div>
+      <div className={cellNumStyle()}>
+        {currentValue}/{value}
+      </div>
       <HorizontalPercentageBar
         widthFraction={fractionValue}
         backgroundColor={color}
