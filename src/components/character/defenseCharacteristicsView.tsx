@@ -1,5 +1,8 @@
 import React from "react";
 import { DefenseCharacteristics } from "../../store/character/types";
+import { agilityColor, strengthColor } from "./colors";
+import { fractionForCharacteristic } from "./fractionForCharacteristic";
+import HorizontalPercentageBar from "./horizontalPercentageBar";
 
 export function DefenseCharacteristicsView(props: {
   defense: DefenseCharacteristics;
@@ -9,18 +12,85 @@ export function DefenseCharacteristicsView(props: {
     <div id="defenseCharacteristics" className="col grouped-container">
       <div className="row">
         <Dodge value={defense.dodge} />
-        <div className="col">Cov: {defense.coverage}</div>
-        <div className="col">{/*intentionally empty*/}</div>
+        <Coverage value={defense.coverage} />
+        <Placeholder />
       </div>
       <div className="row">
-        <div className="col">Blu: {defense.blunt}</div>
-        <div className="col">Cut: {defense.cut}</div>
-        <div className="col">Pen: {defense.penetrating}</div>
+        <Blunt value={defense.blunt} />
+        <Cut value={defense.cut} />
+        <Penetrating value={defense.penetrating} />
       </div>
     </div>
   );
 }
 
 function Dodge(props: { value: number }) {
-  return <div className="col">Dod: {props.value}</div>;
+  return DefenseCharacteristic(
+    "Dod",
+    props.value,
+    fractionForCharacteristic(props.value, 0, 3),
+    agilityColor
+  );
+}
+
+function Coverage(props: { value: number }) {
+  return DefenseCharacteristic(
+    "Cov",
+    props.value,
+    fractionForCharacteristic(props.value, 3, 9),
+    agilityColor
+  );
+}
+
+function Blunt(props: { value: number }) {
+  return DefenseCharacteristic(
+    "Blu",
+    props.value,
+    fractionForCharacteristic(props.value, 0, 6),
+    strengthColor
+  );
+}
+
+function Cut(props: { value: number }) {
+  return DefenseCharacteristic(
+    "Cut",
+    props.value,
+    fractionForCharacteristic(props.value, 0, 6),
+    strengthColor
+  );
+}
+
+function Penetrating(props: { value: number }) {
+  return DefenseCharacteristic(
+    "Pen",
+    props.value,
+    fractionForCharacteristic(props.value, 0, 6),
+    strengthColor
+  );
+}
+
+function DefenseCharacteristic(
+  name: string,
+  value: number,
+  fractionValue: number,
+  color: string
+) {
+  return (
+    <div className="col innergrid-with-bottom">
+      <div className="row">
+        <div className="col-2">{name} </div>
+        <div className="col-2 num">{value}</div>
+        <HorizontalPercentageBar
+          widthFraction={fractionValue}
+          backgroundColor={color}
+        />
+      </div>
+    </div>
+  );
+}
+
+function Placeholder() {
+  return (
+    <div className="col innergrid-with-bottom">{/*intentionally empty*/}</div>
+  );
 }
