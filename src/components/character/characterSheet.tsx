@@ -3,7 +3,17 @@ import { Link } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import { fetchCharacter } from "../../store/character/characterActions";
 import { Character, CharacterSheetState } from "../../store/character/types";
-import Attribute from "./attribute";
+import {
+  Agility,
+  Defense,
+  Extension,
+  Intelligence,
+  Leadership,
+  Power,
+  Strength,
+  Tenacity,
+  Will
+} from "./attribute";
 import Characteristic from "./characteristic";
 
 interface CharacterSheetProps {
@@ -47,15 +57,15 @@ export default class CharacterSheet extends React.Component<
             <div id="equipment" className="row"></div>
             <div id="attribs-and-characteristics" className="row">
               <div id="attributes" className="col-2 grouped-container">
-                <Attribute name="T" value={character.attributes.T} />
-                <Attribute name="A" value={character.attributes.A} />
-                <Attribute name="S" value={character.attributes.S} />
-                <Attribute name="W" value={character.attributes.W} />
-                <Attribute name="I" value={character.attributes.I} />
-                <Attribute name="L" value={character.attributes.L} />
-                <Attribute name="P" value={character.attributes.P} />
-                <Attribute name="D" value={character.attributes.D} />
-                <Attribute name="E" value={character.attributes.E} />
+                <Tenacity value={character.attributes.T} />
+                <Agility value={character.attributes.A} />
+                <Strength value={character.attributes.S} />
+                <Will value={character.attributes.W} />
+                <Intelligence value={character.attributes.I} />
+                <Leadership value={character.attributes.L} />
+                <Power value={character.attributes.P} />
+                <Defense value={character.attributes.D} />
+                <Extension value={character.attributes.E} />
               </div>
               <div id="characteristics" className="col-3 grouped-container">
                 <Characteristic
