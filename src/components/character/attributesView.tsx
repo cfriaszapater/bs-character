@@ -7,6 +7,7 @@ export function AttributesView(props: { attributes: Attributes }) {
   const { attributes } = props;
   return (
     <div id="attributes" className="col-2 grouped-container">
+      <EmptyRow />
       <Endurance value={attributes.endurance} />
       <Agility value={attributes.agility} />
       <Strength value={attributes.strength} />
@@ -73,4 +74,8 @@ const maxAttributeValue = 5;
 
 function percentageForAttribute(value: number): number {
   return value / maxAttributeValue;
+}
+
+function EmptyRow() {
+  return <div className="row innergrid">&nbsp;</div>;
 }

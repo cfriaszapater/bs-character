@@ -27,7 +27,7 @@ export function CharacteristicsView(props: {
 
 function Initiative(props: { value: number }) {
   return Characteristic(
-    "Da",
+    "Ini",
     props.value,
     fractionForCharacteristic(props.value, 3, 11),
     defaultColor
@@ -36,7 +36,7 @@ function Initiative(props: { value: number }) {
 
 function Stamina(props: { value: number }) {
   return Characteristic(
-    "Da",
+    "Sta",
     props.value,
     fractionForCharacteristic(props.value, 0, 20),
     staminaColor
@@ -45,7 +45,7 @@ function Stamina(props: { value: number }) {
 
 function Impact(props: { value: number }) {
   return Characteristic(
-    "Da",
+    "Imp",
     props.value,
     fractionForCharacteristic(props.value, 2, 5),
     agilityColor

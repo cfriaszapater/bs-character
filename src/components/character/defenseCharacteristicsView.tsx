@@ -10,10 +10,12 @@ export function DefenseCharacteristicsView(props: {
   const { defense } = props;
   return (
     <div id="defenseCharacteristics" className="col grouped-container">
+      <EmptyRow />
+      <EmptyRow />
       <div className="row">
         <Dodge value={defense.dodge} />
         <Coverage value={defense.coverage} />
-        <Placeholder />
+        <EmptyCol />
       </div>
       <div className="row">
         <Blunt value={defense.blunt} />
@@ -89,8 +91,12 @@ function DefenseCharacteristic(
   );
 }
 
-function Placeholder() {
+function EmptyCol() {
   return (
     <div className="col innergrid-with-bottom">{/*intentionally empty*/}</div>
   );
+}
+
+function EmptyRow() {
+  return <div className="row innergrid">&nbsp;</div>;
 }
