@@ -43,7 +43,8 @@ export default class CharacterView extends React.Component<
         {character && (
           <div id="sheet" className="container-fluid">
             <div className="row">
-              <div id="combatSheet" className="col">
+              <div id="mainSheet" className="col">
+                {/* Combat sheet */}
                 <div id="personal-info" className="row">
                   <div>Name: {character.name}</div>
                 </div>
@@ -58,7 +59,8 @@ export default class CharacterView extends React.Component<
                   />
                 </div>
               </div>
-              <div id="nonCombatSheet" className="col">
+              <div id="secondarySheet" className="col">
+                {/* Non-combat sheet */}
                 <div id="notes" className="row grouped-container h-100">
                   <div className="col">
                     <div>note 1</div>
