@@ -58,7 +58,7 @@ function Stamina(props: { currrentValue: number; value: number }) {
 function Impact(props: { value: number }) {
   return Characteristic(
     "Imp",
-    props.value,
+    props.value.toString(),
     fractionForCharacteristic(props.value, 2, 5),
     agilityColor
   );
@@ -67,7 +67,7 @@ function Impact(props: { value: number }) {
 function Damage(props: { value: number }) {
   return Characteristic(
     "Da",
-    props.value,
+    props.value.toString(),
     fractionForCharacteristic(props.value, 2, 8),
     strengthColor
   );
@@ -85,7 +85,7 @@ function Health(props: { currentValue: number; value: number }) {
 
 function Characteristic(
   name: string,
-  value: number,
+  value: string,
   fractionValue: number,
   color: string
 ) {
@@ -108,16 +108,5 @@ function VariableCharacteristic(
   value: number,
   color: string
 ) {
-  return (
-    <div className="row innergrid-with-bottom">
-      <div className={cellStyle()}>{name} </div>
-      <div className={cellNumStyle()}>
-        {currentValue}/{value}
-      </div>
-      <HorizontalPercentageBar
-        widthFraction={fractionValue}
-        backgroundColor={color}
-      />
-    </div>
-  );
+  return Characteristic(name, currentValue + "/" + value, fractionValue, color);
 }
