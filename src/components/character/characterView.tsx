@@ -5,6 +5,7 @@ import { fetchCharacter } from "../../store/character/characterActions";
 import { Character, CharacterViewState } from "../../store/character/types";
 import { AttributesView } from "./attributesView";
 import { CharacteristicsView } from "./characteristicsView";
+import { DefenseCharacteristicsView } from "./defenseCharacteristicsView";
 
 interface CharacterViewProps {
   character: Character | null;
@@ -50,31 +51,9 @@ export default class CharacterView extends React.Component<
               <CharacteristicsView
                 characteristics={character.characteristics}
               />
-              <div
-                id="defenseCharacteristics"
-                className="col grouped-container"
-              >
-                <div className="row">
-                  <div className="col">
-                    Dod: {character.defenseCharacteristics.dodge}
-                  </div>
-                  <div className="col">
-                    Cov: {character.defenseCharacteristics.coverage}
-                  </div>
-                  <div className="col">{/*intentionally empty*/}</div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    Blu: {character.defenseCharacteristics.blunt}
-                  </div>
-                  <div className="col">
-                    Cut: {character.defenseCharacteristics.cut}
-                  </div>
-                  <div className="col">
-                    Pen: {character.defenseCharacteristics.penetrating}
-                  </div>
-                </div>
-              </div>
+              <DefenseCharacteristicsView
+                defense={character.defenseCharacteristics}
+              />
             </div>
           </div>
         )}
