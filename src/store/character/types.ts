@@ -13,26 +13,32 @@ export interface Attributes {
 export interface Character {
   name: string;
   attributes: Attributes;
-  equipment: {
-    hand1: any;
-    hand2: any;
-    body: any;
-    bag: [any];
-  };
-  characteristics: {
-    initiative: number;
-    stamina: number;
-    impact: number;
-    damage: number;
-    health: number;
-  };
-  defenseCharacteristics: {
-    dodge: number;
-    coverage: number;
-    blunt: number;
-    cut: number;
-    penetrating: number;
-  };
+  equipment: Equipment;
+  characteristics: Characteristics;
+  defenseCharacteristics: DefenseCharacteristics;
+}
+
+export interface Characteristics {
+  initiative: number;
+  stamina: number;
+  impact: number;
+  damage: number;
+  health: number;
+}
+
+export interface DefenseCharacteristics {
+  dodge: number;
+  coverage: number;
+  blunt: number;
+  cut: number;
+  penetrating: number;
+}
+
+export interface Equipment {
+  hand1: any;
+  hand2: any;
+  body: any;
+  bag: [any];
 }
 
 export interface CharacterViewState {

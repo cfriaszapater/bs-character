@@ -4,7 +4,7 @@ import { ThunkDispatch } from "redux-thunk";
 import { fetchCharacter } from "../../store/character/characterActions";
 import { Character, CharacterViewState } from "../../store/character/types";
 import { AttributesView } from "./attributesView";
-import Characteristic from "./characteristic";
+import { CharacteristicsView } from "./characteristicsView";
 
 interface CharacterViewProps {
   character: Character | null;
@@ -47,28 +47,9 @@ export default class CharacterView extends React.Component<
             <div id="equipment" className="row"></div>
             <div id="attribs-and-characteristics" className="row">
               <AttributesView attributes={character.attributes} />
-              <div id="characteristics" className="col-3 grouped-container">
-                <Characteristic
-                  name="Ini"
-                  value={character.characteristics.initiative}
-                />
-                <Characteristic
-                  name="Sta"
-                  value={character.characteristics.stamina}
-                />
-                <Characteristic
-                  name="Imp"
-                  value={character.characteristics.impact}
-                />
-                <Characteristic
-                  name="Da"
-                  value={character.characteristics.damage}
-                />
-                <Characteristic
-                  name="HP"
-                  value={character.characteristics.health}
-                />
-              </div>
+              <CharacteristicsView
+                characteristics={character.characteristics}
+              />
               <div
                 id="defenseCharacteristics"
                 className="col grouped-container"

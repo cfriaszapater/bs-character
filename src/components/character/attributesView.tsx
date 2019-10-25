@@ -1,5 +1,6 @@
 import React from "react";
 import { Attributes } from "../../store/character/types";
+import { agilityColor, defaultColor, strengthColor, willColor } from "./colors";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
 
 export function AttributesView(props: { attributes: Attributes }) {
@@ -18,11 +19,6 @@ export function AttributesView(props: { attributes: Attributes }) {
     </div>
   );
 }
-
-const defaultColor = "gray";
-const agilityColor = "blue";
-const strengthColor = "darkred";
-const willColor = "gold";
 
 function Endurance(props: { value: number }) {
   return Attribute("E", props.value, defaultColor);
