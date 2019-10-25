@@ -5,7 +5,7 @@ export default function HorizontalPercentageBar(props: {
   backgroundColor: string;
 }) {
   return (
-    <div className="col" style={{ padding: 0 }}>
+    <div className="col-6" style={{ padding: 0 }}>
       <div
         style={{
           backgroundColor: props.backgroundColor,

@@ -1,5 +1,5 @@
 export function cellStyle() {
-  return "col-2 px-1 text-center";
+  return "col px-1 text-center";
 }
 
 export function cellNumStyle() {

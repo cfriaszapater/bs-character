@@ -42,18 +42,31 @@ export default class CharacterView extends React.Component<
         )}
         {character && (
           <div id="sheet" className="container-fluid">
-            <div id="personal-info" className="row">
-              <div>Name: {character.name}</div>
-            </div>
-            <div id="equipment" className="row"></div>
-            <div id="attribs-and-characteristics" className="row">
-              <AttributesView attributes={character.attributes} />
-              <CharacteristicsView
-                characteristics={character.characteristics}
-              />
-              <DefenseCharacteristicsView
-                defense={character.defenseCharacteristics}
-              />
+            <div className="row">
+              <div id="combatSheet" className="col">
+                <div id="personal-info" className="row">
+                  <div>Name: {character.name}</div>
+                </div>
+                <div id="equipment" className="row"></div>
+                <div id="attribs-and-characteristics" className="row">
+                  <AttributesView attributes={character.attributes} />
+                  <CharacteristicsView
+                    characteristics={character.characteristics}
+                  />
+                  <DefenseCharacteristicsView
+                    defense={character.defenseCharacteristics}
+                  />
+                </div>
+              </div>
+              <div id="nonCombatSheet" className="col">
+                <div id="notes" className="row grouped-container h-100">
+                  <div className="col">
+                    <div>note 1</div>
+                    <div>note 2</div>
+                    <div>note ...</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}

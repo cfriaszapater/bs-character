@@ -13,3 +13,7 @@ div.innergrid:not(:last-child) {
 div.innergrid-with-bottom {
   border-bottom: 1px solid lightgray;
 }
+
+div.right-border-not-last:not(:last-child) {
+  border-right: 1px solid lightgray;
+}

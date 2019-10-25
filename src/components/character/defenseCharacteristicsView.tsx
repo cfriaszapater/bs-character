@@ -79,7 +79,7 @@ function DefenseCharacteristic(
   color: string
 ) {
   return (
-    <div className="col innergrid-with-bottom">
+    <div className="col innergrid-with-bottom right-border-not-last">
       <div className="row">
         <div className={cellStyle()}>{name} </div>
         <div className={cellNumStyle()}>{value}</div>
