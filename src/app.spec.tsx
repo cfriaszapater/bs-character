@@ -3,14 +3,14 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import { givenAppStateWithSomeCards } from "../testUtil/givenStateWithSomeCards";
+import { givenAppStateWithCharacter } from "./testUtil/givenAppStateWithCharacter";
 import App from "./app";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 it("renders without crashing", () => {
-  const store = mockStore(givenAppStateWithSomeCards());
+  const store = mockStore(givenAppStateWithCharacter());
   const div = document.createElement("div");
   ReactDOM.render(
     <Provider store={store}>
