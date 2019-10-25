@@ -3,13 +3,14 @@ import { DefenseCharacteristics } from "../../store/character/types";
 import { agilityColor, strengthColor } from "./colors";
 import { fractionForCharacteristic } from "./fractionForCharacteristic";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
+import { cellNumStyle, cellStyle } from "./styles";
 
 export function DefenseCharacteristicsView(props: {
   defense: DefenseCharacteristics;
 }) {
   const { defense } = props;
   return (
-    <div id="defenseCharacteristics" className="col grouped-container">
+    <div id="defenseCharacteristics" className="col-6 grouped-container">
       <EmptyRow />
       <EmptyRow />
       <div className="row">
@@ -80,8 +81,8 @@ function DefenseCharacteristic(
   return (
     <div className="col innergrid-with-bottom">
       <div className="row">
-        <div className="col-2">{name} </div>
-        <div className="col-2 num">{value}</div>
+        <div className={cellStyle()}>{name} </div>
+        <div className={cellNumStyle()}>{value}</div>
         <HorizontalPercentageBar
           widthFraction={fractionValue}
           backgroundColor={color}

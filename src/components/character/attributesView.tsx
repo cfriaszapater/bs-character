@@ -2,11 +2,12 @@ import React from "react";
 import { Attributes } from "../../store/character/types";
 import { agilityColor, defaultColor, strengthColor, willColor } from "./colors";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
+import { cellNumStyle, cellStyle } from "./styles";
 
 export function AttributesView(props: { attributes: Attributes }) {
   const { attributes } = props;
   return (
-    <div id="attributes" className="col-2 grouped-container">
+    <div id="attributes" className="col-3 grouped-container">
       <EmptyRow />
       <Endurance value={attributes.endurance} />
       <Agility value={attributes.agility} />
@@ -22,46 +23,46 @@ export function AttributesView(props: { attributes: Attributes }) {
 }
 
 function Endurance(props: { value: number }) {
-  return Attribute("E", props.value, defaultColor);
+  return Attribute("End", props.value, defaultColor);
 }
 
 function Agility(props: { value: number }) {
-  return Attribute("A", props.value, agilityColor);
+  return Attribute("Agi", props.value, agilityColor);
 }
 
 function Strength(props: { value: number }) {
-  return Attribute("S", props.value, strengthColor);
+  return Attribute("Str", props.value, strengthColor);
 }
 
 function Will(props: { value: number }) {
-  return Attribute("W", props.value, willColor);
+  return Attribute("Wil", props.value, willColor);
 }
 
 function Intelligence(props: { value: number }) {
-  return Attribute("I", props.value, defaultColor);
+  return Attribute("Int", props.value, defaultColor);
 }
 
 function Leadership(props: { value: number }) {
-  return Attribute("L", props.value, defaultColor);
+  return Attribute("Lea", props.value, defaultColor);
 }
 
 function Power(props: { value: number }) {
-  return Attribute("P", props.value, defaultColor);
+  return Attribute("Pow", props.value, defaultColor);
 }
 
 function Defense(props: { value: number }) {
-  return Attribute("D", props.value, defaultColor);
+  return Attribute("Def", props.value, defaultColor);
 }
 
 function Extension(props: { value: number }) {
-  return Attribute("E", props.value, defaultColor);
+  return Attribute("Ext", props.value, defaultColor);
 }
 
 function Attribute(name: string, value: number, color: string) {
   return (
-    <div className="row innergrid">
-      <div className="col-1">{name} </div>
-      <div className="col-1 num">{value}</div>
+    <div id={name} className="row innergrid">
+      <div className={cellStyle()}>{name} </div>
+      <div className={cellNumStyle()}>{value}</div>
       <HorizontalPercentageBar
         widthFraction={percentageForAttribute(value)}
         backgroundColor={color}

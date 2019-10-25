@@ -9,6 +9,7 @@ import {
 } from "./colors";
 import { fractionForCharacteristic } from "./fractionForCharacteristic";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
+import { cellStyle, cellNumStyle } from "./styles";
 
 export function CharacteristicsView(props: {
   characteristics: Characteristics;
@@ -78,8 +79,8 @@ function Characteristic(
 ) {
   return (
     <div className="row innergrid-with-bottom">
-      <div className="col-2">{name} </div>
-      <div className="col-2 num">{value}</div>
+      <div className={cellStyle()}>{name} </div>
+      <div className={cellNumStyle()}>{value}</div>
       <HorizontalPercentageBar
         widthFraction={fractionValue}
         backgroundColor={color}
