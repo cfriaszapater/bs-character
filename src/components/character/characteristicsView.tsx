@@ -173,7 +173,7 @@ function VariableCharacteristic(
 ) {
   const [editing, setEditing] = useState(false);
 
-  function handleClick(e: React.SyntheticEvent<HTMLElement>) {
+  function handleClick() {
     setEditing(true);
   }
 
@@ -186,7 +186,7 @@ function VariableCharacteristic(
       <div className={cellStyle()}>{name} </div>
       <div className={cellNumStyle()} onClick={handleClick} onBlur={handleBlur}>
         {editing
-          ? editableCurrentValue(name, currentValue, value, handleChange)
+          ? editableInput(name, currentValue, value, handleChange)
           : currentValue + "/" + value}
       </div>
       <HorizontalPercentageBar
@@ -197,11 +197,11 @@ function VariableCharacteristic(
   );
 }
 
-function editableCurrentValue(
+function editableInput(
   name: string,
   currentValue: number,
   maxValue: number,
-  handleChange: (e?: any) => void
+  handleChange: (e: React.SyntheticEvent<HTMLInputElement>) => void
 ) {
   return (
     <input

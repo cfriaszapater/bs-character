@@ -3,8 +3,8 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import { givenAppStateWithCharacter } from "./testUtil/givenAppStateWithCharacter";
 import App from "./app";
+import { givenAppStateWithCharacter } from "./testUtil/givenAppStateWithCharacter";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
