@@ -35,7 +35,6 @@ export type CharacterActions =
 export const fetchCharacter = () => async (
   dispatch: ThunkDispatch<{}, {}, any>
 ): Promise<FetchCharacterSuccessAction | FetchCharacterFailureAction> => {
-  console.log("fetchCharacter");
   dispatch(fetchCharacterBegin());
   try {
     const character: Character = await getCharacter();
@@ -70,15 +69,9 @@ export const fetchCharacterFailure = (
   type: FETCH_CHARACTER_FAILURE
 });
 
-export const updateCharacter = (character: Character) => {
-  // TODO
-  console.log("updateCharacter");
-};
-
-export function updateCharacteristics(c: Characteristics) {
-  console.log("updateCharacteristics " + JSON.stringify(c));
+export function updateCharacteristics(characteristics: Characteristics) {
   return {
-    characteristics: c,
+    characteristics,
     type: UPDATE_CHARACTERISTICS_BEGIN
   };
 }

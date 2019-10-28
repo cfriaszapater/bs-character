@@ -19,20 +19,20 @@ interface CharacteristicsViewProps {
 }
 
 function CharacteristicsView(props: CharacteristicsViewProps) {
-  const { characteristics } = props;
+  const { characteristics, updateCharacteristics } = props;
   return (
     <div id="characteristics" className="col-3 grouped-container">
       <InitiativeView
         currentValue={characteristics.initiative.current}
         value={characteristics.initiative.max}
         characteristics={characteristics}
-        updateCharacteristics={props.updateCharacteristics}
+        updateCharacteristics={updateCharacteristics}
       />
       <StaminaView
         currrentValue={characteristics.stamina.current}
         value={characteristics.stamina.max}
         characteristics={characteristics}
-        updateCharacteristics={props.updateCharacteristics}
+        updateCharacteristics={updateCharacteristics}
       />
       <ImpactView value={characteristics.impact} />
       <DamageView value={characteristics.damage} />
@@ -40,7 +40,7 @@ function CharacteristicsView(props: CharacteristicsViewProps) {
         currentValue={characteristics.health.current}
         value={characteristics.health.max}
         characteristics={characteristics}
-        updateCharacteristics={props.updateCharacteristics}
+        updateCharacteristics={updateCharacteristics}
       />
     </div>
   );
@@ -53,7 +53,6 @@ function InitiativeView(props: {
   updateCharacteristics: typeof characterActions.updateCharacteristics;
 }) {
   function handleInitiativeChange(e: React.SyntheticEvent<HTMLInputElement>) {
-    console.log("handleInitiativeChange");
     const updatedCharacteristics = {
       ...props.characteristics,
       initiative: {
@@ -81,7 +80,6 @@ function StaminaView(props: {
   updateCharacteristics: typeof characterActions.updateCharacteristics;
 }) {
   function handleStaminaChange(e: React.SyntheticEvent<HTMLInputElement>) {
-    console.log("handleStaminaChange");
     const updatedCharacteristics = {
       ...props.characteristics,
       stamina: {
@@ -127,7 +125,6 @@ function HealthView(props: {
   updateCharacteristics: typeof characterActions.updateCharacteristics;
 }) {
   function handleHealthChange(e: React.SyntheticEvent<HTMLInputElement>) {
-    console.log("handleHealthChange");
     const updatedCharacteristics = {
       ...props.characteristics,
       health: {
@@ -172,7 +169,7 @@ function VariableCharacteristic(
   fractionValue: number,
   value: number,
   color: string,
-  handleChange: (e?: any) => void
+  handleChange: (e: React.SyntheticEvent<HTMLInputElement>) => void
 ) {
   const [editing, setEditing] = useState(false);
 
@@ -187,7 +184,6 @@ function VariableCharacteristic(
   return (
     <div className="row innergrid-with-bottom">
       <div className={cellStyle()}>{name} </div>
-      {/* TODO switch to editable on click (change "5/6" to "<input type number>") */}
       <div className={cellNumStyle()} onClick={handleClick} onBlur={handleBlur}>
         {editing
           ? editableCurrentValue(name, currentValue, value, handleChange)
