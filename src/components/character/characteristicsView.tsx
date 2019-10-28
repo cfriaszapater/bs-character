@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { updateCharacteristics } from "../../store/character/characterActions";
 import { Characteristics } from "../../store/character/types";
@@ -25,7 +25,6 @@ function CharacteristicsView(props: CharacteristicsViewProps) {
       <InitiativeView
         currentValue={characteristics.initiative.current}
         value={characteristics.initiative.max}
-        editing={characteristics.initiative.editing ? true : false}
         characteristics={characteristics}
       />
       <StaminaView
@@ -49,22 +48,22 @@ function CharacteristicsView(props: CharacteristicsViewProps) {
 function InitiativeView(props: {
   currentValue: number;
   value: number;
-  editing: boolean;
   characteristics: Characteristics;
 }) {
-  function handleInitiativeClick() {
-    console.log("handleInitiativeClick");
-    // TODO start editing
+  function handleInitiativeChange() {
+    console.log("handleInitiativeChange");
+    // TODO
     const updatedCharacteristics = {
-      ...props.characteristics,
-      initiative: { ...props.characteristics.initiative, editing: true }
+      ...props.characteristics
+      // TODO initiative: { ...props.characteristics.initiative, current: e.TODO_value }
     };
     updateCharacteristics(updatedCharacteristics);
   }
 
-  function handleInitiativeChange() {
-    console.log("handleInitiativeChange");
-    // TODO
+  const [editing, setEditing] = useState(false);
+
+  function handleClick() {
+    setEditing(true);
   }
 
   return VariableCharacteristic(
@@ -73,8 +72,8 @@ function InitiativeView(props: {
     fractionForCharacteristic(props.currentValue, 3, 11),
     props.value,
     defaultColor,
-    props.editing,
-    handleInitiativeClick,
+    editing,
+    handleClick,
     handleInitiativeChange
   );
 }
