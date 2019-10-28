@@ -7,7 +7,6 @@ import {
 import { CharacterViewState } from "./types";
 
 export const initialState: CharacterViewState = {
-  character: null,
   error: null,
   loading: false
 };
@@ -41,7 +40,6 @@ export function characterReducer(
       // Since it failed, we don't have items to display anymore, so set it empty.
       return {
         ...state,
-        character: null,
         error: action.error,
         loading: false
       };

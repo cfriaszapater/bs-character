@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import { updateCharacteristics } from "../../store/character/characterActions";
 import { Characteristics } from "../../store/character/types";
 import {
   agilityColor,
@@ -11,51 +13,106 @@ import { fractionForCharacteristic } from "./fractionForCharacteristic";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
 import { cellNumStyle, cellStyle } from "./styles";
 
-export function CharacteristicsView(props: {
+interface CharacteristicsViewProps {
   characteristics: Characteristics;
-}) {
+  updateCharacteristics: typeof updateCharacteristics;
+}
+
+function CharacteristicsView(props: CharacteristicsViewProps) {
   const { characteristics } = props;
   return (
     <div id="characteristics" className="col-3 grouped-container">
-      <Initiative
-        currentValue={characteristics.currentInitiative}
-        value={characteristics.initiative}
+      <InitiativeView
+        currentValue={characteristics.initiative.current}
+        value={characteristics.initiative.max}
+        editing={characteristics.initiative.editing ? true : false}
+        characteristics={characteristics}
       />
-      <Stamina
-        currrentValue={characteristics.currentStamina}
-        value={characteristics.stamina}
+      <StaminaView
+        currrentValue={characteristics.stamina.current}
+        value={characteristics.stamina.max}
+        editing={characteristics.stamina.editing ? true : false}
+        characteristics={characteristics}
       />
-      <Impact value={characteristics.impact} />
-      <Damage value={characteristics.damage} />
-      <Health
-        currentValue={characteristics.currentHealth}
-        value={characteristics.health}
+      <ImpactView value={characteristics.impact} />
+      <DamageView value={characteristics.damage} />
+      <HealthView
+        currentValue={characteristics.health.current}
+        value={characteristics.health.max}
+        editing={characteristics.health.editing ? true : false}
+        characteristics={characteristics}
       />
     </div>
   );
 }
 
-function Initiative(props: { currentValue: number; value: number }) {
+function InitiativeView(props: {
+  currentValue: number;
+  value: number;
+  editing: boolean;
+  characteristics: Characteristics;
+}) {
+  function handleInitiativeClick() {
+    console.log("handleInitiativeClick");
+    // TODO start editing
+    const updatedCharacteristics = {
+      ...props.characteristics,
+      initiative: { ...props.characteristics.initiative, editing: true }
+    };
+    updateCharacteristics(updatedCharacteristics);
+  }
+
+  function handleInitiativeChange() {
+    console.log("handleInitiativeChange");
+    // TODO
+  }
+
   return VariableCharacteristic(
     "Ini",
     props.currentValue,
     fractionForCharacteristic(props.currentValue, 3, 11),
     props.value,
-    defaultColor
+    defaultColor,
+    props.editing,
+    handleInitiativeClick,
+    handleInitiativeChange
   );
 }
 
-function Stamina(props: { currrentValue: number; value: number }) {
+function StaminaView(props: {
+  currrentValue: number;
+  value: number;
+  editing: boolean;
+  characteristics: Characteristics;
+}) {
+  function handleStaminaClick() {
+    console.log("handleStaminaClick");
+    // TODO start editing
+    const updatedCharacteristics = {
+      ...props.characteristics,
+      stamina: { ...props.characteristics.stamina, editing: true }
+    };
+    updateCharacteristics(updatedCharacteristics);
+  }
+
+  function handleStaminaChange() {
+    console.log("handleStaminaChange");
+    // TODO
+  }
+
   return VariableCharacteristic(
     "Sta",
     props.currrentValue,
     fractionForCharacteristic(props.currrentValue, 0, 20),
     props.value,
-    staminaColor
+    staminaColor,
+    false, // TODO
+    handleStaminaClick,
+    handleStaminaChange
   );
 }
 
-function Impact(props: { value: number }) {
+function ImpactView(props: { value: number }) {
   return Characteristic(
     "Imp",
     props.value,
@@ -64,7 +121,7 @@ function Impact(props: { value: number }) {
   );
 }
 
-function Damage(props: { value: number }) {
+function DamageView(props: { value: number }) {
   return Characteristic(
     "Da",
     props.value,
@@ -73,13 +130,36 @@ function Damage(props: { value: number }) {
   );
 }
 
-function Health(props: { currentValue: number; value: number }) {
+function HealthView(props: {
+  currentValue: number;
+  value: number;
+  editing: boolean;
+  characteristics: Characteristics;
+}) {
+  function handleHealthClick() {
+    console.log("handleHealthClick");
+    // TODO start editing
+    const updatedCharacteristics = {
+      ...props.characteristics,
+      health: { ...props.characteristics.health, editing: true }
+    };
+    updateCharacteristics(updatedCharacteristics);
+  }
+
+  function handleHealthChange() {
+    console.log("handleHealthChange");
+    // TODO
+  }
+
   return VariableCharacteristic(
     "HP",
     props.currentValue,
     fractionForCharacteristic(props.currentValue, 0, 20),
     props.value,
-    willColor
+    willColor,
+    false, // TODO
+    handleHealthClick,
+    handleHealthChange
   );
 }
 
@@ -106,13 +186,19 @@ function VariableCharacteristic(
   currentValue: number,
   fractionValue: number,
   value: number,
-  color: string
+  color: string,
+  editing: boolean,
+  handleClick: (e: any) => void,
+  handleChange: () => void
 ) {
   return (
     <div className="row innergrid-with-bottom">
       <div className={cellStyle()}>{name} </div>
-      <div className={cellNumStyle()}>
-        {currentValue}/{value}
+      {/* TODO switch to editable on click (change "5/6" to "<input type number>") */}
+      <div className={cellNumStyle()} onClick={handleClick}>
+        {editing
+          ? editableCurrentValue(name, currentValue, value, handleChange)
+          : currentValue + "/" + value}
       </div>
       <HorizontalPercentageBar
         widthFraction={fractionValue}
@@ -121,3 +207,28 @@ function VariableCharacteristic(
     </div>
   );
 }
+
+function editableCurrentValue(
+  name: string,
+  currentValue: number,
+  maxValue: number,
+  handleChange: () => void
+) {
+  return (
+    <input
+      type="number"
+      id={name + "-currentvalue"}
+      name={name + "-currentvalue"}
+      min="0"
+      max={maxValue}
+      value={currentValue}
+      className="editablenum"
+      onChange={handleChange}
+    />
+  );
+}
+
+export default connect(
+  null,
+  { updateCharacteristics }
+)(CharacteristicsView);

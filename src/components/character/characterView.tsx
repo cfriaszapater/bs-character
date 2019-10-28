@@ -1,25 +1,26 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { ThunkDispatch } from "redux-thunk";
+import { AppState } from "../../store";
 import { fetchCharacter } from "../../store/character/characterActions";
 import { Character, CharacterViewState } from "../../store/character/types";
 import { AttributesView } from "./attributesView";
-import { CharacteristicsView } from "./characteristicsView";
+import CharacteristicsView from "./characteristicsView";
 import { DefenseCharacteristicsView } from "./defenseCharacteristicsView";
 
 interface CharacterViewProps {
-  character: Character | null;
+  character?: Character;
   loading: boolean;
   error: Error | null;
-  dispatch: ThunkDispatch<{}, {}, any>;
+  fetchCharacter: () => any;
 }
 
-export default class CharacterView extends React.Component<
+class CharacterView extends React.Component<
   CharacterViewProps,
   CharacterViewState
 > {
   public componentDidMount() {
-    this.props.dispatch(fetchCharacter());
+    this.props.fetchCharacter();
   }
 
   public render() {
@@ -76,3 +77,14 @@ export default class CharacterView extends React.Component<
     );
   }
 }
+
+const mapStateToProps = (state: AppState) => ({
+  character: state.character.character,
+  error: state.character.error,
+  loading: state.character.loading
+});
+
+export default connect(
+  mapStateToProps,
+  { fetchCharacter }
+)(CharacterView);

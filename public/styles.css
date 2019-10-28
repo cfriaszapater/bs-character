@@ -17,3 +17,7 @@ div.innergrid-with-bottom {
 div.right-border-not-last:not(:last-child) {
   border-right: 1px solid lightgray;
 }
+
+input.editablenum {
+  width: 2em;
+}

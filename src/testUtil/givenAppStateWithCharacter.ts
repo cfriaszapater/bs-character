@@ -79,13 +79,21 @@ export function givenTestCharacter(): Character {
       ]
     },
     characteristics: {
-      initiative: 6,
-      currentInitiative: 5,
-      stamina: 10,
+      initiative: {
+        current: 5,
+        max: 6
+      },
+      stamina: {
+        current: 9,
+        max: 10
+      },
       currentStamina: 9,
       impact: 4,
       damage: 5,
-      health: 15,
+      health: {
+        current: 14,
+        max: 15
+      },
       currentHealth: 14
     },
     defenseCharacteristics: {

@@ -31,15 +31,7 @@ class App extends React.Component<AppProps> {
         )}
         <Router history={history}>
           <div>
-            <PrivateRoute
-              exact
-              path="/"
-              component={CharacterView}
-              character={this.props.character}
-              loading={this.props.loading}
-              error={this.props.error}
-              dispatch={this.props.dispatch}
-            />
+            <PrivateRoute exact path="/" component={CharacterView} />
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
           </div>
@@ -51,7 +43,7 @@ class App extends React.Component<AppProps> {
 
 interface AppProps {
   dispatch: ThunkDispatch<{}, {}, any>;
-  character: Character | null;
+  character?: Character;
   loading: boolean;
   error: Error | null;
   alert: Alert;

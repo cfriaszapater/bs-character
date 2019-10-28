@@ -1,6 +1,6 @@
 import { ThunkDispatch } from "redux-thunk";
 import { givenTestCharacter } from "../../testUtil/givenAppStateWithCharacter";
-import { Character } from "./types";
+import { Character, Characteristics } from "./types";
 
 export const FETCH_CHARACTER_BEGIN = "FETCH_CHARACTER_BEGIN";
 export const FETCH_CHARACTER_SUCCESS = "FETCH_CHARACTER_SUCCESS";
@@ -28,6 +28,7 @@ export type CharacterActions =
 export const fetchCharacter = () => async (
   dispatch: ThunkDispatch<{}, {}, any>
 ): Promise<FetchCharacterSuccessAction | FetchCharacterFailureAction> => {
+  console.log("fetchCharacter");
   dispatch(fetchCharacterBegin());
   try {
     const character: Character = await getCharacter();
@@ -61,3 +62,13 @@ export const fetchCharacterFailure = (
   error,
   type: FETCH_CHARACTER_FAILURE
 });
+
+export const updateCharacter = (character: Character) => {
+  // TODO
+  console.log("updateCharacter");
+};
+
+export function updateCharacteristics(c: Characteristics) {
+  console.log("updateCharacteristics " + JSON.stringify(c));
+  // TODO
+}

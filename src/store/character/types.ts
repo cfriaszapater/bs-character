@@ -19,14 +19,25 @@ export interface Character {
 }
 
 export interface Characteristics {
-  initiative: number;
-  currentInitiative: number;
-  stamina: number;
+  initiative: Initiative;
+  stamina: Stamina;
   currentStamina: number;
   impact: number;
   damage: number;
-  health: number;
+  health: Health;
   currentHealth: number;
+}
+
+export type Initiative = VariableCharacteristic;
+
+export type Stamina = VariableCharacteristic;
+
+export type Health = VariableCharacteristic;
+
+export interface VariableCharacteristic {
+  current: number;
+  max: number;
+  editing?: boolean;
 }
 
 export interface DefenseCharacteristics {
@@ -45,7 +56,7 @@ export interface Equipment {
 }
 
 export interface CharacterViewState {
-  character: Character | null;
+  character?: Character;
   loading: boolean;
   error: Error | null;
 }
