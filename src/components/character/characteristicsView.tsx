@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { updateCharacteristics } from "../../store/character/characterActions";
+import * as characterActions from "../../store/character/characterActions";
 import { Characteristics } from "../../store/character/types";
 import {
   agilityColor,
@@ -15,7 +15,7 @@ import { cellNumStyle, cellStyle } from "./styles";
 
 interface CharacteristicsViewProps {
   characteristics: Characteristics;
-  updateCharacteristics: typeof updateCharacteristics;
+  updateCharacteristics: typeof characterActions.updateCharacteristics;
 }
 
 function CharacteristicsView(props: CharacteristicsViewProps) {
@@ -26,11 +26,13 @@ function CharacteristicsView(props: CharacteristicsViewProps) {
         currentValue={characteristics.initiative.current}
         value={characteristics.initiative.max}
         characteristics={characteristics}
+        updateCharacteristics={props.updateCharacteristics}
       />
       <StaminaView
         currrentValue={characteristics.stamina.current}
         value={characteristics.stamina.max}
         characteristics={characteristics}
+        updateCharacteristics={props.updateCharacteristics}
       />
       <ImpactView value={characteristics.impact} />
       <DamageView value={characteristics.damage} />
@@ -38,6 +40,7 @@ function CharacteristicsView(props: CharacteristicsViewProps) {
         currentValue={characteristics.health.current}
         value={characteristics.health.max}
         characteristics={characteristics}
+        updateCharacteristics={props.updateCharacteristics}
       />
     </div>
   );
@@ -47,15 +50,18 @@ function InitiativeView(props: {
   currentValue: number;
   value: number;
   characteristics: Characteristics;
+  updateCharacteristics: typeof characterActions.updateCharacteristics;
 }) {
-  function handleInitiativeChange() {
+  function handleInitiativeChange(e: React.SyntheticEvent<HTMLInputElement>) {
     console.log("handleInitiativeChange");
-    // TODO
     const updatedCharacteristics = {
-      ...props.characteristics
-      // TODO initiative: { ...props.characteristics.initiative, current: e.TODO_value }
+      ...props.characteristics,
+      initiative: {
+        ...props.characteristics.initiative,
+        current: Number(e.currentTarget.value)
+      }
     };
-    updateCharacteristics(updatedCharacteristics);
+    props.updateCharacteristics(updatedCharacteristics);
   }
 
   return VariableCharacteristic(
@@ -72,10 +78,18 @@ function StaminaView(props: {
   currrentValue: number;
   value: number;
   characteristics: Characteristics;
+  updateCharacteristics: typeof characterActions.updateCharacteristics;
 }) {
-  function handleStaminaChange() {
+  function handleStaminaChange(e: React.SyntheticEvent<HTMLInputElement>) {
     console.log("handleStaminaChange");
-    // TODO
+    const updatedCharacteristics = {
+      ...props.characteristics,
+      stamina: {
+        ...props.characteristics.stamina,
+        current: Number(e.currentTarget.value)
+      }
+    };
+    props.updateCharacteristics(updatedCharacteristics);
   }
 
   return VariableCharacteristic(
@@ -110,10 +124,18 @@ function HealthView(props: {
   currentValue: number;
   value: number;
   characteristics: Characteristics;
+  updateCharacteristics: typeof characterActions.updateCharacteristics;
 }) {
-  function handleHealthChange() {
+  function handleHealthChange(e: React.SyntheticEvent<HTMLInputElement>) {
     console.log("handleHealthChange");
-    // TODO
+    const updatedCharacteristics = {
+      ...props.characteristics,
+      health: {
+        ...props.characteristics.health,
+        current: Number(e.currentTarget.value)
+      }
+    };
+    props.updateCharacteristics(updatedCharacteristics);
   }
 
   return VariableCharacteristic(
@@ -150,11 +172,11 @@ function VariableCharacteristic(
   fractionValue: number,
   value: number,
   color: string,
-  handleChange: () => void
+  handleChange: (e?: any) => void
 ) {
   const [editing, setEditing] = useState(false);
 
-  function handleClick() {
+  function handleClick(e: React.SyntheticEvent<HTMLElement>) {
     setEditing(true);
   }
 
@@ -183,7 +205,7 @@ function editableCurrentValue(
   name: string,
   currentValue: number,
   maxValue: number,
-  handleChange: () => void
+  handleChange: (e?: any) => void
 ) {
   return (
     <input
@@ -195,11 +217,12 @@ function editableCurrentValue(
       value={currentValue}
       className="editablenum"
       onChange={handleChange}
+      ref={input => input && input.focus()}
     />
   );
 }
 
 export default connect(
   null,
-  { updateCharacteristics }
+  { updateCharacteristics: characterActions.updateCharacteristics }
 )(CharacteristicsView);

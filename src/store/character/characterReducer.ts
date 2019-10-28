@@ -2,11 +2,13 @@ import {
   CharacterActions,
   FETCH_CHARACTER_BEGIN,
   FETCH_CHARACTER_FAILURE,
-  FETCH_CHARACTER_SUCCESS
+  FETCH_CHARACTER_SUCCESS,
+  UPDATE_CHARACTERISTICS_BEGIN
 } from "./characterActions";
-import { CharacterViewState } from "./types";
+import { Character, CharacterViewState } from "./types";
 
 export const initialState: CharacterViewState = {
+  character: emptyCharacter(),
   error: null,
   loading: false
 };
@@ -44,8 +46,64 @@ export function characterReducer(
         loading: false
       };
 
+    case UPDATE_CHARACTERISTICS_BEGIN:
+      console.log("reducer " + UPDATE_CHARACTERISTICS_BEGIN);
+      return {
+        ...state,
+        character: {
+          ...state.character,
+          characteristics: action.characteristics
+        }
+      };
+
     default:
       // ALWAYS have a default case in a reducer
       return state;
   }
+}
+
+function emptyCharacter(): Character {
+  return {
+    name: "",
+    attributes: {
+      endurance: 0,
+      agility: 0,
+      strength: 0,
+      will: 0,
+      intelligence: 0,
+      leadership: 0,
+      power: 0,
+      defense: 0,
+      extension: 0
+    },
+    equipment: {
+      hand1: null,
+      hand2: null,
+      body: null,
+      bag: [{}]
+    },
+    characteristics: {
+      initiative: {
+        current: 0,
+        max: 0
+      },
+      stamina: {
+        current: 0,
+        max: 0
+      },
+      impact: 0,
+      damage: 0,
+      health: {
+        current: 0,
+        max: 0
+      }
+    },
+    defenseCharacteristics: {
+      dodge: 0,
+      coverage: 0,
+      blunt: 0,
+      cut: 0,
+      penetrating: 0
+    }
+  };
 }

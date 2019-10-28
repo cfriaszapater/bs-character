@@ -21,11 +21,9 @@ export interface Character {
 export interface Characteristics {
   initiative: Initiative;
   stamina: Stamina;
-  currentStamina: number;
   impact: number;
   damage: number;
   health: Health;
-  currentHealth: number;
 }
 
 export type Initiative = VariableCharacteristic;
@@ -56,7 +54,7 @@ export interface Equipment {
 }
 
 export interface CharacterViewState {
-  character?: Character;
+  character: Character;
   loading: boolean;
   error: Error | null;
 }

@@ -87,14 +87,12 @@ export function givenTestCharacter(): Character {
         current: 9,
         max: 10
       },
-      currentStamina: 9,
       impact: 4,
       damage: 5,
       health: {
         current: 14,
         max: 15
-      },
-      currentHealth: 14
+      }
     },
     defenseCharacteristics: {
       dodge: 2,

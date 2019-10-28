@@ -5,6 +5,7 @@ import { Character, Characteristics } from "./types";
 export const FETCH_CHARACTER_BEGIN = "FETCH_CHARACTER_BEGIN";
 export const FETCH_CHARACTER_SUCCESS = "FETCH_CHARACTER_SUCCESS";
 export const FETCH_CHARACTER_FAILURE = "FETCH_CHARACTER_FAILURE";
+export const UPDATE_CHARACTERISTICS_BEGIN = "UPDATE_CHARACTERISTICS_BEGIN";
 
 export interface FetchCharacterBeginAction {
   type: typeof FETCH_CHARACTER_BEGIN;
@@ -20,10 +21,16 @@ export interface FetchCharacterFailureAction {
   error: Error | null;
 }
 
+export interface UpdateCharacteristicsBeginAction {
+  type: typeof UPDATE_CHARACTERISTICS_BEGIN;
+  characteristics: Characteristics;
+}
+
 export type CharacterActions =
   | FetchCharacterBeginAction
   | FetchCharacterFailureAction
-  | FetchCharacterSuccessAction;
+  | FetchCharacterSuccessAction
+  | UpdateCharacteristicsBeginAction;
 
 export const fetchCharacter = () => async (
   dispatch: ThunkDispatch<{}, {}, any>
@@ -70,5 +77,8 @@ export const updateCharacter = (character: Character) => {
 
 export function updateCharacteristics(c: Characteristics) {
   console.log("updateCharacteristics " + JSON.stringify(c));
-  // TODO
+  return {
+    characteristics: c,
+    type: UPDATE_CHARACTERISTICS_BEGIN
+  };
 }
