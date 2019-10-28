@@ -30,7 +30,6 @@ function CharacteristicsView(props: CharacteristicsViewProps) {
       <StaminaView
         currrentValue={characteristics.stamina.current}
         value={characteristics.stamina.max}
-        editing={characteristics.stamina.editing ? true : false}
         characteristics={characteristics}
       />
       <ImpactView value={characteristics.impact} />
@@ -38,7 +37,6 @@ function CharacteristicsView(props: CharacteristicsViewProps) {
       <HealthView
         currentValue={characteristics.health.current}
         value={characteristics.health.max}
-        editing={characteristics.health.editing ? true : false}
         characteristics={characteristics}
       />
     </div>
@@ -60,20 +58,12 @@ function InitiativeView(props: {
     updateCharacteristics(updatedCharacteristics);
   }
 
-  const [editing, setEditing] = useState(false);
-
-  function handleClick() {
-    setEditing(true);
-  }
-
   return VariableCharacteristic(
     "Ini",
     props.currentValue,
     fractionForCharacteristic(props.currentValue, 3, 11),
     props.value,
     defaultColor,
-    editing,
-    handleClick,
     handleInitiativeChange
   );
 }
@@ -81,19 +71,8 @@ function InitiativeView(props: {
 function StaminaView(props: {
   currrentValue: number;
   value: number;
-  editing: boolean;
   characteristics: Characteristics;
 }) {
-  function handleStaminaClick() {
-    console.log("handleStaminaClick");
-    // TODO start editing
-    const updatedCharacteristics = {
-      ...props.characteristics,
-      stamina: { ...props.characteristics.stamina, editing: true }
-    };
-    updateCharacteristics(updatedCharacteristics);
-  }
-
   function handleStaminaChange() {
     console.log("handleStaminaChange");
     // TODO
@@ -105,8 +84,6 @@ function StaminaView(props: {
     fractionForCharacteristic(props.currrentValue, 0, 20),
     props.value,
     staminaColor,
-    false, // TODO
-    handleStaminaClick,
     handleStaminaChange
   );
 }
@@ -132,19 +109,8 @@ function DamageView(props: { value: number }) {
 function HealthView(props: {
   currentValue: number;
   value: number;
-  editing: boolean;
   characteristics: Characteristics;
 }) {
-  function handleHealthClick() {
-    console.log("handleHealthClick");
-    // TODO start editing
-    const updatedCharacteristics = {
-      ...props.characteristics,
-      health: { ...props.characteristics.health, editing: true }
-    };
-    updateCharacteristics(updatedCharacteristics);
-  }
-
   function handleHealthChange() {
     console.log("handleHealthChange");
     // TODO
@@ -156,8 +122,6 @@ function HealthView(props: {
     fractionForCharacteristic(props.currentValue, 0, 20),
     props.value,
     willColor,
-    false, // TODO
-    handleHealthClick,
     handleHealthChange
   );
 }
@@ -186,15 +150,23 @@ function VariableCharacteristic(
   fractionValue: number,
   value: number,
   color: string,
-  editing: boolean,
-  handleClick: (e: any) => void,
   handleChange: () => void
 ) {
+  const [editing, setEditing] = useState(false);
+
+  function handleClick() {
+    setEditing(true);
+  }
+
+  function handleBlur() {
+    setEditing(false);
+  }
+
   return (
     <div className="row innergrid-with-bottom">
       <div className={cellStyle()}>{name} </div>
       {/* TODO switch to editable on click (change "5/6" to "<input type number>") */}
-      <div className={cellNumStyle()} onClick={handleClick}>
+      <div className={cellNumStyle()} onClick={handleClick} onBlur={handleBlur}>
         {editing
           ? editableCurrentValue(name, currentValue, value, handleChange)
           : currentValue + "/" + value}
