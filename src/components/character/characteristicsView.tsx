@@ -9,6 +9,7 @@ import {
   strengthColor,
   willColor
 } from "./colors";
+import { EditableInput } from "./editableInput";
 import { fractionForCharacteristic } from "./fractionForCharacteristic";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
 import { cellNumStyle, cellStyle } from "./styles";
@@ -186,7 +187,7 @@ function VariableCharacteristic(
       <div className={cellStyle()}>{name} </div>
       <div className={cellNumStyle()} onClick={handleClick} onBlur={handleBlur}>
         {editing
-          ? editableInput(name, currentValue, value, handleChange)
+          ? EditableInput(name, currentValue, value, handleChange)
           : currentValue + "/" + value}
       </div>
       <HorizontalPercentageBar
@@ -194,27 +195,6 @@ function VariableCharacteristic(
         backgroundColor={color}
       />
     </div>
-  );
-}
-
-function editableInput(
-  name: string,
-  currentValue: number,
-  maxValue: number,
-  handleChange: (e: React.SyntheticEvent<HTMLInputElement>) => void
-) {
-  return (
-    <input
-      type="number"
-      id={name + "-currentvalue"}
-      name={name + "-currentvalue"}
-      min="0"
-      max={maxValue}
-      value={currentValue}
-      className="editablenum"
-      onChange={handleChange}
-      ref={input => input && input.focus()}
-    />
   );
 }
 

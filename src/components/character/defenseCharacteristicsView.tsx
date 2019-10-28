@@ -1,27 +1,38 @@
-import React from "react";
-import { DefenseCharacteristics } from "../../store/character/types";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import * as characterActions from "../../store/character/characterActions";
+import { Characteristics } from "../../store/character/types";
 import { agilityColor, strengthColor } from "./colors";
+import { EditableInput } from "./editableInput";
 import { fractionForCharacteristic } from "./fractionForCharacteristic";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
 import { cellNumStyle, cellStyle } from "./styles";
 
-export function DefenseCharacteristicsView(props: {
-  defense: DefenseCharacteristics;
-}) {
-  const { defense } = props;
+interface CharacteristicsViewProps {
+  characteristics: Characteristics;
+  updateCharacteristics: typeof characterActions.updateCharacteristics;
+}
+
+function DefenseCharacteristicsView(props: CharacteristicsViewProps) {
+  const { characteristics, updateCharacteristics } = props;
   return (
     <div id="defenseCharacteristics" className="col-6 grouped-container">
       <EmptyRow />
       <EmptyRow />
       <div className="row">
-        <Dodge value={defense.dodge} />
-        <Coverage value={defense.coverage} />
+        <Dodge value={characteristics.dodge} />
+        <Coverage
+          currentValue={characteristics.coverage.current}
+          value={characteristics.coverage.max}
+          characteristics={characteristics}
+          updateCharacteristics={updateCharacteristics}
+        />
         <EmptyCol />
       </div>
       <div className="row">
-        <Blunt value={defense.blunt} />
-        <Cut value={defense.cut} />
-        <Penetrating value={defense.penetrating} />
+        <Blunt value={characteristics.blunt} />
+        <Cut value={characteristics.cut} />
+        <Penetrating value={characteristics.penetrating} />
       </div>
     </div>
   );
@@ -36,12 +47,31 @@ function Dodge(props: { value: number }) {
   );
 }
 
-function Coverage(props: { value: number }) {
-  return DefenseCharacteristic(
+function Coverage(props: {
+  currentValue: number;
+  value: number;
+  characteristics: Characteristics;
+  updateCharacteristics: typeof characterActions.updateCharacteristics;
+}) {
+  function handleChange(e: React.SyntheticEvent<HTMLInputElement>) {
+    const updatedCharacteristics = {
+      ...props.characteristics,
+      coverage: {
+        ...props.characteristics.coverage,
+        current: Number(e.currentTarget.value)
+      }
+    };
+    props.updateCharacteristics(updatedCharacteristics);
+  }
+
+  return VariableDefenseCharacteristic(
     "Cov",
+    props.currentValue,
+    fractionForCharacteristic(props.currentValue, 3, 9),
     props.value,
-    fractionForCharacteristic(props.value, 3, 9),
-    agilityColor
+    agilityColor,
+    handleChange,
+    props.characteristics.dodge
   );
 }
 
@@ -92,6 +122,47 @@ function DefenseCharacteristic(
   );
 }
 
+function VariableDefenseCharacteristic(
+  name: string,
+  currentValue: number,
+  fractionValue: number,
+  value: number,
+  color: string,
+  handleChange: (e: React.SyntheticEvent<HTMLInputElement>) => void,
+  minValue?: number
+) {
+  const [editing, setEditing] = useState(false);
+
+  function handleClick() {
+    setEditing(true);
+  }
+
+  function handleBlur() {
+    setEditing(false);
+  }
+
+  return (
+    <div className="col innergrid-with-bottom right-border-not-last">
+      <div className="row">
+        <div className={cellStyle()}>{name} </div>
+        <div
+          className={cellNumStyle()}
+          onClick={handleClick}
+          onBlur={handleBlur}
+        >
+          {editing
+            ? EditableInput(name, currentValue, value, handleChange, minValue)
+            : currentValue + "/" + value}
+        </div>
+        <HorizontalPercentageBar
+          widthFraction={fractionValue}
+          backgroundColor={color}
+        />
+      </div>
+    </div>
+  );
+}
+
 function EmptyCol() {
   return (
     <div className="col innergrid-with-bottom">{/*intentionally empty*/}</div>
@@ -101,3 +172,8 @@ function EmptyCol() {
 function EmptyRow() {
   return <div className="row innergrid">&nbsp;</div>;
 }
+
+export default connect(
+  null,
+  { updateCharacteristics: characterActions.updateCharacteristics }
+)(DefenseCharacteristicsView);

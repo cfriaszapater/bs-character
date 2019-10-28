@@ -15,15 +15,17 @@ export interface Character {
   attributes: Attributes;
   equipment: Equipment;
   characteristics: Characteristics;
-  defenseCharacteristics: DefenseCharacteristics;
 }
 
-export interface Characteristics {
+export interface Characteristics
+  extends AttackCharacteristics,
+    DefenseCharacteristics {}
+
+export interface AttackCharacteristics {
   initiative: Initiative;
   stamina: Stamina;
   impact: number;
   damage: number;
-  health: Health;
 }
 
 export type Initiative = VariableCharacteristic;
@@ -31,6 +33,8 @@ export type Initiative = VariableCharacteristic;
 export type Stamina = VariableCharacteristic;
 
 export type Health = VariableCharacteristic;
+
+export type Coverage = VariableCharacteristic;
 
 export interface VariableCharacteristic {
   current: number;
@@ -40,10 +44,11 @@ export interface VariableCharacteristic {
 
 export interface DefenseCharacteristics {
   dodge: number;
-  coverage: number;
+  coverage: Coverage;
   blunt: number;
   cut: number;
   penetrating: number;
+  health: Health;
 }
 
 export interface Equipment {

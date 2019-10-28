@@ -6,7 +6,7 @@ import { fetchCharacter } from "../../store/character/characterActions";
 import { Character, CharacterViewState } from "../../store/character/types";
 import { AttributesView } from "./attributesView";
 import CharacteristicsView from "./characteristicsView";
-import { DefenseCharacteristicsView } from "./defenseCharacteristicsView";
+import DefenseCharacteristicsView from "./defenseCharacteristicsView";
 
 interface CharacterViewProps {
   character?: Character;
@@ -56,7 +56,7 @@ class CharacterView extends React.Component<
                     characteristics={character.characteristics}
                   />
                   <DefenseCharacteristicsView
-                    defense={character.defenseCharacteristics}
+                    characteristics={character.characteristics}
                   />
                 </div>
               </div>

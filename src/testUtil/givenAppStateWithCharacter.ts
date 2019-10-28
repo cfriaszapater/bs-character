@@ -92,11 +92,12 @@ export function givenTestCharacter(): Character {
       health: {
         current: 14,
         max: 15
-      }
-    },
-    defenseCharacteristics: {
+      },
       dodge: 2,
-      coverage: 6,
+      coverage: {
+        current: 5,
+        max: 6
+      },
       blunt: 2,
       cut: 3,
       penetrating: 5

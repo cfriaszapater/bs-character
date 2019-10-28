@@ -96,11 +96,12 @@ function emptyCharacter(): Character {
       health: {
         current: 0,
         max: 0
-      }
-    },
-    defenseCharacteristics: {
+      },
       dodge: 0,
-      coverage: 0,
+      coverage: {
+        current: 0,
+        max: 0
+      },
       blunt: 0,
       cut: 0,
       penetrating: 0
