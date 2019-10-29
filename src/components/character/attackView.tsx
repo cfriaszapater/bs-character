@@ -24,7 +24,10 @@ function AttackView(props: CharacteristicsViewProps) {
   const { characteristics, updateCharacteristics, className } = props;
   return (
     <div id="attack" className={className}>
-      <MainHandView className="row innergrid-with-bottom" />
+      <MainHandView
+        className="row innergrid-with-bottom"
+        id="equipped-in-main-hand"
+      />
       <InitiativeView
         currentValue={characteristics.initiative.current}
         value={characteristics.initiative.max}

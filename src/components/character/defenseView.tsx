@@ -6,6 +6,8 @@ import { agilityColor, strengthColor, willColor } from "./colors";
 import { EditableInput } from "./editableInput";
 import { fractionForCharacteristic } from "./fractionForCharacteristic";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
+import BodyView from "./itemsEquipped/bodyView";
+import SecondaryHandView from "./itemsEquipped/secondaryHandView";
 import { cellNumStyle, cellStyle } from "./styles";
 
 interface CharacteristicsViewProps {
@@ -18,8 +20,11 @@ function DefenseView(props: CharacteristicsViewProps) {
   const { characteristics, updateCharacteristics, className } = props;
   return (
     <div id="defense" className={className}>
-      <EmptyRow />
-      <EmptyRow />
+      <BodyView className="row innergrid-with-bottom" id="equipped-in-body" />
+      <SecondaryHandView
+        className="row innergrid-with-bottom"
+        id="equipped-in-secondary-hand"
+      />
       <div className="row">
         <Dodge value={characteristics.dodge} />
         <Coverage

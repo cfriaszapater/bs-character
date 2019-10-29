@@ -8,12 +8,12 @@ import {
 } from "../../../store/character/types";
 import { ItemEquippedView, ItemEquippedViewProps } from "./itemEquippedView";
 
-function MainHandView(props: ItemEquippedViewProps) {
+function BodyView(props: ItemEquippedViewProps) {
   return ItemEquippedView(
     props,
-    EquipPositions.MainHand,
-    [ItemTypes.Weapon],
-    "-main weapon-"
+    EquipPositions.Body,
+    [ItemTypes.Armor],
+    "-armor-"
   );
 }
 
@@ -28,4 +28,4 @@ const mapStateToProps = (state: AppState): PropsFromState => ({
 export default connect(
   mapStateToProps,
   { updateEquipment: characterActions.updateEquipment }
-)(MainHandView);
+)(BodyView);

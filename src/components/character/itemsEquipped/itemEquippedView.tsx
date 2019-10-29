@@ -4,33 +4,37 @@ import {
   Equipment,
   EquipPositions,
   Item,
-  ItemTypes,
-  Weapon
+  ItemTypes
 } from "../../../store/character/types";
 
 export interface ItemEquippedViewProps {
   className?: string;
   updateEquipment: typeof characterActions.updateEquipment;
   equipment: Equipment;
+  id: string;
 }
 
 export function ItemEquippedView(
   props: ItemEquippedViewProps,
-  position: EquipPositions
+  position: EquipPositions,
+  allowedItemTypesInPosition: ItemTypes[],
+  placeholderOptionText: string
 ) {
-  const { className, equipment, updateEquipment } = props;
+  const { className, equipment, updateEquipment, id } = props;
   const { carried, equipped } = equipment;
 
-  function carriedItemById(id: string) {
-    return carried.filter(item => item.id === id)[0];
+  function carriedItemById(itemId: string) {
+    return carried.filter(item => item.id === itemId)[0];
   }
 
   function handleChange(e: SyntheticEvent<HTMLSelectElement>) {
+    const itemId = e.currentTarget.value;
     updateEquipment({
       ...equipment,
       equipped: {
         ...equipment.equipped,
-        [position]: carriedItemById(e.currentTarget.value) as Weapon
+        [position]:
+          itemId === null || itemId === "" ? null : carriedItemById(itemId)
       }
     });
   }
@@ -45,21 +49,31 @@ export function ItemEquippedView(
     );
   const itemInPosition = equipped[position];
   return (
-    <div className={className} id="main-hand">
+    <div className={className} id={id}>
       <select
-        name="main-hand-weapon"
+        name={id}
         className="w-100"
         onChange={handleChange}
         defaultValue={itemInPosition ? itemInPosition.id : undefined}
       >
-        {carried
-          .filter(notWornElsewhere)
-          .filter(item => item.type === ItemTypes.Weapon)
-          .map(item => (
-            <option value={item.id} key={item.id}>
-              {item.name}
-            </option>
-          ))}
+        {[
+          <option value="" key="placeholder-option">
+            {placeholderOptionText}
+          </option>
+        ].concat(
+          carried
+            .filter(notWornElsewhere)
+            .filter(item =>
+              allowedItemTypesInPosition.some(
+                itemType => item.type === itemType
+              )
+            )
+            .map(item => (
+              <option value={item.id} key={item.id}>
+                {item.name}
+              </option>
+            ))
+        )}
       </select>
     </div>
   );
