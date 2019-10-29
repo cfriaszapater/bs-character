@@ -4,10 +4,13 @@ import { agilityColor, defaultColor, strengthColor, willColor } from "./colors";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
 import { cellNumStyle, cellStyle } from "./styles";
 
-export function AttributesView(props: { attributes: Attributes }) {
-  const { attributes } = props;
+export function AttributesView(props: {
+  attributes: Attributes;
+  className?: string;
+}) {
+  const { attributes, className } = props;
   return (
-    <div id="attributes" className="col-3 grouped-container">
+    <div id="attributes" className={className}>
       <EmptyRow />
       <Endurance value={attributes.endurance} />
       <Agility value={attributes.agility} />

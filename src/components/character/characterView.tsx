@@ -49,14 +49,18 @@ class CharacterView extends React.Component<
                 <div id="personal-info" className="row">
                   <div>Name: {character.name}</div>
                 </div>
-                <div id="equipment" className="row"></div>
-                <div id="attribs-and-characteristics" className="row">
-                  <AttributesView attributes={character.attributes} />
+                <div id="main" className="row">
+                  <AttributesView
+                    attributes={character.attributes}
+                    className="col-3 grouped-container"
+                  />
                   <CharacteristicsView
                     characteristics={character.characteristics}
+                    className="col-3 grouped-container"
                   />
                   <DefenseCharacteristicsView
                     characteristics={character.characteristics}
+                    className="col-6 grouped-container"
                   />
                 </div>
               </div>

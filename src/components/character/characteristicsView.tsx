@@ -17,12 +17,13 @@ import { cellNumStyle, cellStyle } from "./styles";
 interface CharacteristicsViewProps {
   characteristics: Characteristics;
   updateCharacteristics: typeof characterActions.updateCharacteristics;
+  className?: string;
 }
 
 function CharacteristicsView(props: CharacteristicsViewProps) {
-  const { characteristics, updateCharacteristics } = props;
+  const { characteristics, updateCharacteristics, className } = props;
   return (
-    <div id="characteristics" className="col-3 grouped-container">
+    <div id="attack" className={className}>
       <InitiativeView
         currentValue={characteristics.initiative.current}
         value={characteristics.initiative.max}
@@ -37,12 +38,6 @@ function CharacteristicsView(props: CharacteristicsViewProps) {
       />
       <ImpactView value={characteristics.impact} />
       <DamageView value={characteristics.damage} />
-      <HealthView
-        currentValue={characteristics.health.current}
-        value={characteristics.health.max}
-        characteristics={characteristics}
-        updateCharacteristics={updateCharacteristics}
-      />
     </div>
   );
 }
@@ -116,33 +111,6 @@ function DamageView(props: { value: number }) {
     props.value,
     fractionForCharacteristic(props.value, 2, 8),
     strengthColor
-  );
-}
-
-function HealthView(props: {
-  currentValue: number;
-  value: number;
-  characteristics: Characteristics;
-  updateCharacteristics: typeof characterActions.updateCharacteristics;
-}) {
-  function handleHealthChange(e: React.SyntheticEvent<HTMLInputElement>) {
-    const updatedCharacteristics = {
-      ...props.characteristics,
-      health: {
-        ...props.characteristics.health,
-        current: Number(e.currentTarget.value)
-      }
-    };
-    props.updateCharacteristics(updatedCharacteristics);
-  }
-
-  return VariableCharacteristic(
-    "HP",
-    props.currentValue,
-    fractionForCharacteristic(props.currentValue, 0, 20),
-    props.value,
-    willColor,
-    handleHealthChange
   );
 }
 
