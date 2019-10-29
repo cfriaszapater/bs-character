@@ -1,5 +1,11 @@
 import { AppState } from "../store";
-import { Armor, Character, Shield, Weapon } from "../store/character/types";
+import {
+  Armor,
+  Character,
+  Shield,
+  Weapon,
+  ItemTypes
+} from "../store/character/types";
 
 export function givenAppStateWithCharacter(): AppState {
   return {
@@ -41,7 +47,7 @@ export function givenTestCharacter(): Character {
     },
     equipment: {
       hand1: {
-        type: "weapon",
+        type: ItemTypes.Weapon,
         weaponType: "sword",
         name: "long sword",
         id: "sw-1",
@@ -51,7 +57,7 @@ export function givenTestCharacter(): Character {
         weight: 2
       },
       hand2: {
-        type: "shield",
+        type: ItemTypes.Shield,
         name: "round shield",
         id: "sh-1",
         level: 1,
@@ -64,7 +70,7 @@ export function givenTestCharacter(): Character {
         penetrating: 2
       },
       body: {
-        type: "armor",
+        type: ItemTypes.Armor,
         name: "chainmail",
         id: "ch-1",
         level: 1,
@@ -78,7 +84,17 @@ export function givenTestCharacter(): Character {
       },
       carried: [
         {
-          type: "weapon",
+          type: ItemTypes.Weapon,
+          weaponType: "sword",
+          name: "dagger",
+          id: "dagger-1",
+          level: 1,
+          reach: 0,
+          structure: 3,
+          weight: 0.5
+        } as Weapon,
+        {
+          type: ItemTypes.Weapon,
           weaponType: "sword",
           name: "long sword",
           id: "sw-1",
@@ -88,7 +104,7 @@ export function givenTestCharacter(): Character {
           weight: 2
         } as Weapon,
         {
-          type: "shield",
+          type: ItemTypes.Shield,
           name: "round shield",
           id: "sh-1",
           level: 1,
@@ -101,7 +117,7 @@ export function givenTestCharacter(): Character {
           penetrating: 2
         } as Shield,
         {
-          type: "armor",
+          type: ItemTypes.Armor,
           name: "chainmail",
           id: "ch-1",
           level: 1,
@@ -114,7 +130,7 @@ export function givenTestCharacter(): Character {
           penetrating: 3
         } as Armor,
         {
-          type: "miscelaneous",
+          type: ItemTypes.Misc,
           id: "misc-1",
           weight: 0,
           level: 1,

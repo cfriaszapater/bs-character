@@ -11,6 +11,7 @@ import {
 import { EditableInput } from "./editableInput";
 import { fractionForCharacteristic } from "./fractionForCharacteristic";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
+import MainHandView from "./mainHandView";
 import { cellNumStyle, cellStyle } from "./styles";
 
 interface CharacteristicsViewProps {
@@ -23,6 +24,7 @@ function AttackView(props: CharacteristicsViewProps) {
   const { characteristics, updateCharacteristics, className } = props;
   return (
     <div id="attack" className={className}>
+      <MainHandView className="row innergrid-with-bottom" />
       <InitiativeView
         currentValue={characteristics.initiative.current}
         value={characteristics.initiative.max}
@@ -150,7 +152,7 @@ function VariableCharacteristic(
   }
 
   return (
-    <div className="row innergrid-with-bottom">
+    <div className="row innergrid-with-bottom" id={name}>
       <div className={cellStyle()}>{name} </div>
       <div className={cellNumStyle()} onClick={handleClick} onBlur={handleBlur}>
         {editing

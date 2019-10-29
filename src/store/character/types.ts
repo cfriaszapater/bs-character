@@ -59,8 +59,15 @@ export interface Equipment {
   carried: Item[];
 }
 
+export enum ItemTypes {
+  Weapon = "weapon",
+  Armor = "armor",
+  Shield = "shield",
+  Misc = "misc"
+}
+
 export interface Item {
-  type: string;
+  type: ItemTypes;
   weight: number;
   name: string;
   id: string;
@@ -68,7 +75,7 @@ export interface Item {
 }
 
 export interface Weapon extends Item {
-  type: "weapon";
+  type: ItemTypes.Weapon;
   weaponType: "sword";
   reach: number;
   structure: number;
@@ -84,11 +91,11 @@ export interface DefenseItem extends Item {
 }
 
 export interface Armor extends DefenseItem {
-  type: "armor";
+  type: ItemTypes.Armor;
 }
 
 export interface Shield extends DefenseItem {
-  type: "shield";
+  type: ItemTypes.Shield;
   dodge: 0;
 }
 

@@ -3,7 +3,8 @@ import {
   FETCH_CHARACTER_BEGIN,
   FETCH_CHARACTER_FAILURE,
   FETCH_CHARACTER_SUCCESS,
-  UPDATE_CHARACTERISTICS_BEGIN
+  UPDATE_CHARACTERISTICS_BEGIN,
+  UPDATE_EQUIPMENT_BEGIN
 } from "./characterActions";
 import { Character, CharacterViewState } from "./types";
 
@@ -52,6 +53,15 @@ export function characterReducer(
         character: {
           ...state.character,
           characteristics: action.characteristics
+        }
+      };
+
+    case UPDATE_EQUIPMENT_BEGIN:
+      return {
+        ...state,
+        character: {
+          ...state.character,
+          equipment: action.equipment
         }
       };
 
