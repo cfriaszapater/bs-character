@@ -4,11 +4,13 @@ import * as characterActions from "../../store/character/characterActions";
 import { Characteristics } from "../../store/character/types";
 import { agilityColor, strengthColor, willColor } from "./colors";
 import { EditableInput } from "./editableInput";
+import { EmptyRow } from "./emptyRow";
 import { fractionForCharacteristic } from "./fractionForCharacteristic";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
 import BodyView from "./itemsEquipped/bodyView";
 import SecondaryHandView from "./itemsEquipped/secondaryHandView";
 import { cellNumStyle, cellStyle } from "./styles";
+import { EmptyCol } from "./emptyCol";
 
 interface CharacteristicsViewProps {
   characteristics: Characteristics;
@@ -25,6 +27,7 @@ function DefenseView(props: CharacteristicsViewProps) {
         className="row innergrid-with-bottom"
         id="equipped-in-secondary-hand"
       />
+      <EmptyRow />
       <div className="row">
         <Dodge value={characteristics.dodge} />
         <Coverage
@@ -205,16 +208,6 @@ function VariableDefenseCharacteristic(
       </div>
     </div>
   );
-}
-
-function EmptyCol() {
-  return (
-    <div className="col innergrid-with-bottom">{/*intentionally empty*/}</div>
-  );
-}
-
-function EmptyRow() {
-  return <div className="row innergrid">&nbsp;</div>;
 }
 
 export default connect(
