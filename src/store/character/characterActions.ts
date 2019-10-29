@@ -45,7 +45,7 @@ export const fetchCharacter = () => async (
 };
 
 async function getCharacter(): Promise<Character> {
-  // TODO return await get(backendUrl() + "/character");
+  // TODO return await get(backendUrl() + "/characters/{id}");
   return new Promise(resolve => {
     resolve(givenTestCharacter());
   });

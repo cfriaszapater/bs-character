@@ -47,7 +47,6 @@ export function characterReducer(
       };
 
     case UPDATE_CHARACTERISTICS_BEGIN:
-      console.log("reducer " + UPDATE_CHARACTERISTICS_BEGIN);
       return {
         ...state,
         character: {
@@ -80,7 +79,7 @@ function emptyCharacter(): Character {
       hand1: null,
       hand2: null,
       body: null,
-      bag: [{}]
+      carried: []
     },
     characteristics: {
       initiative: {

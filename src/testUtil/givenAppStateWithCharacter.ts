@@ -1,5 +1,5 @@
 import { AppState } from "../store";
-import { Character } from "../store/character/types";
+import { Character, Weapon, Shield, Armor } from "../store/character/types";
 
 export function givenAppStateWithCharacter(): AppState {
   return {
@@ -42,7 +42,9 @@ export function givenTestCharacter(): Character {
     equipment: {
       hand1: {
         type: "weapon",
-        id: "long-sword",
+        weaponType: "sword",
+        name: "long sword",
+        id: "sw-1",
         level: 1,
         reach: 2,
         structure: 3,
@@ -50,10 +52,12 @@ export function givenTestCharacter(): Character {
       },
       hand2: {
         type: "shield",
-        id: "round-shield",
+        name: "round shield",
+        id: "sh-1",
         level: 1,
         structure: 1,
         weight: 1,
+        dodge: 0,
         coverage: 1,
         blunt: 0,
         cut: 0,
@@ -61,7 +65,8 @@ export function givenTestCharacter(): Character {
       },
       body: {
         type: "armor",
-        id: "chainmail",
+        name: "chainmail",
+        id: "ch-1",
         level: 1,
         structure: 3,
         weight: 11,
@@ -71,10 +76,49 @@ export function givenTestCharacter(): Character {
         cut: 3,
         penetrating: 3
       },
-      bag: [
+      carried: [
+        {
+          type: "weapon",
+          weaponType: "sword",
+          name: "long sword",
+          id: "sw-1",
+          level: 1,
+          reach: 2,
+          structure: 3,
+          weight: 2
+        } as Weapon,
+        {
+          type: "shield",
+          name: "round shield",
+          id: "sh-1",
+          level: 1,
+          structure: 1,
+          weight: 1,
+          dodge: 0,
+          coverage: 1,
+          blunt: 0,
+          cut: 0,
+          penetrating: 2
+        } as Shield,
+        {
+          type: "armor",
+          name: "chainmail",
+          id: "ch-1",
+          level: 1,
+          structure: 3,
+          weight: 11,
+          dodge: 2,
+          coverage: 5,
+          blunt: 2,
+          cut: 3,
+          penetrating: 3
+        } as Armor,
         {
           type: "miscelaneous",
-          id: "flask"
+          id: "misc-1",
+          weight: 0,
+          level: 1,
+          name: "flask"
         }
       ]
     },

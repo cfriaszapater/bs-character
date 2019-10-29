@@ -52,10 +52,44 @@ export interface DefenseCharacteristics {
 }
 
 export interface Equipment {
-  hand1: any;
-  hand2: any;
-  body: any;
-  bag: [any];
+  // items in hands or body are duplicates of those carried (carried is the list of all items the characters has available in combat)
+  hand1: Weapon | null;
+  hand2: Weapon | Shield | null;
+  body: Armor | null;
+  carried: Item[];
+}
+
+export interface Item {
+  type: string;
+  weight: number;
+  name: string;
+  id: string;
+  level: number;
+}
+
+export interface Weapon extends Item {
+  type: "weapon";
+  weaponType: "sword";
+  reach: number;
+  structure: number;
+}
+
+export interface DefenseItem extends Item {
+  dodge: number;
+  coverage: number;
+  structure: number;
+  blunt: number;
+  cut: number;
+  penetrating: number;
+}
+
+export interface Armor extends DefenseItem {
+  type: "armor";
+}
+
+export interface Shield extends DefenseItem {
+  type: "shield";
+  dodge: 0;
 }
 
 export interface CharacterViewState {
