@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import { AppState } from "../../store";
 import { fetchCharacter } from "../../store/character/characterActions";
 import { Character, CharacterViewState } from "../../store/character/types";
+import AttackView from "./attackView";
 import { AttributesView } from "./attributesView";
-import CharacteristicsView from "./characteristicsView";
-import DefenseCharacteristicsView from "./defenseCharacteristicsView";
+import DefenseView from "./defenseView";
 
 interface CharacterViewProps {
   character?: Character;
@@ -54,11 +54,11 @@ class CharacterView extends React.Component<
                     attributes={character.attributes}
                     className="col-3 grouped-container"
                   />
-                  <CharacteristicsView
+                  <AttackView
                     characteristics={character.characteristics}
                     className="col-3 grouped-container"
                   />
-                  <DefenseCharacteristicsView
+                  <DefenseView
                     characteristics={character.characteristics}
                     className="col-6 grouped-container"
                   />

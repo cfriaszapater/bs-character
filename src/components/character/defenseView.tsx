@@ -14,7 +14,7 @@ interface CharacteristicsViewProps {
   className?: string;
 }
 
-function DefenseCharacteristicsView(props: CharacteristicsViewProps) {
+function DefenseView(props: CharacteristicsViewProps) {
   const { characteristics, updateCharacteristics, className } = props;
   return (
     <div id="defense" className={className}>
@@ -215,4 +215,4 @@ function EmptyRow() {
 export default connect(
   null,
   { updateCharacteristics: characterActions.updateCharacteristics }
-)(DefenseCharacteristicsView);
+)(DefenseView);

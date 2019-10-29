@@ -1,5 +1,5 @@
 import { AppState } from "../store";
-import { Character, Weapon, Shield, Armor } from "../store/character/types";
+import { Armor, Character, Shield, Weapon } from "../store/character/types";
 
 export function givenAppStateWithCharacter(): AppState {
   return {

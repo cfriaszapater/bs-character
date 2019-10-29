@@ -6,8 +6,7 @@ import {
   agilityColor,
   defaultColor,
   staminaColor,
-  strengthColor,
-  willColor
+  strengthColor
 } from "./colors";
 import { EditableInput } from "./editableInput";
 import { fractionForCharacteristic } from "./fractionForCharacteristic";
@@ -20,7 +19,7 @@ interface CharacteristicsViewProps {
   className?: string;
 }
 
-function CharacteristicsView(props: CharacteristicsViewProps) {
+function AttackView(props: CharacteristicsViewProps) {
   const { characteristics, updateCharacteristics, className } = props;
   return (
     <div id="attack" className={className}>
@@ -169,4 +168,4 @@ function VariableCharacteristic(
 export default connect(
   null,
   { updateCharacteristics: characterActions.updateCharacteristics }
-)(CharacteristicsView);
+)(AttackView);
