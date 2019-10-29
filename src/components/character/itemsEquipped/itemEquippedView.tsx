@@ -1,25 +1,23 @@
 import React, { SyntheticEvent } from "react";
-import { connect } from "react-redux";
-import { AppState } from "../../store";
-import * as characterActions from "../../store/character/characterActions";
+import * as characterActions from "../../../store/character/characterActions";
 import {
   Equipment,
   EquipPositions,
   Item,
   ItemTypes,
   Weapon
-} from "../../store/character/types";
+} from "../../../store/character/types";
 
-type MainHandViewProps = {
+export interface ItemEquippedViewProps {
   className?: string;
   updateEquipment: typeof characterActions.updateEquipment;
-} & PropsFromState;
-
-function MainHandView(props: MainHandViewProps) {
-  return ItemEquippedView(props, EquipPositions.MainHand);
+  equipment: Equipment;
 }
 
-function ItemEquippedView(props: MainHandViewProps, position: EquipPositions) {
+export function ItemEquippedView(
+  props: ItemEquippedViewProps,
+  position: EquipPositions
+) {
   const { className, equipment, updateEquipment } = props;
   const { carried, equipped } = equipment;
 
@@ -70,16 +68,3 @@ function ItemEquippedView(props: MainHandViewProps, position: EquipPositions) {
 function itemIn(item: Item, position: Item) {
   return position !== null && item.id === position.id;
 }
-
-interface PropsFromState {
-  equipment: Equipment;
-}
-
-const mapStateToProps = (state: AppState): PropsFromState => ({
-  equipment: state.character.character.equipment
-});
-
-export default connect(
-  mapStateToProps,
-  { updateEquipment: characterActions.updateEquipment }
-)(MainHandView);

@@ -11,7 +11,7 @@ import {
 import { EditableInput } from "./editableInput";
 import { fractionForCharacteristic } from "./fractionForCharacteristic";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
-import MainHandView from "./mainHandView";
+import MainHandView from "./itemsEquipped/mainHandView";
 import { cellNumStyle, cellStyle } from "./styles";
 
 interface CharacteristicsViewProps {
