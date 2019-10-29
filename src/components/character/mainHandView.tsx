@@ -4,6 +4,7 @@ import { AppState } from "../../store";
 import * as characterActions from "../../store/character/characterActions";
 import {
   Equipment,
+  EquipPositions,
   Item,
   ItemTypes,
   Weapon
@@ -15,8 +16,12 @@ type MainHandViewProps = {
 } & PropsFromState;
 
 function MainHandView(props: MainHandViewProps) {
+  return ItemEquippedView(props, EquipPositions.MainHand);
+}
+
+function ItemEquippedView(props: MainHandViewProps, position: EquipPositions) {
   const { className, equipment, updateEquipment } = props;
-  const { carried, hand1, hand2, body } = equipment;
+  const { carried, equipped } = equipment;
 
   function carriedItemById(id: string) {
     return carried.filter(item => item.id === id)[0];
@@ -25,19 +30,29 @@ function MainHandView(props: MainHandViewProps) {
   function handleChange(e: SyntheticEvent<HTMLSelectElement>) {
     updateEquipment({
       ...equipment,
-      hand1: carriedItemById(e.currentTarget.value) as Weapon
+      equipped: {
+        ...equipment.equipped,
+        [position]: carriedItemById(e.currentTarget.value) as Weapon
+      }
     });
   }
 
+  const otherPositions = Object.keys(equipment.equipped).filter(
+    pKey => pKey !== position
+  );
   const notWornElsewhere = (item: Item) =>
-    !itemIn(item, hand2 as Item) && !itemIn(item, body as Item);
+    otherPositions.every(
+      otherPosition =>
+        !itemIn(item, equipped[otherPosition as EquipPositions] as Item)
+    );
+  const itemInPosition = equipped[position];
   return (
     <div className={className} id="main-hand">
       <select
         name="main-hand-weapon"
         className="w-100"
         onChange={handleChange}
-        defaultValue={hand1 ? hand1.id : undefined}
+        defaultValue={itemInPosition ? itemInPosition.id : undefined}
       >
         {carried
           .filter(notWornElsewhere)

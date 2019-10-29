@@ -51,11 +51,19 @@ export interface DefenseCharacteristics {
   health: Health;
 }
 
+export enum EquipPositions {
+  MainHand = "hand1",
+  SecondaryHand = "hand2",
+  Body = "body"
+}
+
 export interface Equipment {
-  // items in hands or body are duplicates of those carried (carried is the list of all items the characters has available in combat)
-  hand1: Weapon | null;
-  hand2: Weapon | Shield | null;
-  body: Armor | null;
+  // Items equipped are duplicates of those carried (carried are all items the character has available in combat; equipped are the ones currently in use)
+  equipped: {
+    [EquipPositions.MainHand]: Weapon | null;
+    [EquipPositions.SecondaryHand]: Weapon | Shield | null;
+    [EquipPositions.Body]: Armor | null;
+  };
   carried: Item[];
 }
 

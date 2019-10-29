@@ -46,41 +46,43 @@ export function givenTestCharacter(): Character {
       extension: 5
     },
     equipment: {
-      hand1: {
-        type: ItemTypes.Weapon,
-        weaponType: "sword",
-        name: "long sword",
-        id: "sw-1",
-        level: 1,
-        reach: 2,
-        structure: 3,
-        weight: 2
-      },
-      hand2: {
-        type: ItemTypes.Shield,
-        name: "round shield",
-        id: "sh-1",
-        level: 1,
-        structure: 1,
-        weight: 1,
-        dodge: 0,
-        coverage: 1,
-        blunt: 0,
-        cut: 0,
-        penetrating: 2
-      },
-      body: {
-        type: ItemTypes.Armor,
-        name: "chainmail",
-        id: "ch-1",
-        level: 1,
-        structure: 3,
-        weight: 11,
-        dodge: 2,
-        coverage: 5,
-        blunt: 2,
-        cut: 3,
-        penetrating: 3
+      equipped: {
+        hand1: {
+          type: ItemTypes.Weapon,
+          weaponType: "sword",
+          name: "long sword",
+          id: "sw-1",
+          level: 1,
+          reach: 2,
+          structure: 3,
+          weight: 2
+        },
+        hand2: {
+          type: ItemTypes.Shield,
+          name: "round shield",
+          id: "sh-1",
+          level: 1,
+          structure: 1,
+          weight: 1,
+          dodge: 0,
+          coverage: 1,
+          blunt: 0,
+          cut: 0,
+          penetrating: 2
+        },
+        body: {
+          type: ItemTypes.Armor,
+          name: "chainmail",
+          id: "ch-1",
+          level: 1,
+          structure: 3,
+          weight: 11,
+          dodge: 2,
+          coverage: 5,
+          blunt: 2,
+          cut: 3,
+          penetrating: 3
+        }
       },
       carried: [
         {

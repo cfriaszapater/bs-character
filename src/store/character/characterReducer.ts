@@ -86,9 +86,11 @@ function emptyCharacter(): Character {
       extension: 0
     },
     equipment: {
-      hand1: null,
-      hand2: null,
-      body: null,
+      equipped: {
+        hand1: null,
+        hand2: null,
+        body: null
+      },
       carried: []
     },
     characteristics: {
