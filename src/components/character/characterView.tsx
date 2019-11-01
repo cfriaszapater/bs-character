@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { AppState } from "../../store";
 import { fetchCharacter } from "../../store/character/characterActions";
 import { Character, CharacterViewState } from "../../store/character/types";
+import { NavBar } from "../navBar";
 import { CharacterMainSheetView } from "./characterMainSheetView";
 
 interface CharacterViewProps {
@@ -30,9 +30,7 @@ class CharacterView extends React.Component<
 
     return (
       <div>
-        <div>
-          <Link to="/login">Logout</Link>
-        </div>
+        <NavBar />
         {error && (
           <div className="alert alert-danger">
             {error.message +
