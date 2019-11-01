@@ -9,7 +9,7 @@ import { AttributesView } from "./attributesView";
 import DefenseView from "./defenseView";
 
 interface CharacterViewProps {
-  character?: Character;
+  character: Character;
   loading: boolean;
   error: Error | null;
   fetchCharacter: () => any;
@@ -41,10 +41,10 @@ class CharacterView extends React.Component<
               " Please check your network connection and refresh."}
           </div>
         )}
-        {character && (
-          <div id="sheet" className="container-fluid">
+        {
+          <div id="character-view" className="container-fluid">
             <div className="row">
-              <div id="mainSheet" className="col">
+              <div id="main-sheet" className="col">
                 {/* Combat sheet */}
                 <div id="personal-info" className="row">
                   <div>Name: {character.name}</div>
@@ -64,7 +64,7 @@ class CharacterView extends React.Component<
                   />
                 </div>
               </div>
-              <div id="secondarySheet" className="col">
+              <div id="secondary-sheet" className="col">
                 {/* Non-combat sheet */}
                 <div id="notes" className="row grouped-container h-100">
                   <div className="col">
@@ -76,7 +76,7 @@ class CharacterView extends React.Component<
               </div>
             </div>
           </div>
-        )}
+        }
       </div>
     );
   }
