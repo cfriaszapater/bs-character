@@ -4,6 +4,7 @@ import { Route, Router } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import CharacterView from "./components/character/characterView";
 import { LoginPage } from "./components/login/loginPage";
+import { MenuView } from "./components/menu/MenuView";
 import { PrivateRoute } from "./components/privateRoute";
 import { RegisterPage } from "./components/register/registerPage";
 import { AppState } from "./store";
@@ -31,7 +32,8 @@ class App extends React.Component<AppProps> {
         )}
         <Router history={history}>
           <div>
-            <PrivateRoute exact path="/" component={CharacterView} />
+            <PrivateRoute exact path="/" component={MenuView} />
+            <PrivateRoute exact path="/character" component={CharacterView} />
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
           </div>
