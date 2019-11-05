@@ -3,7 +3,8 @@ import {
   FETCH_CHARACTER_BEGIN,
   FETCH_CHARACTER_FAILURE,
   FETCH_CHARACTER_SUCCESS,
-  UPDATE_CHARACTERISTICS_BEGIN
+  UPDATE_CHARACTERISTICS_BEGIN,
+  UPDATE_EQUIPMENT_BEGIN
 } from "./characterActions";
 import { Character, CharacterViewState } from "./types";
 
@@ -47,12 +48,20 @@ export function characterReducer(
       };
 
     case UPDATE_CHARACTERISTICS_BEGIN:
-      console.log("reducer " + UPDATE_CHARACTERISTICS_BEGIN);
       return {
         ...state,
         character: {
           ...state.character,
           characteristics: action.characteristics
+        }
+      };
+
+    case UPDATE_EQUIPMENT_BEGIN:
+      return {
+        ...state,
+        character: {
+          ...state.character,
+          equipment: action.equipment
         }
       };
 
@@ -77,10 +86,12 @@ function emptyCharacter(): Character {
       extension: 0
     },
     equipment: {
-      hand1: null,
-      hand2: null,
-      body: null,
-      bag: [{}]
+      equipped: {
+        hand1: null,
+        hand2: null,
+        body: null
+      },
+      carried: []
     },
     characteristics: {
       initiative: {

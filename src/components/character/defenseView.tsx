@@ -2,22 +2,31 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import * as characterActions from "../../store/character/characterActions";
 import { Characteristics } from "../../store/character/types";
-import { agilityColor, strengthColor } from "./colors";
+import { agilityColor, strengthColor, willColor } from "./colors";
 import { EditableInput } from "./editableInput";
+import { EmptyRow } from "./emptyRow";
 import { fractionForCharacteristic } from "./fractionForCharacteristic";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
+import BodyView from "./itemsEquipped/bodyView";
+import SecondaryHandView from "./itemsEquipped/secondaryHandView";
 import { cellNumStyle, cellStyle } from "./styles";
+import { EmptyCol } from "./emptyCol";
 
 interface CharacteristicsViewProps {
   characteristics: Characteristics;
   updateCharacteristics: typeof characterActions.updateCharacteristics;
+  className?: string;
 }
 
-function DefenseCharacteristicsView(props: CharacteristicsViewProps) {
-  const { characteristics, updateCharacteristics } = props;
+function DefenseView(props: CharacteristicsViewProps) {
+  const { characteristics, updateCharacteristics, className } = props;
   return (
-    <div id="defenseCharacteristics" className="col-6 grouped-container">
-      <EmptyRow />
+    <div id="defense" className={className}>
+      <BodyView className="row innergrid-with-bottom" id="equipped-in-body" />
+      <SecondaryHandView
+        className="row innergrid-with-bottom"
+        id="equipped-in-secondary-hand"
+      />
       <EmptyRow />
       <div className="row">
         <Dodge value={characteristics.dodge} />
@@ -27,12 +36,23 @@ function DefenseCharacteristicsView(props: CharacteristicsViewProps) {
           characteristics={characteristics}
           updateCharacteristics={updateCharacteristics}
         />
-        <EmptyCol />
       </div>
       <div className="row">
         <Blunt value={characteristics.blunt} />
+        <EmptyCol />
+      </div>
+      <div className="row">
         <Cut value={characteristics.cut} />
+        <HealthView
+          currentValue={characteristics.health.current}
+          value={characteristics.health.max}
+          characteristics={characteristics}
+          updateCharacteristics={updateCharacteristics}
+        />
+      </div>
+      <div className="row">
         <Penetrating value={characteristics.penetrating} />
+        <EmptyCol />
       </div>
     </div>
   );
@@ -102,6 +122,33 @@ function Penetrating(props: { value: number }) {
   );
 }
 
+function HealthView(props: {
+  currentValue: number;
+  value: number;
+  characteristics: Characteristics;
+  updateCharacteristics: typeof characterActions.updateCharacteristics;
+}) {
+  function handleHealthChange(e: React.SyntheticEvent<HTMLInputElement>) {
+    const updatedCharacteristics = {
+      ...props.characteristics,
+      health: {
+        ...props.characteristics.health,
+        current: Number(e.currentTarget.value)
+      }
+    };
+    props.updateCharacteristics(updatedCharacteristics);
+  }
+
+  return VariableDefenseCharacteristic(
+    "HP",
+    props.currentValue,
+    fractionForCharacteristic(props.currentValue, 0, 20),
+    props.value,
+    willColor,
+    handleHealthChange
+  );
+}
+
 function DefenseCharacteristic(
   name: string,
   value: number,
@@ -163,17 +210,7 @@ function VariableDefenseCharacteristic(
   );
 }
 
-function EmptyCol() {
-  return (
-    <div className="col innergrid-with-bottom">{/*intentionally empty*/}</div>
-  );
-}
-
-function EmptyRow() {
-  return <div className="row innergrid">&nbsp;</div>;
-}
-
 export default connect(
   null,
   { updateCharacteristics: characterActions.updateCharacteristics }
-)(DefenseCharacteristicsView);
+)(DefenseView);

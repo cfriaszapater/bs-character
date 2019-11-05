@@ -1,5 +1,11 @@
 import { AppState } from "../store";
-import { Character } from "../store/character/types";
+import {
+  Armor,
+  Character,
+  Shield,
+  Weapon,
+  ItemTypes
+} from "../store/character/types";
 
 export function givenAppStateWithCharacter(): AppState {
   return {
@@ -40,41 +46,97 @@ export function givenTestCharacter(): Character {
       extension: 5
     },
     equipment: {
-      hand1: {
-        type: "weapon",
-        id: "long-sword",
-        level: 1,
-        reach: 2,
-        structure: 3,
-        weight: 2
+      equipped: {
+        hand1: {
+          type: ItemTypes.Weapon,
+          weaponType: "sword",
+          name: "long sword",
+          id: "sw-1",
+          level: 1,
+          reach: 2,
+          structure: 3,
+          weight: 2
+        },
+        hand2: {
+          type: ItemTypes.Shield,
+          name: "round shield",
+          id: "sh-1",
+          level: 1,
+          structure: 1,
+          weight: 1,
+          dodge: 0,
+          coverage: 1,
+          blunt: 0,
+          cut: 0,
+          penetrating: 2
+        },
+        body: {
+          type: ItemTypes.Armor,
+          name: "chainmail",
+          id: "ch-1",
+          level: 1,
+          structure: 3,
+          weight: 11,
+          dodge: 2,
+          coverage: 5,
+          blunt: 2,
+          cut: 3,
+          penetrating: 3
+        }
       },
-      hand2: {
-        type: "shield",
-        id: "round-shield",
-        level: 1,
-        structure: 1,
-        weight: 1,
-        coverage: 1,
-        blunt: 0,
-        cut: 0,
-        penetrating: 2
-      },
-      body: {
-        type: "armor",
-        id: "chainmail",
-        level: 1,
-        structure: 3,
-        weight: 11,
-        dodge: 2,
-        coverage: 5,
-        blunt: 2,
-        cut: 3,
-        penetrating: 3
-      },
-      bag: [
+      carried: [
         {
-          type: "miscelaneous",
-          id: "flask"
+          type: ItemTypes.Weapon,
+          weaponType: "sword",
+          name: "dagger",
+          id: "dagger-1",
+          level: 1,
+          reach: 0,
+          structure: 3,
+          weight: 0.5
+        } as Weapon,
+        {
+          type: ItemTypes.Weapon,
+          weaponType: "sword",
+          name: "long sword",
+          id: "sw-1",
+          level: 1,
+          reach: 2,
+          structure: 3,
+          weight: 2
+        } as Weapon,
+        {
+          type: ItemTypes.Shield,
+          name: "round shield",
+          id: "sh-1",
+          level: 1,
+          structure: 1,
+          weight: 1,
+          dodge: 0,
+          coverage: 1,
+          blunt: 0,
+          cut: 0,
+          penetrating: 2
+        } as Shield,
+        {
+          type: ItemTypes.Armor,
+          name: "chainmail",
+          id: "ch-1",
+          level: 1,
+          structure: 3,
+          weight: 11,
+          dodge: 2,
+          coverage: 5,
+          blunt: 2,
+          cut: 3,
+          penetrating: 3
+        } as Armor,
+        {
+          type: ItemTypes.Misc,
+          id: "misc-1",
+          weight: 0,
+          level: 1,
+          name: "flask"
         }
       ]
     },

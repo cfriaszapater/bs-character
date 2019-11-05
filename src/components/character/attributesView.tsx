@@ -1,13 +1,18 @@
 import React from "react";
 import { Attributes } from "../../store/character/types";
 import { agilityColor, defaultColor, strengthColor, willColor } from "./colors";
+import { EmptyRow } from "./emptyRow";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
 import { cellNumStyle, cellStyle } from "./styles";
 
-export function AttributesView(props: { attributes: Attributes }) {
-  const { attributes } = props;
+export function AttributesView(props: {
+  attributes: Attributes;
+  className?: string;
+}) {
+  const { attributes, className } = props;
   return (
-    <div id="attributes" className="col-3 grouped-container">
+    <div id="attributes" className={className}>
+      <EmptyRow />
       <EmptyRow />
       <Endurance value={attributes.endurance} />
       <Agility value={attributes.agility} />
@@ -75,8 +80,4 @@ const maxAttributeValue = 5;
 
 function percentageForAttribute(value: number): number {
   return value / maxAttributeValue;
-}
-
-function EmptyRow() {
-  return <div className="row innergrid">&nbsp;</div>;
 }

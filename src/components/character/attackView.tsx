@@ -6,23 +6,28 @@ import {
   agilityColor,
   defaultColor,
   staminaColor,
-  strengthColor,
-  willColor
+  strengthColor
 } from "./colors";
 import { EditableInput } from "./editableInput";
 import { fractionForCharacteristic } from "./fractionForCharacteristic";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
+import MainHandView from "./itemsEquipped/mainHandView";
 import { cellNumStyle, cellStyle } from "./styles";
 
 interface CharacteristicsViewProps {
   characteristics: Characteristics;
   updateCharacteristics: typeof characterActions.updateCharacteristics;
+  className?: string;
 }
 
-function CharacteristicsView(props: CharacteristicsViewProps) {
-  const { characteristics, updateCharacteristics } = props;
+function AttackView(props: CharacteristicsViewProps) {
+  const { characteristics, updateCharacteristics, className } = props;
   return (
-    <div id="characteristics" className="col-3 grouped-container">
+    <div id="attack" className={className}>
+      <MainHandView
+        className="row innergrid-with-bottom"
+        id="equipped-in-main-hand"
+      />
       <InitiativeView
         currentValue={characteristics.initiative.current}
         value={characteristics.initiative.max}
@@ -37,12 +42,6 @@ function CharacteristicsView(props: CharacteristicsViewProps) {
       />
       <ImpactView value={characteristics.impact} />
       <DamageView value={characteristics.damage} />
-      <HealthView
-        currentValue={characteristics.health.current}
-        value={characteristics.health.max}
-        characteristics={characteristics}
-        updateCharacteristics={updateCharacteristics}
-      />
     </div>
   );
 }
@@ -119,33 +118,6 @@ function DamageView(props: { value: number }) {
   );
 }
 
-function HealthView(props: {
-  currentValue: number;
-  value: number;
-  characteristics: Characteristics;
-  updateCharacteristics: typeof characterActions.updateCharacteristics;
-}) {
-  function handleHealthChange(e: React.SyntheticEvent<HTMLInputElement>) {
-    const updatedCharacteristics = {
-      ...props.characteristics,
-      health: {
-        ...props.characteristics.health,
-        current: Number(e.currentTarget.value)
-      }
-    };
-    props.updateCharacteristics(updatedCharacteristics);
-  }
-
-  return VariableCharacteristic(
-    "HP",
-    props.currentValue,
-    fractionForCharacteristic(props.currentValue, 0, 20),
-    props.value,
-    willColor,
-    handleHealthChange
-  );
-}
-
 function Characteristic(
   name: string,
   value: number,
@@ -183,7 +155,7 @@ function VariableCharacteristic(
   }
 
   return (
-    <div className="row innergrid-with-bottom">
+    <div className="row innergrid-with-bottom" id={name}>
       <div className={cellStyle()}>{name} </div>
       <div className={cellNumStyle()} onClick={handleClick} onBlur={handleBlur}>
         {editing
@@ -201,4 +173,4 @@ function VariableCharacteristic(
 export default connect(
   null,
   { updateCharacteristics: characterActions.updateCharacteristics }
-)(CharacteristicsView);
+)(AttackView);
