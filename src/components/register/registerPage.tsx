@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { AppState } from "../../store";
+import { AppState } from "../../store/rootReducer";
 import {
   changeRegisterEditing,
   createUser,

@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { AppState } from "../../../store";
+import { AppState } from "../../../store/rootReducer";
 import * as characterActions from "../../../store/character/characterActions";
 import {
   Equipment,

@@ -1,11 +1,11 @@
-import { AppState } from "../store";
 import {
   Armor,
   Character,
+  ItemTypes,
   Shield,
-  Weapon,
-  ItemTypes
+  Weapon
 } from "../store/character/types";
+import { AppState } from "../store/rootReducer";
 
 export function givenAppStateWithCharacter(): AppState {
   return {

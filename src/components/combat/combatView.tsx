@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
+import { AppState } from "../../store/rootReducer";
 import { fetchCharacter } from "../../store/character/characterActions";
 import { Character, CharacterViewState } from "../../store/character/types";
-import { AppState } from "../../store/rootReducer";
+import { CharacterMainSheetView } from "../character/characterMainSheetView";
 import { NavBar } from "../navBar";
-import { CharacterMainSheetView } from "./characterMainSheetView";
 
 interface CharacterViewProps {
   character: Character;
@@ -61,8 +61,9 @@ class CharacterView extends React.Component<
 
 const mapStateToProps = (state: AppState) => ({
   character: state.character.character,
-  error: state.character.error,
-  loading: state.character.loading
+  combat: state.combat.combat,
+  error: state.combat.error,
+  loading: state.combat.loading
 });
 
 export default connect(
