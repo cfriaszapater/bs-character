@@ -30,7 +30,8 @@ export const fetchCombat = () => async (
 ): Promise<FetchCombatSuccessAction | FetchCombatFailureAction> => {
   dispatch(fetchCombatBegin());
   try {
-    const combat: Combat = await getCombat();
+    await timeout(1000);
+    const combat = await getCombat();
     return dispatch(fetchCombatSuccess(combat));
   } catch (error) {
     return dispatch(fetchCombatFailure(error));
@@ -59,3 +60,7 @@ export const fetchCombatFailure = (error: Error): FetchCombatFailureAction => ({
   error,
   type: FETCH_COMBAT_FAILURE
 });
+
+function timeout(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
