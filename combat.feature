@@ -28,25 +28,31 @@ Feature: Combat frontend
     Then turn.defender is C2
     And turn.step is "DecideStaminaLowerIni"
 
-  Scenario: lower Ini defender decides stamina investment
+  Scenario: lower Ini defender invests stamina
     Given turn.step is "DecideStaminaLowerIni"
     And turn.attacker is C1 with Ini 7
-    And turn.defender is C2 with Ini 6
-    When C2 decides to invest stamina in Dodge
-    And C2 decides to invest stamina in Block
+    And turn.defender is C2 with Ini 6, Sta 9
+    And turn.defenderStamina is null (not yet decided)
+    And turn.attackerStamina is null (not yet decided)
+    When C2 invests stamina in Dodge
+    And C2 invests stamina in Block
     And C2 decides defense combat options "DCO1, DCO2"
-    Then turn.defenderStamina is "[Dodge, Block]"
+    Then C2 Sta is 7
+    And turn.defenderStamina is "[Dodge, Block]"
     And turn.defenderCombatOptions is "[DCO1, DCO2]"
     And turn.step is "DecideStaminaHigherIni"
 
-  Scenario: higher Ini attacker decides stamina investment
+  Scenario: higher Ini attacker invests stamina
     Given turn.step is "DecideStaminaHigherIni"
-    And turn.attacker is C1 with Ini 7
+    And turn.attacker is C1 with Ini 7, Sta 10
     And turn.defender is C2 with Ini 6
-    When C1 decides to invest stamina in Impact
-    And C1 decides to invest stamina in Damage
+    And turn.defenderStamina is not null (already decided)
+    And turn.attackerStamina is null (not yet decided)
+    When C1 invests stamina in Impact
+    And C1 invests stamina in Damage
     And C1 decides attack combat options "ACO1"
-    Then turn.attackerStamina is "[Impact, Damage]"
+    Then C1 Sta is 8
+    And turn.attackerStamina is "[Impact, Damage]"
     And turn.attackerCombatOptions is "[ACO1]"
     And turn.step is "ConfirmAttack"
 
@@ -57,8 +63,18 @@ Feature: Combat frontend
     Then defender health is reduced by final damage
     And turn.step is "AttackResolved"
 
-  Scenario: show resolved attack summary, end of turn
+  Scenario: post-attack actions (IncreaseInitiative)
     Given turn.step is "AttackResolved"
+    And turn.attacker is C1 with Int 3, Ini 7, Sta 8
+    And turn.attackerCombatOptions is "[opportunist]"
+    And combat option "opportunist" allows post-attack action "IncreaseInitiative"
+    When C1 selects "IncreaseInitiative"
+    Then C1 Sta is 7
+    And C1 Ini is 10
+    And turn.step is "TurnEnd"
+
+  Scenario: show resolved attack summary, end of turn
+    Given turn.step is "TurnEnd"
     And turn.attacker is C1
     And no more attacks left for C1
     And summary shown
@@ -66,10 +82,6 @@ Feature: Combat frontend
     When dismiss
     Then turns is "[turn]" (attacker turn ends)
     And turn is "null"
-
-
-# TODO
-Feature: Combat backend
 
   Scenario: throw attack and defense runes
     And turn.attacker is C1 with Agi 2, Str 3
@@ -83,7 +95,6 @@ Feature: Combat backend
     And defender throws 6 Block runes
 
   Scenario: resolve attack (superficial impact with damage)
-    # TODO
     Given attacker final Impact > defender final Dodge
     And attacker final Impact <= defender final Coverage
     And attacker final cut Damage > defender final cut defense
