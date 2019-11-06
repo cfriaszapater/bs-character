@@ -1,28 +1,30 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Character } from "../../store/character/types";
+import { fetchCombat } from "../../store/combat/combatActions";
+import { Combat, CombatViewState } from "../../store/combat/types";
 import { AppState } from "../../store/rootReducer";
-import { fetchCharacter } from "../../store/character/characterActions";
-import { Character, CharacterViewState } from "../../store/character/types";
 import { CharacterMainSheetView } from "../character/characterMainSheetView";
 import { NavBar } from "../navBar";
 
-interface CharacterViewProps {
+interface CombatViewProps {
+  combat: Combat;
   character: Character;
   loading: boolean;
   error: Error | null;
-  fetchCharacter: () => any;
+  fetchCombat: () => void;
 }
 
-class CharacterView extends React.Component<
-  CharacterViewProps,
-  CharacterViewState
+class CombatView extends React.Component<
+  CombatViewProps,
+  CombatViewState
 > {
   public componentDidMount() {
-    this.props.fetchCharacter();
+    this.props.fetchCombat();
   }
 
   public render() {
-    const { character, error, loading } = this.props;
+    const { combat, character, error, loading } = this.props;
 
     if (loading) {
       return <div>Loading...</div>;
@@ -38,19 +40,19 @@ class CharacterView extends React.Component<
           </div>
         )}
         {
-          <div id="character-view" className="container-fluid">
+          <div id="combat-view" className="container-fluid">
             <div className="row">
               <CharacterMainSheetView character={character} />
-              <div id="secondary-sheet" className="col">
-                {/* Non-combat sheet */}
-                <div id="notes" className="row grouped-container h-100">
+              {combat.turn && combat.turn.defender && <div id="opponent-or-card-board-view" className="col">
+                {/* TODO opponent or card board view */}
+                <div id="TODO" className="row grouped-container h-100">
                   <div className="col">
-                    <div>note 1</div>
-                    <div>note 2</div>
-                    <div>note ...</div>
+                    <div>this will show</div>
+                    <div>card board view</div>
+                    <div>or selected opponent sheet...</div>
                   </div>
                 </div>
-              </div>
+              </div>}
             </div>
           </div>
         }
@@ -60,13 +62,13 @@ class CharacterView extends React.Component<
 }
 
 const mapStateToProps = (state: AppState) => ({
-  character: state.character.character,
   combat: state.combat.combat,
   error: state.combat.error,
-  loading: state.combat.loading
+  loading: state.combat.loading,
+  character: state.character.character,
 });
 
 export default connect(
   mapStateToProps,
-  { fetchCharacter }
-)(CharacterView);
+  { fetchCombat }
+)(CombatView);

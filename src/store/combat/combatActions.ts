@@ -1,5 +1,5 @@
 import { ThunkDispatch } from "redux-thunk";
-import { givenTestCombat } from "../../testUtil/givenAppStateWithCombat";
+import { givenTestCombat } from "../../testUtil/givenAppStateWithMockData";
 import { Combat } from "./types";
 
 export const FETCH_COMBAT_BEGIN = "FETCH_COMBAT_BEGIN";

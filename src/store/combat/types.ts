@@ -8,8 +8,14 @@ export interface CombatViewState {
 
 export interface Combat {
   // TODO
+  turn: Turn | null;
   participants: Character[];
   rounds: Round[];
+}
+
+export interface Turn {
+  attacker: Character;
+  defender: Character;
 }
 
 export interface Round {}

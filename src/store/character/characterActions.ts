@@ -1,5 +1,5 @@
 import { ThunkDispatch } from "redux-thunk";
-import { givenTestCharacter } from "../../testUtil/givenAppStateWithCharacter";
+import { givenTestCharacter } from "../../testUtil/givenAppStateWithMockData";
 import { Character, Characteristics, Equipment } from "./types";
 
 export const FETCH_CHARACTER_BEGIN = "FETCH_CHARACTER_BEGIN";
