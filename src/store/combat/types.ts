@@ -8,7 +8,7 @@ export interface CombatViewState {
 
 export interface Combat {
   // TODO
-  turn: Turn | null;
+  turn?: Turn;
   participants: Character[];
   rounds: Round[];
 }
@@ -16,6 +16,11 @@ export interface Combat {
 export interface Turn {
   attacker: Character;
   defender: Character;
+  attackerStamina?: [AttackStaminaOption];
+  defenderStamina?: [DefendStaminaOption];
 }
+
+export type AttackStaminaOption = "Impact" | "Damage";
+export type DefendStaminaOption = "Dodge" | "Block";
 
 export interface Round {}

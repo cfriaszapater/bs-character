@@ -30,7 +30,7 @@ export function givenAppStateWithMockData(): AppState {
       username: ""
     },
     combat: {
-       combat: givenTestCombat(),
+      combat: givenTestCombat(),
       error: null,
       loading: false
     }
@@ -175,7 +175,7 @@ export function givenTestCharacter(): Character {
 
 function givenTestOpponent(): Character {
   return {
-    name: "Oppargh",
+    name: "Argh",
     attributes: {
       endurance: 2,
       agility: 3,
@@ -294,4 +294,3 @@ export function givenTestCombat(): Combat {
     rounds: []
   };
 }
-

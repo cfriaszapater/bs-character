@@ -42,24 +42,20 @@ Feature: Combat frontend
     And turn.defenderCombatOptions is "[DCO1, DCO2]"
     And turn.step is "DecideStaminaHigherIni"
 
-  Scenario: higher Ini attacker invests stamina
+  Scenario: higher Ini attacker invests stamina, confirms attack (causes damage)
     Given turn.step is "DecideStaminaHigherIni"
     And turn.attacker is C1 with Ini 7, Sta 10
     And turn.defender is C2 with Ini 6
     And turn.defenderStamina is not null (already decided)
     And turn.attackerStamina is null (not yet decided)
+    And attack will cause final damage
     When C1 invests stamina in Impact
     And C1 invests stamina in Damage
     And C1 decides attack combat options "ACO1"
+    And C1 confirms attack
     Then C1 Sta is 8
     And turn.attackerStamina is "[Impact, Damage]"
     And turn.attackerCombatOptions is "[ACO1]"
-    And turn.step is "ConfirmAttack"
-
-  Scenario: attacker confirms attack (causes damage)
-    Given turn.step is "ConfirmAttack"
-    And attack will cause final damage
-    When turn.attacker confirms
     Then defender health is reduced by final damage
     And turn.step is "AttackResolved"
 

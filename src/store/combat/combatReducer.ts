@@ -1,4 +1,9 @@
-import { CombatActions, FETCH_COMBAT_BEGIN, FETCH_COMBAT_FAILURE, FETCH_COMBAT_SUCCESS } from "./combatActions";
+import {
+  CombatActions,
+  FETCH_COMBAT_BEGIN,
+  FETCH_COMBAT_FAILURE,
+  FETCH_COMBAT_SUCCESS
+} from "./combatActions";
 import { Combat, CombatViewState } from "./types";
 
 export function combatReducer(
@@ -34,7 +39,6 @@ export function combatReducer(
         loading: false
       };
 
-
     default:
       // ALWAYS have a default case in a reducer
       return state;
@@ -50,7 +54,6 @@ const initialState: CombatViewState = {
 function emptyCombat(): Combat {
   return {
     participants: [],
-    rounds: [],
-    turn: null
+    rounds: []
   };
 }

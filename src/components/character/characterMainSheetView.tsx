@@ -8,10 +8,16 @@ export function CharacterMainSheetView(props: {
   character: Character;
   updateCharacteristics?: (...c: any) => any;
   updateEquipment?: (...c: any) => any;
+  className?: string;
 }) {
-  const { character, updateCharacteristics, updateEquipment } = props;
+  const {
+    character,
+    updateCharacteristics,
+    updateEquipment,
+    className
+  } = props;
   return (
-    <div id="main-sheet" className="col">
+    <div id="main-sheet" className={className}>
       {/* Combat sheet */}
       <div id="personal-info" className="row">
         <div>Name: {character.name}</div>

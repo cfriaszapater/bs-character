@@ -50,6 +50,7 @@ class CharacterView extends React.Component<
                 character={character}
                 updateCharacteristics={this.props.updateCharacteristics}
                 updateEquipment={this.props.updateEquipment}
+                className="col"
               />
               <div id="secondary-sheet" className="col">
                 {/* Non-combat sheet */}

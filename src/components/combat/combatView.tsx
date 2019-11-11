@@ -7,6 +7,8 @@ import { Combat, CombatViewState } from "../../store/combat/types";
 import { AppState } from "../../store/rootReducer";
 import { CharacterMainSheetView } from "../character/characterMainSheetView";
 import { NavBar } from "../navBar";
+import { decodeTurn } from "./decodeTurn";
+import { InteractionView } from "./interactionView";
 
 interface CombatViewProps {
   combat: Combat;
@@ -37,6 +39,8 @@ class CombatView extends React.Component<CombatViewProps, CombatViewState> {
       return <div>Loading...</div>;
     }
 
+    const { turn } = combat;
+    const { opponent } = decodeTurn(character, turn);
     return (
       <div>
         <NavBar />
@@ -53,9 +57,20 @@ class CombatView extends React.Component<CombatViewProps, CombatViewState> {
                 character={character}
                 updateCharacteristics={updateCharacteristics}
                 updateEquipment={updateEquipment}
+                className="col-5"
               />
-              {combat.turn && combat.turn.defender && (
-                <CharacterMainSheetView character={combat.turn.defender} />
+              {turn && opponent && (
+                <InteractionView
+                  character={character}
+                  turn={turn}
+                  className="col"
+                />
+              )}
+              {opponent && (
+                <CharacterMainSheetView
+                  character={opponent}
+                  className="col-5"
+                />
               )}
             </div>
           </div>
