@@ -58,7 +58,7 @@ function InitiativeView(props: {
   const max = 11;
   const color = defaultColor;
   const { updateCharacteristics } = props;
-  if (isFunction(updateCharacteristics)) {
+  if (typeof updateCharacteristics === "function") {
     const handleInitiativeChange = (
       e: React.SyntheticEvent<HTMLInputElement>
     ) => {
@@ -89,10 +89,6 @@ function InitiativeView(props: {
   }
 }
 
-function isFunction(f: ((...c: any) => any) | undefined): f is (c: any) => any {
-  return f !== undefined;
-}
-
 function StaminaView(props: {
   currentValue: number;
   value: number;
@@ -104,7 +100,7 @@ function StaminaView(props: {
   const max = 20;
   const color = staminaColor;
   const { updateCharacteristics } = props;
-  if (isFunction(updateCharacteristics)) {
+  if (typeof updateCharacteristics === "function") {
     const handleStaminaChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
       const updatedCharacteristics = {
         ...props.characteristics,

@@ -28,6 +28,7 @@ export function CharacterMainSheetView(props: {
         <DefenseView
           characteristics={character.characteristics}
           className="col-6 grouped-container"
+          updateCharacteristics={updateCharacteristics}
         />
       </div>
     </div>
