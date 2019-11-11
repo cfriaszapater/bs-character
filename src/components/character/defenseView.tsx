@@ -20,13 +20,26 @@ interface CharacteristicsViewProps {
 }
 
 export default function DefenseView(props: CharacteristicsViewProps) {
-  const { characteristics, updateCharacteristics, className } = props;
+  const {
+    characteristics,
+    equipment,
+    updateCharacteristics,
+    updateEquipment,
+    className
+  } = props;
   return (
     <div id="defense" className={className}>
-      <BodyView className="row innergrid-with-bottom" id="equipped-in-body" />
+      <BodyView
+        className="row innergrid-with-bottom"
+        id="equipped-in-body"
+        equipment={equipment}
+        updateEquipment={updateEquipment}
+      />
       <SecondaryHandView
         className="row innergrid-with-bottom"
         id="equipped-in-secondary-hand"
+        equipment={equipment}
+        updateEquipment={updateEquipment}
       />
       <EmptyRow />
       <div className="row">
