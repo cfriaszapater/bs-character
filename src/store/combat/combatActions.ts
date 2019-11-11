@@ -30,7 +30,7 @@ export const fetchCombat = () => async (
 ): Promise<FetchCombatSuccessAction | FetchCombatFailureAction> => {
   dispatch(fetchCombatBegin());
   try {
-    await timeout(1000);
+    await timeout(300);
     const combat = await getCombat();
     return dispatch(fetchCombatSuccess(combat));
   } catch (error) {
