@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
-import * as characterActions from "../../store/character/characterActions";
 import { Characteristics } from "../../store/character/types";
 import {
   agilityColor,
@@ -16,11 +14,11 @@ import { cellNumStyle, cellStyle } from "./styles";
 
 interface CharacteristicsViewProps {
   characteristics: Characteristics;
-  updateCharacteristics: typeof characterActions.updateCharacteristics;
+  updateCharacteristics?: (...c: any) => any;
   className?: string;
 }
 
-function AttackView(props: CharacteristicsViewProps) {
+export default function AttackView(props: CharacteristicsViewProps) {
   const { characteristics, updateCharacteristics, className } = props;
   return (
     <div id="attack" className={className}>
@@ -35,7 +33,7 @@ function AttackView(props: CharacteristicsViewProps) {
         updateCharacteristics={updateCharacteristics}
       />
       <StaminaView
-        currrentValue={characteristics.stamina.current}
+        currentValue={characteristics.stamina.current}
         value={characteristics.stamina.max}
         characteristics={characteristics}
         updateCharacteristics={updateCharacteristics}
@@ -46,62 +44,97 @@ function AttackView(props: CharacteristicsViewProps) {
   );
 }
 
+/**
+ * A variable view if updateCharacteristics function is passed, static view otherwise.
+ */
 function InitiativeView(props: {
   currentValue: number;
   value: number;
   characteristics: Characteristics;
-  updateCharacteristics: typeof characterActions.updateCharacteristics;
+  updateCharacteristics?: (...c: any) => any;
 }) {
-  function handleInitiativeChange(e: React.SyntheticEvent<HTMLInputElement>) {
-    const updatedCharacteristics = {
-      ...props.characteristics,
-      initiative: {
-        ...props.characteristics.initiative,
-        current: Number(e.currentTarget.value)
-      }
+  const name = "Ini";
+  const min = 3;
+  const max = 11;
+  const color = defaultColor;
+  const { updateCharacteristics } = props;
+  if (isFunction(updateCharacteristics)) {
+    const handleInitiativeChange = (
+      e: React.SyntheticEvent<HTMLInputElement>
+    ) => {
+      const updatedCharacteristics = {
+        ...props.characteristics,
+        initiative: {
+          ...props.characteristics.initiative,
+          current: Number(e.currentTarget.value)
+        }
+      };
+      updateCharacteristics(updatedCharacteristics);
     };
-    props.updateCharacteristics(updatedCharacteristics);
+    return VariableCharacteristicView(
+      name,
+      props.currentValue,
+      fractionForCharacteristic(props.currentValue, min, max),
+      props.value,
+      color,
+      handleInitiativeChange
+    );
+  } else {
+    return StaticCharacteristicView(
+      name,
+      props.value,
+      fractionForCharacteristic(props.value, min, max),
+      color
+    );
   }
+}
 
-  return VariableCharacteristic(
-    "Ini",
-    props.currentValue,
-    fractionForCharacteristic(props.currentValue, 3, 11),
-    props.value,
-    defaultColor,
-    handleInitiativeChange
-  );
+function isFunction(f: ((...c: any) => any) | undefined): f is (c: any) => any {
+  return f !== undefined;
 }
 
 function StaminaView(props: {
-  currrentValue: number;
+  currentValue: number;
   value: number;
   characteristics: Characteristics;
-  updateCharacteristics: typeof characterActions.updateCharacteristics;
+  updateCharacteristics?: (...c: any) => any;
 }) {
-  function handleStaminaChange(e: React.SyntheticEvent<HTMLInputElement>) {
-    const updatedCharacteristics = {
-      ...props.characteristics,
-      stamina: {
-        ...props.characteristics.stamina,
-        current: Number(e.currentTarget.value)
-      }
+  const name = "Sta";
+  const min = 0;
+  const max = 20;
+  const color = staminaColor;
+  const { updateCharacteristics } = props;
+  if (isFunction(updateCharacteristics)) {
+    const handleStaminaChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+      const updatedCharacteristics = {
+        ...props.characteristics,
+        stamina: {
+          ...props.characteristics.stamina,
+          current: Number(e.currentTarget.value)
+        }
+      };
+      updateCharacteristics(updatedCharacteristics);
     };
-    props.updateCharacteristics(updatedCharacteristics);
+    return VariableCharacteristicView(
+      name,
+      props.currentValue,
+      fractionForCharacteristic(props.currentValue, min, max),
+      props.value,
+      color,
+      handleStaminaChange
+    );
+  } else {
+    return StaticCharacteristicView(
+      name,
+      props.value,
+      fractionForCharacteristic(props.value, min, max),
+      color
+    );
   }
-
-  return VariableCharacteristic(
-    "Sta",
-    props.currrentValue,
-    fractionForCharacteristic(props.currrentValue, 0, 20),
-    props.value,
-    staminaColor,
-    handleStaminaChange
-  );
 }
 
 function ImpactView(props: { value: number }) {
-  return Characteristic(
+  return StaticCharacteristicView(
     "Imp",
     props.value,
     fractionForCharacteristic(props.value, 2, 5),
@@ -110,7 +143,7 @@ function ImpactView(props: { value: number }) {
 }
 
 function DamageView(props: { value: number }) {
-  return Characteristic(
+  return StaticCharacteristicView(
     "Da",
     props.value,
     fractionForCharacteristic(props.value, 2, 8),
@@ -118,7 +151,7 @@ function DamageView(props: { value: number }) {
   );
 }
 
-function Characteristic(
+function StaticCharacteristicView(
   name: string,
   value: number,
   fractionValue: number,
@@ -136,7 +169,7 @@ function Characteristic(
   );
 }
 
-function VariableCharacteristic(
+function VariableCharacteristicView(
   name: string,
   currentValue: number,
   fractionValue: number,
@@ -169,8 +202,3 @@ function VariableCharacteristic(
     </div>
   );
 }
-
-export default connect(
-  null,
-  { updateCharacteristics: characterActions.updateCharacteristics }
-)(AttackView);

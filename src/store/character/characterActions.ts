@@ -76,14 +76,18 @@ export const fetchCharacterFailure = (
   type: FETCH_CHARACTER_FAILURE
 });
 
-export function updateCharacteristics(characteristics: Characteristics) {
+export function updateCharacteristics(
+  characteristics: Characteristics
+): UpdateCharacteristicsBeginAction {
   return {
     characteristics,
     type: UPDATE_CHARACTERISTICS_BEGIN
   };
 }
 
-export function updateEquipment(equipment: Equipment) {
+export function updateEquipment(
+  equipment: Equipment
+): UpdateEquipmentBeginAction {
   return {
     equipment,
     type: UPDATE_EQUIPMENT_BEGIN

@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import * as characterActions from "../../store/character/characterActions";
 import { Character } from "../../store/character/types";
 import { fetchCombat } from "../../store/combat/combatActions";
 import { Combat, CombatViewState } from "../../store/combat/types";
@@ -13,18 +14,22 @@ interface CombatViewProps {
   loading: boolean;
   error: Error | null;
   fetchCombat: () => void;
+  updateCharacteristics?: typeof characterActions.updateCharacteristics;
 }
 
-class CombatView extends React.Component<
-  CombatViewProps,
-  CombatViewState
-> {
+class CombatView extends React.Component<CombatViewProps, CombatViewState> {
   public componentDidMount() {
     this.props.fetchCombat();
   }
 
   public render() {
-    const { combat, character, error, loading } = this.props;
+    const {
+      combat,
+      character,
+      error,
+      loading,
+      updateCharacteristics
+    } = this.props;
 
     if (loading) {
       return <div>Loading...</div>;
@@ -42,17 +47,13 @@ class CombatView extends React.Component<
         {
           <div id="combat-view" className="container-fluid">
             <div className="row">
-              <CharacterMainSheetView character={character} />
-              {combat.turn && combat.turn.defender && <div id="opponent-or-card-board-view" className="col">
-                {/* TODO opponent or card board view */}
-                <div id="TODO" className="row grouped-container h-100">
-                  <div className="col">
-                    <div>this will show</div>
-                    <div>card board view</div>
-                    <div>or selected opponent sheet...</div>
-                  </div>
-                </div>
-              </div>}
+              <CharacterMainSheetView
+                character={character}
+                updateCharacteristics={updateCharacteristics}
+              />
+              {combat.turn && combat.turn.defender && (
+                <CharacterMainSheetView character={combat.turn.defender} />
+              )}
             </div>
           </div>
         }
@@ -65,10 +66,10 @@ const mapStateToProps = (state: AppState) => ({
   combat: state.combat.combat,
   error: state.combat.error,
   loading: state.combat.loading,
-  character: state.character.character,
+  character: state.character.character
 });
 
 export default connect(
   mapStateToProps,
-  { fetchCombat }
+  { fetchCombat, updateCharacteristics: characterActions.updateCharacteristics }
 )(CombatView);

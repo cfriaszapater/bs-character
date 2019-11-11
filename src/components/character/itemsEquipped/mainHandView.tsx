@@ -1,11 +1,11 @@
 import { connect } from "react-redux";
-import { AppState } from "../../../store/rootReducer";
 import * as characterActions from "../../../store/character/characterActions";
 import {
   Equipment,
   EquipPositions,
   ItemTypes
 } from "../../../store/character/types";
+import { AppState } from "../../../store/rootReducer";
 import { ItemEquippedView, ItemEquippedViewProps } from "./itemEquippedView";
 
 function MainHandView(props: ItemEquippedViewProps) {

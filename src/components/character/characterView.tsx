@@ -1,6 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchCharacter } from "../../store/character/characterActions";
+import {
+  fetchCharacter,
+  updateCharacteristics
+} from "../../store/character/characterActions";
 import { Character, CharacterViewState } from "../../store/character/types";
 import { AppState } from "../../store/rootReducer";
 import { NavBar } from "../navBar";
@@ -11,6 +14,7 @@ interface CharacterViewProps {
   loading: boolean;
   error: Error | null;
   fetchCharacter: () => any;
+  updateCharacteristics: (...args: any) => any;
 }
 
 class CharacterView extends React.Component<
@@ -40,7 +44,10 @@ class CharacterView extends React.Component<
         {
           <div id="character-view" className="container-fluid">
             <div className="row">
-              <CharacterMainSheetView character={character} />
+              <CharacterMainSheetView
+                character={character}
+                updateCharacteristics={this.props.updateCharacteristics}
+              />
               <div id="secondary-sheet" className="col">
                 {/* Non-combat sheet */}
                 <div id="notes" className="row grouped-container h-100">
@@ -67,5 +74,5 @@ const mapStateToProps = (state: AppState) => ({
 
 export default connect(
   mapStateToProps,
-  { fetchCharacter }
+  { fetchCharacter, updateCharacteristics }
 )(CharacterView);
