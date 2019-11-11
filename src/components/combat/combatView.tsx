@@ -15,6 +15,7 @@ interface CombatViewProps {
   error: Error | null;
   fetchCombat: () => void;
   updateCharacteristics?: typeof characterActions.updateCharacteristics;
+  updateEquipment?: typeof characterActions.updateEquipment;
 }
 
 class CombatView extends React.Component<CombatViewProps, CombatViewState> {
@@ -28,7 +29,8 @@ class CombatView extends React.Component<CombatViewProps, CombatViewState> {
       character,
       error,
       loading,
-      updateCharacteristics
+      updateCharacteristics,
+      updateEquipment
     } = this.props;
 
     if (loading) {
@@ -50,6 +52,7 @@ class CombatView extends React.Component<CombatViewProps, CombatViewState> {
               <CharacterMainSheetView
                 character={character}
                 updateCharacteristics={updateCharacteristics}
+                updateEquipment={updateEquipment}
               />
               {combat.turn && combat.turn.defender && (
                 <CharacterMainSheetView character={combat.turn.defender} />
@@ -71,5 +74,9 @@ const mapStateToProps = (state: AppState) => ({
 
 export default connect(
   mapStateToProps,
-  { fetchCombat, updateCharacteristics: characterActions.updateCharacteristics }
+  {
+    fetchCombat,
+    updateCharacteristics: characterActions.updateCharacteristics,
+    updateEquipment: characterActions.updateEquipment
+  }
 )(CombatView);

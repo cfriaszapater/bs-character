@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Characteristics } from "../../store/character/types";
+import { Characteristics, Equipment } from "../../store/character/types";
 import {
   agilityColor,
   defaultColor,
@@ -14,17 +14,27 @@ import { cellNumStyle, cellStyle } from "./styles";
 
 interface CharacteristicsViewProps {
   characteristics: Characteristics;
+  equipment: Equipment;
   updateCharacteristics?: (...c: any) => any;
+  updateEquipment?: (...c: any) => any;
   className?: string;
 }
 
 export default function AttackView(props: CharacteristicsViewProps) {
-  const { characteristics, updateCharacteristics, className } = props;
+  const {
+    characteristics,
+    updateCharacteristics,
+    equipment,
+    updateEquipment,
+    className
+  } = props;
   return (
     <div id="attack" className={className}>
       <MainHandView
         className="row innergrid-with-bottom"
         id="equipped-in-main-hand"
+        equipment={equipment}
+        updateEquipment={updateEquipment}
       />
       <InitiativeView
         currentValue={characteristics.initiative.current}

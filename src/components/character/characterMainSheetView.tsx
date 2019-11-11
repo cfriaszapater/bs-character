@@ -7,8 +7,9 @@ import DefenseView from "./defenseView";
 export function CharacterMainSheetView(props: {
   character: Character;
   updateCharacteristics?: (...c: any) => any;
+  updateEquipment?: (...c: any) => any;
 }) {
-  const { character, updateCharacteristics } = props;
+  const { character, updateCharacteristics, updateEquipment } = props;
   return (
     <div id="main-sheet" className="col">
       {/* Combat sheet */}
@@ -24,11 +25,15 @@ export function CharacterMainSheetView(props: {
           characteristics={character.characteristics}
           className="col-3 grouped-container"
           updateCharacteristics={updateCharacteristics}
+          equipment={character.equipment}
+          updateEquipment={updateEquipment}
         />
         <DefenseView
           characteristics={character.characteristics}
           className="col-6 grouped-container"
           updateCharacteristics={updateCharacteristics}
+          equipment={character.equipment}
+          updateEquipment={updateEquipment}
         />
       </div>
     </div>

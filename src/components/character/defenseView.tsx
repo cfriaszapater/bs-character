@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as characterActions from "../../store/character/characterActions";
-import { Characteristics } from "../../store/character/types";
+import { Characteristics, Equipment } from "../../store/character/types";
 import { agilityColor, strengthColor, willColor } from "./colors";
 import { EditableInput } from "./editableInput";
 import { EmptyCol } from "./emptyCol";
@@ -13,7 +13,9 @@ import { cellNumStyle, cellStyle } from "./styles";
 
 interface CharacteristicsViewProps {
   characteristics: Characteristics;
+  equipment: Equipment;
   updateCharacteristics?: typeof characterActions.updateCharacteristics;
+  updateEquipment?: (...c: any) => any;
   className?: string;
 }
 

@@ -1,15 +1,17 @@
 import React, { SyntheticEvent } from "react";
-import * as characterActions from "../../../store/character/characterActions";
 import {
+  Armor,
   Equipment,
   EquipPositions,
   Item,
-  ItemTypes
+  ItemTypes,
+  Shield,
+  Weapon
 } from "../../../store/character/types";
 
 export interface ItemEquippedViewProps {
   className?: string;
-  updateEquipment: typeof characterActions.updateEquipment;
+  updateEquipment?: (...c: any) => any;
   equipment: Equipment;
   id: string;
 }
@@ -27,18 +29,6 @@ export function ItemEquippedView(
     return carried.filter(item => item.id === itemId)[0];
   }
 
-  function handleChange(e: SyntheticEvent<HTMLSelectElement>) {
-    const itemId = e.currentTarget.value;
-    updateEquipment({
-      ...equipment,
-      equipped: {
-        ...equipment.equipped,
-        [position]:
-          itemId === null || itemId === "" ? null : carriedItemById(itemId)
-      }
-    });
-  }
-
   const otherPositions = Object.keys(equipment.equipped).filter(
     pKey => pKey !== position
   );
@@ -48,6 +38,48 @@ export function ItemEquippedView(
         !itemIn(item, equipped[otherPosition as EquipPositions] as Item)
     );
   const itemInPosition = equipped[position];
+
+  if (typeof updateEquipment === "function") {
+    const handleChange = (e: SyntheticEvent<HTMLSelectElement>) => {
+      const itemId = e.currentTarget.value;
+      updateEquipment({
+        ...equipment,
+        equipped: {
+          ...equipment.equipped,
+          [position]:
+            itemId === null || itemId === "" ? null : carriedItemById(itemId)
+        }
+      });
+    };
+    return VariableItemEquipped(
+      className,
+      id,
+      handleChange,
+      itemInPosition,
+      placeholderOptionText,
+      carried,
+      notWornElsewhere,
+      allowedItemTypesInPosition
+    );
+  } else {
+    return (
+      <div className={className} id={id}>
+        {itemInPosition ? itemInPosition.name : placeholderOptionText}
+      </div>
+    );
+  }
+}
+
+function VariableItemEquipped(
+  className: string | undefined,
+  id: string,
+  handleChange: (e: React.SyntheticEvent<HTMLSelectElement, Event>) => void,
+  itemInPosition: Weapon | Shield | Armor | null,
+  placeholderOptionText: string,
+  carried: Item[],
+  notWornElsewhere: (item: Item) => boolean,
+  allowedItemTypesInPosition: ItemTypes[]
+) {
   return (
     <div className={className} id={id}>
       <select

@@ -2,7 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import {
   fetchCharacter,
-  updateCharacteristics
+  updateCharacteristics,
+  updateEquipment
 } from "../../store/character/characterActions";
 import { Character, CharacterViewState } from "../../store/character/types";
 import { AppState } from "../../store/rootReducer";
@@ -15,6 +16,7 @@ interface CharacterViewProps {
   error: Error | null;
   fetchCharacter: () => any;
   updateCharacteristics: (...args: any) => any;
+  updateEquipment: (...args: any) => any;
 }
 
 class CharacterView extends React.Component<
@@ -47,6 +49,7 @@ class CharacterView extends React.Component<
               <CharacterMainSheetView
                 character={character}
                 updateCharacteristics={this.props.updateCharacteristics}
+                updateEquipment={this.props.updateEquipment}
               />
               <div id="secondary-sheet" className="col">
                 {/* Non-combat sheet */}
@@ -74,5 +77,5 @@ const mapStateToProps = (state: AppState) => ({
 
 export default connect(
   mapStateToProps,
-  { fetchCharacter, updateCharacteristics }
+  { fetchCharacter, updateCharacteristics, updateEquipment }
 )(CharacterView);
