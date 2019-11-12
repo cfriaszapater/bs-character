@@ -5,6 +5,9 @@ import {
   Turn
 } from "../../store/combat/types";
 
+/**
+ * Turn from the character's point of view.
+ */
 export function decodeTurn(
   character: Character,
   turn?: Turn

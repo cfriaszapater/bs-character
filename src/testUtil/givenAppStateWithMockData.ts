@@ -287,8 +287,10 @@ function givenTestOpponent(): Character {
 export function givenTestCombat(): Combat {
   return {
     turn: {
+      step: "DecideStaminaHigherIni",
       attacker: givenTestCharacter(),
-      defender: givenTestOpponent()
+      defender: givenTestOpponent(),
+      attackerStamina: ["Damage"]
     },
     participants: [givenTestCharacter(), givenTestOpponent()],
     rounds: []
