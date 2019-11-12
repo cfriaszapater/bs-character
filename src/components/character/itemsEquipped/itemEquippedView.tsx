@@ -64,7 +64,7 @@ export function ItemEquippedView(
   } else {
     return (
       <div className={className} id={id}>
-        {itemInPosition ? itemInPosition.name : placeholderOptionText}
+        {itemInPosition ? itemInPosition.name : ""}
       </div>
     );
   }
