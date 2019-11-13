@@ -39,11 +39,6 @@ export function InteractionView(props: InteractionViewProps) {
 function AttackInteraction(props: InteractionViewProps) {
   const { turn, character, className } = props;
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("handleSubmit");
-  };
-
   return (
     <div className={className + " px-0"}>
       <EmptyDiv />
@@ -51,21 +46,30 @@ function AttackInteraction(props: InteractionViewProps) {
         <div>Attack. {decision(turn.step)}</div>
         <EmptyDiv />
         <EmptyDiv />
-        <form name="invest-stamina" onSubmit={handleSubmit}>
-          <div className="d-flex justify-content-between">
-            <Checkbox name="Impact" />
-            {/* TODO check if defender invested Sta */}
-            <Checkbox name="Dodge" checked={true} />
-          </div>
-          <div className="d-flex justify-content-between">
-            <Checkbox name="Damage" />
-            {/* TODO check if defender invested Sta */}
-            <Checkbox name="Block" checked={true} />
-          </div>
-          <button>Attack</button>
-        </form>
+        <InvestStaminaForm />
       </div>
     </div>
+  );
+}
+
+function InvestStaminaForm() {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("handleSubmit");
+  };
+
+  return (
+    <form name="invest-stamina" onSubmit={handleSubmit}>
+      <div className="d-flex justify-content-between">
+        <Checkbox name="Impact" />
+        <Checkbox name="Dodge" checked={true} />
+      </div>
+      <div className="d-flex justify-content-between">
+        <Checkbox name="Damage" />
+        <Checkbox name="Block" checked={true} />
+      </div>
+      <button>Attack</button>
+    </form>
   );
 }
 
