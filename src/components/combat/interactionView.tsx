@@ -16,7 +16,7 @@ interface InteractionViewProps {
 }
 
 export function InteractionView(props: InteractionViewProps) {
-  const { turn, character, className } = props;
+  const { turn, character } = props;
   const {
     opponent,
     attacking,
@@ -38,26 +38,39 @@ export function InteractionView(props: InteractionViewProps) {
 
 function AttackInteraction(props: InteractionViewProps) {
   const { turn, character, className } = props;
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("handleSubmit");
+  };
+
   return (
     <div className={className + " px-0"}>
-      <div>&nbsp;</div>
+      <EmptyDiv />
       <div className="grouped-container">
         <div>Attack. {decision(turn.step)}</div>
-        <div>&nbsp;</div>
-        <div>&nbsp;</div>
-        <div className="d-flex justify-content-between">
-          <Checkbox name="Impact" />
-          {/* TODO check if defender invested Sta */}
-          <Checkbox name="Dodge" checked={true} />
-        </div>
-        <div className="d-flex justify-content-between">
-          <Checkbox name="Damage" />
-          {/* TODO check if defender invested Sta */}
-          <Checkbox name="Block" checked={true} />
-        </div>
+        <EmptyDiv />
+        <EmptyDiv />
+        <form name="invest-stamina" onSubmit={handleSubmit}>
+          <div className="d-flex justify-content-between">
+            <Checkbox name="Impact" />
+            {/* TODO check if defender invested Sta */}
+            <Checkbox name="Dodge" checked={true} />
+          </div>
+          <div className="d-flex justify-content-between">
+            <Checkbox name="Damage" />
+            {/* TODO check if defender invested Sta */}
+            <Checkbox name="Block" checked={true} />
+          </div>
+          <button>Attack</button>
+        </form>
       </div>
     </div>
   );
+}
+
+function EmptyDiv() {
+  return <div>&nbsp;</div>;
 }
 
 function decision(step: Step) {
