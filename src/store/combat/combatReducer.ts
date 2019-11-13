@@ -2,7 +2,9 @@ import {
   CombatActions,
   FETCH_COMBAT_BEGIN,
   FETCH_COMBAT_FAILURE,
-  FETCH_COMBAT_SUCCESS
+  FETCH_COMBAT_SUCCESS,
+  RESOLVE_ATTACK_FAILURE,
+  RESOLVE_ATTACK_SUCCESS
 } from "./combatActions";
 import { Combat, CombatViewState } from "./types";
 
@@ -32,11 +34,27 @@ export function combatReducer(
     case FETCH_COMBAT_FAILURE:
       // The request failed, but it did stop, so set loading to "false".
       // Save the error, and we can display it somewhere
-      // Since it failed, we don't have items to display anymore, so set it empty.
       return {
         ...state,
         error: action.error,
         loading: false
+      };
+
+    case RESOLVE_ATTACK_SUCCESS:
+      return {
+        ...state,
+        combat: {
+          ...state.combat,
+          turn: state.combat.turn
+            ? { ...state.combat.turn, attackResult: action.attackResult }
+            : undefined
+        }
+      };
+
+    case RESOLVE_ATTACK_FAILURE:
+      return {
+        ...state,
+        error: action.error
       };
 
     default:

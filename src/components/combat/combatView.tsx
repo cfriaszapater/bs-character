@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import * as characterActions from "../../store/character/characterActions";
 import { Character } from "../../store/character/types";
-import { fetchCombat } from "../../store/combat/combatActions";
+import * as combatActions from "../../store/combat/combatActions";
 import { Combat, CombatViewState } from "../../store/combat/types";
 import { AppState } from "../../store/rootReducer";
 import { CharacterMainSheetView } from "../character/characterMainSheetView";
@@ -15,9 +15,10 @@ interface CombatViewProps {
   character: Character;
   loading: boolean;
   error: Error | null;
-  fetchCombat: () => void;
-  updateCharacteristics?: typeof characterActions.updateCharacteristics;
-  updateEquipment?: typeof characterActions.updateEquipment;
+  fetchCombat: (...args: any) => any;
+  updateCharacteristics: typeof characterActions.updateCharacteristics;
+  updateEquipment: typeof characterActions.updateEquipment;
+  resolveAttack: (...args: any) => any;
 }
 
 class CombatView extends React.Component<CombatViewProps, CombatViewState> {
@@ -32,7 +33,8 @@ class CombatView extends React.Component<CombatViewProps, CombatViewState> {
       error,
       loading,
       updateCharacteristics,
-      updateEquipment
+      updateEquipment,
+      resolveAttack
     } = this.props;
 
     if (loading) {
@@ -64,6 +66,7 @@ class CombatView extends React.Component<CombatViewProps, CombatViewState> {
                   character={character}
                   turn={turn}
                   className="col"
+                  resolveAttack={resolveAttack}
                 />
               )}
               {opponent && (
@@ -87,11 +90,9 @@ const mapStateToProps = (state: AppState) => ({
   character: state.character.character
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchCombat,
-    updateCharacteristics: characterActions.updateCharacteristics,
-    updateEquipment: characterActions.updateEquipment
-  }
-)(CombatView);
+export default connect(mapStateToProps, {
+  fetchCombat: combatActions.fetchCombat,
+  resolveAttack: combatActions.resolveAttack,
+  updateCharacteristics: characterActions.updateCharacteristics,
+  updateEquipment: characterActions.updateEquipment
+})(CombatView);

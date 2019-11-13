@@ -13,6 +13,7 @@ interface InteractionViewProps {
   character: Character;
   turn: Turn;
   className?: string;
+  resolveAttack: (stamina: AttackStamina | DefendStamina) => any;
 }
 
 export function InteractionView(props: InteractionViewProps) {
@@ -37,7 +38,7 @@ export function InteractionView(props: InteractionViewProps) {
 }
 
 function AttackInteraction(props: InteractionViewProps) {
-  const { turn, character, className } = props;
+  const { turn, character, className, resolveAttack } = props;
 
   return (
     <div className={className + " px-0"}>
@@ -46,25 +47,28 @@ function AttackInteraction(props: InteractionViewProps) {
         <div>Attack. {decision(turn.step)}</div>
         <EmptyDiv />
         <EmptyDiv />
-        <AttackInvestStaminaForm defenderStamina={turn.defenderStamina} />
+        <AttackInvestStaminaForm
+          defenderStamina={turn.defenderStamina}
+          resolveAttack={resolveAttack}
+        />
+        {turn.attackResult && <div>{JSON.stringify(turn.attackResult)}</div>}
       </div>
     </div>
   );
 }
 
-function AttackInvestStaminaForm(props: { defenderStamina?: DefendStamina }) {
-  const { defenderStamina } = props;
+function AttackInvestStaminaForm(props: {
+  defenderStamina?: DefendStamina;
+  resolveAttack: (stamina: AttackStamina | DefendStamina) => any;
+}) {
+  const { defenderStamina, resolveAttack } = props;
 
   const [impactStamina, setImpactStamina] = useState(0);
   const [damageStamina, setDamageStamina] = useState(0);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(
-      "handleSubmit with impactStamina, damageStamina",
-      impactStamina,
-      damageStamina
-    );
+    resolveAttack({ impact: impactStamina, damage: damageStamina });
   };
 
   const handleImpactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,7 +97,7 @@ function AttackInvestStaminaForm(props: { defenderStamina?: DefendStamina }) {
         />
         <Checkbox
           name="Dodge"
-          checked={defenderStamina && defenderStamina.Dodge > 0}
+          checked={defenderStamina && defenderStamina.dodge > 0}
           disabled
         />
       </div>
@@ -105,7 +109,7 @@ function AttackInvestStaminaForm(props: { defenderStamina?: DefendStamina }) {
         />
         <Checkbox
           name="Block"
-          checked={defenderStamina && defenderStamina.Block > 0}
+          checked={defenderStamina && defenderStamina.block > 0}
           disabled
         />
       </div>

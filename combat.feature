@@ -41,14 +41,15 @@ Feature: Combat frontend
     And turn.defenderStamina is "{Dodge=1, Block=1}"
     And turn.defenderCombatOptions is "[DCO1, DCO2]"
     And turn.step is "DecideStaminaHigherIni"
+    And C2 waits until "AttackResolved"
 
   Scenario: higher Ini attacker invests stamina, confirms attack (causes damage)
     Given turn.step is "DecideStaminaHigherIni"
     And turn.attacker is C1 with Ini 7, Sta 10
-    And turn.defender is C2 with Ini 6
+    And turn.defender is C2 with Ini 6, Wil 2
     And turn.defenderStamina is not undefined (already decided)
     And turn.attackerStamina is undefined (not yet decided)
-    And attack will cause final damage
+    And attack will cause final damage "5"
     When C1 invests stamina in Impact
     And C1 invests stamina in Damage
     And C1 decides attack combat options "ACO1"
@@ -56,7 +57,9 @@ Feature: Combat frontend
     Then C1 Sta is 8
     And turn.attackerStamina is "{Impact=1, Damage=1}"
     And turn.attackerCombatOptions is "[ACO1]"
-    Then defender health is reduced by final damage
+    And turn.attackResult is "{isHit: true, damage: 5, coverageDamage: 0, stunned=2}"
+    And defender health is reduced by final damage "5"
+    And defender is stunned for 2 turns
     And turn.step is "AttackResolved"
 
   Scenario: post-attack actions (IncreaseInitiative)
@@ -73,7 +76,7 @@ Feature: Combat frontend
     Given turn.step is "TurnEnd"
     And turn.attacker is C1
     And no more attacks left for C1
-    And summary shown
+    And turn.attackResult shown
     And turns is "[]"
     When dismiss
     Then turns is "[turn]" (attacker turn ends)
