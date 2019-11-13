@@ -1,8 +1,8 @@
 import React from "react";
 import { Character } from "../../store/character/types";
 import {
-  AttackStaminaOption,
-  DefendStaminaOption,
+  AttackStamina,
+  DefendStamina,
   Step,
   Turn
 } from "../../store/combat/types";
@@ -46,13 +46,15 @@ function AttackInteraction(props: InteractionViewProps) {
         <div>Attack. {decision(turn.step)}</div>
         <EmptyDiv />
         <EmptyDiv />
-        <InvestStaminaForm />
+        <AttackInvestStaminaForm defenderStamina={turn.defenderStamina} />
       </div>
     </div>
   );
 }
 
-function InvestStaminaForm() {
+function AttackInvestStaminaForm(props: { defenderStamina?: DefendStamina }) {
+  const { defenderStamina } = props;
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("handleSubmit");
@@ -62,11 +64,19 @@ function InvestStaminaForm() {
     <form name="invest-stamina" onSubmit={handleSubmit}>
       <div className="d-flex justify-content-between">
         <Checkbox name="Impact" />
-        <Checkbox name="Dodge" checked={true} />
+        <Checkbox
+          name="Dodge"
+          checked={defenderStamina && defenderStamina.Dodge > 0}
+          disabled
+        />
       </div>
       <div className="d-flex justify-content-between">
         <Checkbox name="Damage" />
-        <Checkbox name="Block" checked={true} />
+        <Checkbox
+          name="Block"
+          checked={defenderStamina && defenderStamina.Block > 0}
+          disabled
+        />
       </div>
       <button>Attack</button>
     </form>
@@ -89,14 +99,21 @@ function decision(step: Step) {
 
 function Checkbox(props: {
   name: string;
+  disabled?: boolean;
   checked?: boolean;
   className?: string;
 }) {
-  const { name, checked, className } = props;
+  const { name, disabled, checked, className } = props;
   return (
     <div className={className}>
       <label>
-        <input type="checkbox" id={name} name={name} defaultChecked={checked} />
+        <input
+          type="checkbox"
+          id={name}
+          name={name}
+          defaultChecked={checked}
+          disabled={disabled}
+        />
         {name}
       </label>
     </div>

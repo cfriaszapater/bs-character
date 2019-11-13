@@ -16,8 +16,8 @@ export interface Turn {
   step: Step;
   attacker: Character;
   defender: Character;
-  attackerStamina?: [AttackStaminaOption];
-  defenderStamina?: [DefendStaminaOption];
+  attackerStamina?: AttackStamina;
+  defenderStamina?: DefendStamina;
 }
 
 export type Step =
@@ -27,7 +27,13 @@ export type Step =
   | "AttackResolved"
   | "TurnEnd";
 
-export type AttackStaminaOption = "Impact" | "Damage";
-export type DefendStaminaOption = "Dodge" | "Block";
+export interface AttackStamina {
+  Impact: number;
+  Damage: number;
+}
+export interface DefendStamina {
+  Dodge: number;
+  Block: number;
+}
 
 export interface Round {}

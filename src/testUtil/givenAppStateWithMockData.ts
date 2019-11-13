@@ -290,7 +290,8 @@ export function givenTestCombat(): Combat {
       step: "DecideStaminaHigherIni",
       attacker: givenTestCharacter(),
       defender: givenTestOpponent(),
-      attackerStamina: ["Damage"]
+      attackerStamina: { Impact: 0, Damage: 1 },
+      defenderStamina: { Dodge: 1, Block: 0 }
     },
     participants: [givenTestCharacter(), givenTestOpponent()],
     rounds: []

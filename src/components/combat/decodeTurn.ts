@@ -1,9 +1,5 @@
 import { Character } from "../../store/character/types";
-import {
-  AttackStaminaOption,
-  DefendStaminaOption,
-  Turn
-} from "../../store/combat/types";
+import { AttackStamina, DefendStamina, Turn } from "../../store/combat/types";
 
 /**
  * Turn from the character's point of view.
@@ -14,9 +10,9 @@ export function decodeTurn(
 ): {
   opponent: Character | undefined;
   attacking: boolean | undefined;
-  defenderStamina: [DefendStaminaOption] | undefined;
+  defenderStamina?: DefendStamina;
   defending: boolean | undefined;
-  attackerStamina: [AttackStaminaOption] | undefined;
+  attackerStamina?: AttackStamina;
 } {
   let attacking;
   let defending;

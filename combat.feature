@@ -32,13 +32,13 @@ Feature: Combat frontend
     Given turn.step is "DecideStaminaLowerIni"
     And turn.attacker is C1 with Ini 7
     And turn.defender is C2 with Ini 6, Sta 9
-    And turn.defenderStamina is null (not yet decided)
-    And turn.attackerStamina is null (not yet decided)
+    And turn.defenderStamina is undefined (not yet decided)
+    And turn.attackerStamina is undefined (not yet decided)
     When C2 invests stamina in Dodge
     And C2 invests stamina in Block
     And C2 decides defense combat options "DCO1, DCO2"
     Then C2 Sta is 7
-    And turn.defenderStamina is "[Dodge, Block]"
+    And turn.defenderStamina is "{Dodge=1, Block=1}"
     And turn.defenderCombatOptions is "[DCO1, DCO2]"
     And turn.step is "DecideStaminaHigherIni"
 
@@ -46,15 +46,15 @@ Feature: Combat frontend
     Given turn.step is "DecideStaminaHigherIni"
     And turn.attacker is C1 with Ini 7, Sta 10
     And turn.defender is C2 with Ini 6
-    And turn.defenderStamina is not null (already decided)
-    And turn.attackerStamina is null (not yet decided)
+    And turn.defenderStamina is not undefined (already decided)
+    And turn.attackerStamina is undefined (not yet decided)
     And attack will cause final damage
     When C1 invests stamina in Impact
     And C1 invests stamina in Damage
     And C1 decides attack combat options "ACO1"
     And C1 confirms attack
     Then C1 Sta is 8
-    And turn.attackerStamina is "[Impact, Damage]"
+    And turn.attackerStamina is "{Impact=1, Damage=1}"
     And turn.attackerCombatOptions is "[ACO1]"
     Then defender health is reduced by final damage
     And turn.step is "AttackResolved"
@@ -81,9 +81,9 @@ Feature: Combat frontend
 
   Scenario: throw attack and defense runes
     And turn.attacker is C1 with Agi 2, Str 3
-    And turn.attackerStamina is "[Impact, Damage]"
+    And turn.attackerStamina is "{Impact=1, Damage=1}"
     And turn.defender is C2 with Agi 2, Str 3
-    And turn.defenderStamina is "[Dodge, Block]"
+    And turn.defenderStamina is "{Dodge=1, Block=1}"
     When runes thrown
     And attacker throws 4 Impact runes
     And defender throws 4 Dodge runes
