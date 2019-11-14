@@ -64,7 +64,7 @@ export function ItemEquippedView(
   } else {
     return (
       <div className={className} id={id}>
-        {itemInPosition ? itemInPosition.name : ""}
+        {itemInPosition ? itemInPosition.name : "\u00a0"}
       </div>
     );
   }
