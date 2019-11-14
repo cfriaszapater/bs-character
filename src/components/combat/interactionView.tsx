@@ -8,6 +8,9 @@ import {
 } from "../../store/combat/types";
 import { EmptyRow } from "../character/emptyRow";
 import { decodeTurn } from "./decodeTurn";
+import { cellStyle } from "../character/styles";
+import { EditableInput } from "../character/editableInput";
+import { EmptyCol } from "../character/emptyCol";
 
 interface InteractionViewProps {
   character: Character;
@@ -45,7 +48,6 @@ function AttackInteraction(props: InteractionViewProps) {
       <EmptyDiv />
       <div className="grouped-container">
         <div>Attack. {decision(turn.step)}</div>
-        <EmptyDiv />
         <EmptyDiv />
         <AttackInvestStaminaForm
           defenderStamina={turn.defenderStamina}
@@ -87,34 +89,64 @@ function AttackInvestStaminaForm(props: {
     }
   };
 
+  // TODO
+  const impactRunes = 3;
+  const dodgeRunes = 4;
+  const damageRunes = 2;
+  const blockRunes = 2;
   return (
     <form name="invest-stamina" onSubmit={handleSubmit}>
-      <div className="d-flex justify-content-between">
-        <Checkbox
-          name="Impact"
-          handleChange={handleImpactChange}
-          checked={impactStamina > 0}
-          leftLabel
-        />
-        <Checkbox
-          name="Dodge"
-          checked={defenderStamina && defenderStamina.dodge > 0}
-          disabled
-        />
-      </div>
-      <div className="d-flex justify-content-between">
-        <Checkbox
-          name="Damage"
-          handleChange={handleDamageChange}
-          checked={damageStamina > 0}
-          leftLabel
-        />
-        <Checkbox
-          name="Block"
-          checked={defenderStamina && defenderStamina.block > 0}
-          disabled
-        />
-      </div>
+      <table className="table-sm w-100 table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">stamina</th>
+            <th scope="col" colSpan={2}>
+              runes
+            </th>
+            <th scope="col">stamina</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <Checkbox
+                name="Impact"
+                handleChange={handleImpactChange}
+                checked={impactStamina > 0}
+                leftLabel
+              />
+            </td>
+            <td>{impactRunes}</td>
+            <td>{dodgeRunes}</td>
+            <td>
+              <Checkbox
+                name="Dodge"
+                checked={defenderStamina && defenderStamina.dodge > 0}
+                disabled
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Checkbox
+                name="Damage"
+                handleChange={handleDamageChange}
+                checked={damageStamina > 0}
+                leftLabel
+              />
+            </td>
+            <td>{damageRunes}</td>
+            <td>{blockRunes}</td>
+            <td>
+              <Checkbox
+                name="Block"
+                checked={defenderStamina && defenderStamina.block > 0}
+                disabled
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
       <button>Attack</button>
     </form>
   );

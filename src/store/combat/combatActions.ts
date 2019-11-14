@@ -92,6 +92,7 @@ function timeout(ms: number) {
 export const resolveAttack = (stamina: AttackStamina | DefendStamina) => async (
   dispatch: ThunkDispatch<{}, {}, any>
 ): Promise<ResolveAttackSuccessAction | ResolveAttackFailureAction> => {
+  console.log("resolveAttack with stamina", JSON.stringify(stamina));
   dispatch(resolveAttackBegin());
   try {
     // TODO ? alternative: const turn = await postResolveAttack(stamina);
