@@ -94,6 +94,7 @@ function AttackInvestStaminaForm(props: {
           name="Impact"
           handleChange={handleImpactChange}
           checked={impactStamina > 0}
+          leftLabel
         />
         <Checkbox
           name="Dodge"
@@ -106,6 +107,7 @@ function AttackInvestStaminaForm(props: {
           name="Damage"
           handleChange={handleDamageChange}
           checked={damageStamina > 0}
+          leftLabel
         />
         <Checkbox
           name="Block"
@@ -138,21 +140,21 @@ function Checkbox(props: {
   checked?: boolean;
   className?: string;
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  leftLabel?: boolean;
 }) {
-  const { name, disabled, checked, className, handleChange } = props;
+  const { name, disabled, checked, className, handleChange, leftLabel } = props;
   return (
     <div className={className}>
-      <label>
-        <input
-          type="checkbox"
-          id={name}
-          name={name}
-          disabled={disabled}
-          onChange={handleChange}
-          checked={checked}
-        />
-        {name}
-      </label>
+      {leftLabel && <label htmlFor={name}>{name}</label>}
+      <input
+        type="checkbox"
+        id={name}
+        name={name}
+        disabled={disabled}
+        onChange={handleChange}
+        checked={checked}
+      />
+      {!leftLabel && <label htmlFor={name}>{name}</label>}
     </div>
   );
 }
