@@ -6,11 +6,11 @@ import {
   Step,
   Turn
 } from "../../store/combat/types";
-import { EmptyRow } from "../character/emptyRow";
-import { decodeTurn } from "./decodeTurn";
-import { cellStyle } from "../character/styles";
 import { EditableInput } from "../character/editableInput";
 import { EmptyCol } from "../character/emptyCol";
+import { EmptyRow } from "../character/emptyRow";
+import { cellStyle } from "../character/styles";
+import { decodeTurn } from "./decodeTurn";
 
 interface InteractionViewProps {
   character: Character;
