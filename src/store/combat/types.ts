@@ -16,6 +16,11 @@ export interface Turn {
   step: Step;
   attacker: Character;
   defender?: Character;
+  attacks: [Attack];
+  currentDecision?: "attacker" | "defender";
+}
+
+export interface Attack {
   attackerStamina?: AttackStamina;
   defenderStamina?: DefendStamina;
   attackResult?: AttackResult;

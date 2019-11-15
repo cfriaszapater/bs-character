@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { Character } from "../../store/character/types";
-import {
-  AttackResult,
-  AttackStamina,
-  DefendStamina,
-  Step,
-  Turn
-} from "../../store/combat/types";
+import { AttackStamina, DefendStamina, Turn } from "../../store/combat/types";
 import { decodeTurn } from "./decodeTurn";
 
 interface InteractionViewProps {
@@ -31,28 +25,33 @@ export function InteractionView(props: InteractionViewProps) {
 
 function AttackInteraction(props: InteractionViewProps) {
   const { turn, character, className, resolveAttack } = props;
-
+  const attack = turn.attacks[turn.attacks.length - 1];
+  const { myCurrentDecision } = decodeTurn(character, turn);
   return (
     <div className={className + " px-0"}>
       <EmptyDiv />
       <div className="grouped-container">
-        <div>Attack. {decision(turn.step)}</div>
-        <EmptyDiv />
-        <AttackInvestStaminaForm
-          defenderStamina={turn.defenderStamina}
-          resolveAttack={resolveAttack}
-        />
-        {turn.attackResult && <div>{explainAttackResult(turn)}</div>}
+        {myCurrentDecision ? (
+          <AttackActForm
+            defenderStamina={attack.defenderStamina}
+            resolveAttack={resolveAttack}
+            turn={turn}
+          />
+        ) : (
+          "Attack. Waiting for opponent decision."
+        )}
+        {attack.attackResult && <div>{explainAttackResult(turn)}</div>}
       </div>
     </div>
   );
 }
 
-function AttackInvestStaminaForm(props: {
+function AttackActForm(props: {
   defenderStamina?: DefendStamina;
   resolveAttack: (stamina: AttackStamina | DefendStamina) => any;
+  turn: Turn;
 }) {
-  const { defenderStamina, resolveAttack } = props;
+  const { defenderStamina, resolveAttack, turn } = props;
 
   const [impactStamina, setImpactStamina] = useState(0);
   const [damageStamina, setDamageStamina] = useState(0);
@@ -78,81 +77,98 @@ function AttackInvestStaminaForm(props: {
     }
   };
 
-  // TODO
-  const impactRunes = 3;
-  const dodgeRunes = 4;
-  const damageRunes = 2;
-  const blockRunes = 2;
-  return (
-    <form name="invest-stamina" onSubmit={handleSubmit}>
-      <table className="table-sm w-100 table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">stamina</th>
-            <th scope="col" colSpan={2}>
-              runes
-            </th>
-            <th scope="col">stamina</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <Checkbox
-                name="Impact"
-                handleChange={handleImpactChange}
-                checked={impactStamina > 0}
-                leftLabel
-              />
-            </td>
-            <td>{impactRunes}</td>
-            <td>{dodgeRunes}</td>
-            <td>
-              <Checkbox
-                name="Dodge"
-                checked={defenderStamina && defenderStamina.dodge > 0}
-                disabled
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <Checkbox
-                name="Damage"
-                handleChange={handleDamageChange}
-                checked={damageStamina > 0}
-                leftLabel
-              />
-            </td>
-            <td>{damageRunes}</td>
-            <td>{blockRunes}</td>
-            <td>
-              <Checkbox
-                name="Block"
-                checked={defenderStamina && defenderStamina.block > 0}
-                disabled
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <button>Attack</button>
-    </form>
+  const { impactRunes, dodgeRunes, damageRunes, blockRunes } = calcRunes(
+    turn,
+    impactStamina,
+    defenderStamina,
+    damageStamina
   );
+  return (
+    <div>
+      <div>Attack. Invest stamina?</div>
+      <EmptyDiv />
+      <form name="invest-stamina" onSubmit={handleSubmit}>
+        <table className="table-sm w-100 table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">stamina</th>
+              <th scope="col" colSpan={2}>
+                runes
+              </th>
+              <th scope="col">stamina</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <Checkbox
+                  name="Impact"
+                  handleChange={handleImpactChange}
+                  checked={impactStamina > 0}
+                  leftLabel
+                />
+              </td>
+              <td>{impactRunes}</td>
+              <td>{dodgeRunes}</td>
+              <td>
+                <Checkbox
+                  name="Dodge"
+                  checked={defenderStamina && defenderStamina.dodge > 0}
+                  disabled
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <Checkbox
+                  name="Damage"
+                  handleChange={handleDamageChange}
+                  checked={damageStamina > 0}
+                  leftLabel
+                />
+              </td>
+              <td>{damageRunes}</td>
+              <td>{blockRunes}</td>
+              <td>
+                <Checkbox
+                  name="Block"
+                  checked={defenderStamina && defenderStamina.block > 0}
+                  disabled
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button>Attack</button>
+      </form>
+    </div>
+  );
+}
+
+function calcRunes(
+  turn: Turn,
+  impactStamina: number,
+  defenderStamina: DefendStamina | undefined,
+  damageStamina: number
+) {
+  const { attacker, defender } = turn;
+  if (defender === undefined) {
+    throw Error("defender should be defined");
+  }
+  const impactRunes = attacker.attributes.agility * (impactStamina > 0 ? 2 : 1);
+  const dodgeRunes =
+    defender.attributes.agility *
+    (defenderStamina && defenderStamina.dodge > 0 ? 2 : 1);
+  const damageRunes =
+    attacker.attributes.strength * (damageStamina > 0 ? 2 : 1);
+  const blockRunes =
+    defender.attributes.strength *
+    (defenderStamina && defenderStamina.block > 0 ? 2 : 1);
+  return { impactRunes, dodgeRunes, damageRunes, blockRunes };
 }
 
 function EmptyDiv() {
   return <div>&nbsp;</div>;
-}
-
-function decision(step: Step) {
-  switch (step) {
-    case "DecideStaminaHigherIni":
-      return "Invest stamina?";
-
-    default:
-      return "Waiting for combat to evolve.";
-  }
 }
 
 function Checkbox(props: {
@@ -184,21 +200,21 @@ function DefenseInteraction(props: InteractionViewProps) {
   const { turn, character, className } = props;
   return (
     <div className={className}>
-      <div>Defense. {decision(turn.step)}</div>
+      <div>Defense. TODO...</div>
     </div>
   );
 }
 
 function WaitingInteraction(props: InteractionViewProps) {
-  const { turn, character, className } = props;
+  const { turn, className } = props;
   return (
     <div className={className}>
-      <div>{waitingInfo(turn)}</div>
+      <div>{explainWait(turn)}</div>
     </div>
   );
 }
 
-function waitingInfo(turn: Turn) {
+function explainWait(turn: Turn) {
   switch (turn.step) {
     case "SelectOpponent":
       return turn.attacker + " turn starts...";
@@ -213,7 +229,8 @@ function waitingInfo(turn: Turn) {
 }
 
 function explainAttackResult(turn: Turn) {
-  const { attackResult, attacker, defender } = turn;
+  const { attacks, attacker, defender } = turn;
+  const attackResult = attacks[attacks.length - 1].attackResult;
   if (attackResult === undefined) {
     throw Error("No attackResult to explain");
   }
@@ -228,11 +245,10 @@ function explainAttackResult(turn: Turn) {
       " causing " +
       attackResult.damage +
       " damage" +
-      (attackResult.stunned > 0
-        ? ", stunning " + attackResult.stunned + " turns"
-        : "") +
+      (attackResult.stunned === 1 ? ", 1 turn stun" : "") +
+      (attackResult.stunned === 2 ? ", 2 turns stun" : "") +
       (attackResult.coverageDamage > 0
-        ? ", causing coverage damage " + attackResult.coverageDamage
+        ? ", " + attackResult.coverageDamage + " coverage damage"
         : "") +
       "."
     );

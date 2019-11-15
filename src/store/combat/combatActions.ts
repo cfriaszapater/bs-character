@@ -3,13 +3,7 @@ import {
   givenTestCombatDecideStaminaHigherIni,
   givenTurnAttackResolved
 } from "../../testUtil/givenAppStateWithMockData";
-import {
-  AttackResult,
-  AttackStamina,
-  Combat,
-  DefendStamina,
-  Turn
-} from "./types";
+import { AttackStamina, Combat, DefendStamina, Turn } from "./types";
 
 export const FETCH_COMBAT_BEGIN = "FETCH_COMBAT_BEGIN";
 export const FETCH_COMBAT_SUCCESS = "FETCH_COMBAT_SUCCESS";

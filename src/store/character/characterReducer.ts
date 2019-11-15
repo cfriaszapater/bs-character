@@ -115,7 +115,8 @@ function emptyCharacter(): Character {
       },
       blunt: 0,
       cut: 0,
-      penetrating: 0
+      penetrating: 0,
+      reach: 0
     }
   };
 }

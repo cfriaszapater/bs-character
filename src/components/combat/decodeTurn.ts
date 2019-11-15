@@ -8,27 +8,42 @@ export function decodeTurn(
   character: Character,
   turn?: Turn
 ): {
-  opponent: Character | undefined;
-  attacking: boolean | undefined;
+  opponent?: Character;
+  attacking?: boolean;
   defenderStamina?: DefendStamina;
-  defending: boolean | undefined;
+  defending?: boolean;
   attackerStamina?: AttackStamina;
+  myCurrentDecision?: boolean;
 } {
-  let attacking;
-  let defending;
-  let opponent: Character | undefined;
-  let defenderStamina;
-  let attackerStamina;
   if (turn) {
-    attacking = turn.attacker && turn.attacker.name === character.name;
-    defending = turn.defender && turn.defender.name === character.name;
+    let opponent: Character | undefined;
+    let defenderStamina: DefendStamina | undefined;
+    let attackerStamina: AttackStamina | undefined;
+    let myCurrentDecision: boolean | undefined;
+    const attack =
+      turn.attacks.length > 0
+        ? turn.attacks[turn.attacks.length - 1]
+        : undefined;
+    const attacking = turn.attacker && turn.attacker.name === character.name;
+    const defending = turn.defender && turn.defender.name === character.name;
     if (attacking) {
       opponent = turn.defender;
-      defenderStamina = turn.defenderStamina;
+      defenderStamina = attack ? attack.defenderStamina : undefined;
+      myCurrentDecision = turn.currentDecision === "attacker";
     } else if (defending) {
       opponent = turn.attacker;
-      attackerStamina = turn.attackerStamina;
+      attackerStamina = attack ? attack.attackerStamina : undefined;
+      myCurrentDecision = turn.currentDecision === "defender";
     }
+    return {
+      opponent,
+      attacking,
+      defenderStamina,
+      defending,
+      attackerStamina,
+      myCurrentDecision
+    };
+  } else {
+    return {};
   }
-  return { opponent, attacking, defenderStamina, defending, attackerStamina };
 }

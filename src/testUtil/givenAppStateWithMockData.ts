@@ -168,7 +168,8 @@ export function givenTestCharacter(): Character {
       },
       blunt: 2,
       cut: 3,
-      penetrating: 5
+      penetrating: 5,
+      reach: 2
     }
   };
 }
@@ -279,7 +280,8 @@ function givenTestOpponent(): Character {
       },
       blunt: 2,
       cut: 3,
-      penetrating: 3
+      penetrating: 3,
+      reach: 0
     }
   };
 }
@@ -297,7 +299,8 @@ function givenTurnDecideStaminaHigherIni(): Turn {
     step: "DecideStaminaHigherIni",
     attacker: givenTestCharacter(),
     defender: givenTestOpponent(),
-    defenderStamina: { dodge: 1, block: 0 }
+    attacks: [{ defenderStamina: { dodge: 1, block: 0 } }],
+    currentDecision: "attacker"
   };
 }
 
@@ -306,10 +309,17 @@ function givenAttackResult(): AttackResult {
 }
 
 export function givenTurnAttackResolved(): Turn {
+  const previousTurn = givenTurnDecideStaminaHigherIni();
   return {
-    ...givenTurnDecideStaminaHigherIni(),
     step: "AttackResolved",
-    attackerStamina: { impact: 1, damage: 1 },
-    attackResult: givenAttackResult()
+    attacker: givenTestCharacter(),
+    defender: givenTestOpponent(),
+    attacks: [
+      {
+        defenderStamina: { dodge: 1, block: 0 },
+        attackerStamina: { impact: 1, damage: 1 },
+        attackResult: givenAttackResult()
+      }
+    ]
   };
 }

@@ -26,6 +26,7 @@ export interface AttackCharacteristics {
   stamina: Stamina;
   impact: number;
   damage: number;
+  reach: number;
 }
 
 export type Initiative = VariableCharacteristic;

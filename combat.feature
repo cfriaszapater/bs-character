@@ -10,7 +10,7 @@ Feature: Combat frontend
     Given character C1 with Ini 7
     And character C2 with Ini 6
     And charactersToAct = <givenCharactersToAct>
-    And turn is "null"
+    And turn is undefined
     When turn starts
     Then turn is <thenTurn>
     And charactersToAct = <thenCharactersToAct>
@@ -62,25 +62,18 @@ Feature: Combat frontend
     And defender is stunned for 2 turns
     And turn.step is "AttackResolved"
 
-  Scenario: post-attack actions (IncreaseInitiative)
+  Scenario: post-attack actions (IncreaseInitiative) and end turn
     Given turn.step is "AttackResolved"
     And turn.attacker is C1 with Int 3, Ini 7, Sta 8
     And turn.attackerCombatOptions is "[opportunist]"
     And combat option "opportunist" allows post-attack action "IncreaseInitiative"
+    And turns is "[]"
     When C1 selects "IncreaseInitiative"
+    And ends turn
     Then C1 Sta is 7
     And C1 Ini is 10
-    And turn.step is "TurnEnd"
-
-  Scenario: show resolved attack summary, end of turn
-    Given turn.step is "TurnEnd"
-    And turn.attacker is C1
-    And no more attacks left for C1
-    And turn.attackResult shown
-    And turns is "[]"
-    When dismiss
-    Then turns is "[turn]" (attacker turn ends)
-    And turn is "null"
+    And turn is undefined
+    And turns is "[turn]" (attacker turn ends)
 
   Scenario: throw attack and defense runes
     And turn.attacker is C1 with Agi 2, Str 3
