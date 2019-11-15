@@ -45,9 +45,7 @@ export function combatReducer(
         ...state,
         combat: {
           ...state.combat,
-          turn: state.combat.turn
-            ? { ...state.combat.turn, attackResult: action.attackResult }
-            : undefined
+          turn: action.turn
         }
       };
 

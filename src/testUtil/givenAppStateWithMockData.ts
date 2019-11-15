@@ -5,7 +5,7 @@ import {
   Shield,
   Weapon
 } from "../store/character/types";
-import { AttackResult, Combat } from "../store/combat/types";
+import { AttackResult, Combat, Turn } from "../store/combat/types";
 import { AppState } from "../store/rootReducer";
 
 export function givenAppStateWithMockData(): AppState {
@@ -286,31 +286,30 @@ function givenTestOpponent(): Character {
 
 export function givenTestCombatDecideStaminaHigherIni(): Combat {
   return {
-    turn: {
-      step: "DecideStaminaHigherIni",
-      attacker: givenTestCharacter(),
-      defender: givenTestOpponent(),
-      defenderStamina: { dodge: 1, block: 0 }
-    },
+    turn: givenTurnDecideStaminaHigherIni(),
     participants: [givenTestCharacter(), givenTestOpponent()],
     rounds: []
   };
 }
 
-export function givenAttackResolved(): AttackResult {
+function givenTurnDecideStaminaHigherIni(): Turn {
+  return {
+    step: "DecideStaminaHigherIni",
+    attacker: givenTestCharacter(),
+    defender: givenTestOpponent(),
+    defenderStamina: { dodge: 1, block: 0 }
+  };
+}
+
+function givenAttackResult(): AttackResult {
   return { isHit: true, damage: 5, coverageDamage: 0, stunned: 2 };
 }
 
-// TODO ? export function givenTestCombatAttackResolved(): Combat {
-//   const combat = givenTestCombatDecideStaminaHigherIni();
-//   return {
-//     ...combat,
-//     turn: combat.turn
-//       ? {
-//           ...combat.turn,
-//           step: "AttackResolved",
-//           attackerStamina: { impact: 1, damage: 1 }
-//         }
-//       : undefined
-//   };
-// }
+export function givenTurnAttackResolved(): Turn {
+  return {
+    ...givenTurnDecideStaminaHigherIni(),
+    step: "AttackResolved",
+    attackerStamina: { impact: 1, damage: 1 },
+    attackResult: givenAttackResult()
+  };
+}

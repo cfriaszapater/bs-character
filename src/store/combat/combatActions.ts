@@ -1,9 +1,15 @@
 import { ThunkDispatch } from "redux-thunk";
 import {
-  givenAttackResolved,
-  givenTestCombatDecideStaminaHigherIni
+  givenTestCombatDecideStaminaHigherIni,
+  givenTurnAttackResolved
 } from "../../testUtil/givenAppStateWithMockData";
-import { AttackResult, AttackStamina, Combat, DefendStamina } from "./types";
+import {
+  AttackResult,
+  AttackStamina,
+  Combat,
+  DefendStamina,
+  Turn
+} from "./types";
 
 export const FETCH_COMBAT_BEGIN = "FETCH_COMBAT_BEGIN";
 export const FETCH_COMBAT_SUCCESS = "FETCH_COMBAT_SUCCESS";
@@ -33,7 +39,7 @@ export interface ResolveAttackBeginAction {
 
 export interface ResolveAttackSuccessAction {
   type: typeof RESOLVE_ATTACK_SUCCESS;
-  attackResult: AttackResult;
+  turn: Turn;
 }
 
 export interface ResolveAttackFailureAction {
@@ -95,9 +101,8 @@ export const resolveAttack = (stamina: AttackStamina | DefendStamina) => async (
   console.log("resolveAttack with stamina", JSON.stringify(stamina));
   dispatch(resolveAttackBegin());
   try {
-    // TODO ? alternative: const turn = await postResolveAttack(stamina);
-    const attackResult = await postResolveAttack(stamina);
-    return dispatch(resolveAttackSuccess(attackResult));
+    const turn = await postResolveAttack(stamina);
+    return dispatch(resolveAttackSuccess(turn));
     // TODO fetchCombat() and then fetchCombatSuccess()?
     // const combat = await fetchCombat();
   } catch (error) {
@@ -107,11 +112,11 @@ export const resolveAttack = (stamina: AttackStamina | DefendStamina) => async (
 
 async function postResolveAttack(
   stamina: AttackStamina | DefendStamina
-): Promise<AttackResult> {
+): Promise<Turn> {
   // TODO return await post(backendUrl() + "/combats/{id}/turn/{id}/attack");
   // or   return await post(backendUrl() + "/combats/{id}/turn/{id}/defense");
   return new Promise(resolve => {
-    resolve(givenAttackResolved());
+    resolve(givenTurnAttackResolved());
   });
 }
 
@@ -120,9 +125,9 @@ export const resolveAttackBegin = (): ResolveAttackBeginAction => ({
 });
 
 export const resolveAttackSuccess = (
-  attackResult: AttackResult
+  turn: Turn
 ): ResolveAttackSuccessAction => ({
-  attackResult,
+  turn,
   type: RESOLVE_ATTACK_SUCCESS
 });
 
