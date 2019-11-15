@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import { Character } from "../../store/character/types";
 import {
+  AttackResult,
   AttackStamina,
   DefendStamina,
   Step,
   Turn
 } from "../../store/combat/types";
-import { EditableInput } from "../character/editableInput";
-import { EmptyCol } from "../character/emptyCol";
-import { EmptyRow } from "../character/emptyRow";
-import { cellStyle } from "../character/styles";
 import { decodeTurn } from "./decodeTurn";
 
 interface InteractionViewProps {
@@ -21,22 +18,14 @@ interface InteractionViewProps {
 
 export function InteractionView(props: InteractionViewProps) {
   const { turn, character } = props;
-  const {
-    opponent,
-    attacking,
-    defenderStamina,
-    defending,
-    attackerStamina
-  } = decodeTurn(character, turn);
+  const { attacking, defending } = decodeTurn(character, turn);
 
   if (attacking) {
     return AttackInteraction(props);
   } else if (defending) {
     return DefenseInteraction(props);
   } else {
-    throw Error(
-      "Should be attacking or defending, it is neither: " + JSON.stringify(turn)
-    );
+    return WaitingInteraction(props);
   }
 }
 
@@ -53,7 +42,7 @@ function AttackInteraction(props: InteractionViewProps) {
           defenderStamina={turn.defenderStamina}
           resolveAttack={resolveAttack}
         />
-        {turn.attackResult && <div>{JSON.stringify(turn.attackResult)}</div>}
+        {turn.attackResult && <div>{explainAttackResult(turn)}</div>}
       </div>
     </div>
   );
@@ -198,4 +187,56 @@ function DefenseInteraction(props: InteractionViewProps) {
       <div>Defense. {decision(turn.step)}</div>
     </div>
   );
+}
+
+function WaitingInteraction(props: InteractionViewProps) {
+  const { turn, character, className } = props;
+  return (
+    <div className={className}>
+      <div>{waitingInfo(turn)}</div>
+    </div>
+  );
+}
+
+function waitingInfo(turn: Turn) {
+  switch (turn.step) {
+    case "SelectOpponent":
+      return turn.attacker + " turn starts...";
+    case "DecideStaminaLowerIni":
+    case "DecideStaminaHigherIni":
+      return turn.attacker + " is attacking " + turn.defender + "...";
+    case "AttackResolved":
+      return explainAttackResult(turn);
+    default:
+      return "Waiting...";
+  }
+}
+
+function explainAttackResult(turn: Turn) {
+  const { attackResult, attacker, defender } = turn;
+  if (attackResult === undefined) {
+    throw Error("No attackResult to explain");
+  }
+  if (defender === undefined) {
+    throw Error("No defender to explain attackResult");
+  }
+  if (attackResult.isHit) {
+    return (
+      attacker.name +
+      " hit " +
+      defender.name +
+      " causing " +
+      attackResult.damage +
+      " damage" +
+      (attackResult.stunned > 0
+        ? ", stunning " + attackResult.stunned + " turns"
+        : "") +
+      (attackResult.coverageDamage > 0
+        ? ", causing coverage damage " + attackResult.coverageDamage
+        : "") +
+      "."
+    );
+  } else {
+    return attacker + " did not hit " + defender;
+  }
 }

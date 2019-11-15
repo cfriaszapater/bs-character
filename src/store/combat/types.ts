@@ -15,7 +15,7 @@ export interface Combat {
 export interface Turn {
   step: Step;
   attacker: Character;
-  defender: Character;
+  defender?: Character;
   attackerStamina?: AttackStamina;
   defenderStamina?: DefendStamina;
   attackResult?: AttackResult;

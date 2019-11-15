@@ -113,8 +113,8 @@ export const resolveAttack = (stamina: AttackStamina | DefendStamina) => async (
 async function postResolveAttack(
   stamina: AttackStamina | DefendStamina
 ): Promise<Turn> {
-  // TODO return await post(backendUrl() + "/combats/{id}/turn/{id}/attack");
-  // or   return await post(backendUrl() + "/combats/{id}/turn/{id}/defense");
+  // TODO POST /attack, /defense or PATCH /turn with stamina. Eg:
+  // return await post(backendUrl() + "/combats/{id}/turn/{id}/attack");
   return new Promise(resolve => {
     resolve(givenTurnAttackResolved());
   });
