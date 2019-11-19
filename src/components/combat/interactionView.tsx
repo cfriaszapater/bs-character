@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Character } from "../../store/character/types";
 import { AttackStamina, DefendStamina, Turn } from "../../store/combat/types";
 import { decodeTurn } from "./decodeTurn";
@@ -8,6 +8,8 @@ interface InteractionViewProps {
   turn: Turn;
   className?: string;
   resolveAttack: (stamina: AttackStamina | DefendStamina) => any;
+  // TODO fetchCombatNoLoading?
+  fetchCombat: (...args: any) => any;
 }
 
 export function InteractionView(props: InteractionViewProps) {
@@ -24,7 +26,7 @@ export function InteractionView(props: InteractionViewProps) {
 }
 
 function AttackInteraction(props: InteractionViewProps) {
-  const { turn, character, className, resolveAttack } = props;
+  const { turn, character, className, resolveAttack, fetchCombat } = props;
   const attack = turn.attacks[turn.attacks.length - 1];
   const { myCurrentDecision } = decodeTurn(character, turn);
   return (
@@ -38,12 +40,20 @@ function AttackInteraction(props: InteractionViewProps) {
             turn={turn}
           />
         ) : (
-          "Attack. Waiting for opponent decision."
+          <AttackWait fetchCombat={fetchCombat} turn={turn} />
         )}
         {attack.attackResult && <div>{explainAttackResult(turn)}</div>}
       </div>
     </div>
   );
+}
+
+function AttackWait(props: { turn: Turn; fetchCombat: (...args: any) => any }) {
+  useEffect(() => {
+    setInterval(props.fetchCombat, 1000);
+  });
+
+  return <span>Attack. Waiting for opponent decision.</span>;
 }
 
 function AttackActForm(props: {

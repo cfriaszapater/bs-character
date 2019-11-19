@@ -67,6 +67,9 @@ class CombatView extends React.Component<CombatViewProps, CombatViewState> {
                   turn={turn}
                   className="col"
                   resolveAttack={resolveAttack}
+                  fetchCombat={() => {
+                    console.log("TODO fetchCombatNoLoading?");
+                  }}
                 />
               )}
               {opponent && (
