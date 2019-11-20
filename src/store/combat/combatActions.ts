@@ -4,6 +4,7 @@ import {
   givenTurnAttackResolved
 } from "../../testUtil/givenAppStateWithMockData";
 import { AttackStamina, Combat, DefendStamina, Turn } from "./types";
+import { setInterval } from "timers";
 
 export const FETCH_COMBAT_BEGIN = "FETCH_COMBAT_BEGIN";
 export const FETCH_COMBAT_SUCCESS = "FETCH_COMBAT_SUCCESS";
@@ -54,13 +55,18 @@ export const fetchCombat = () => async (
 ): Promise<FetchCombatSuccessAction | FetchCombatFailureAction> => {
   dispatch(fetchCombatBegin());
   try {
-    await timeout(300);
-    const combat = await getCombat();
-    return dispatch(fetchCombatSuccess(combat));
+    return await fetchCombatNoLoading(dispatch);
   } catch (error) {
     return dispatch(fetchCombatFailure(error));
   }
 };
+
+async function fetchCombatNoLoading(dispatch: ThunkDispatch<{}, {}, any>) {
+  console.log("fetchCombatNoLoading called");
+  await timeout(300);
+  const combat = await getCombat();
+  return dispatch(fetchCombatSuccess(combat));
+}
 
 async function getCombat(): Promise<Combat> {
   // TODO return await get(backendUrl() + "/combats/{id}");
@@ -131,3 +137,9 @@ export const resolveAttackFailure = (
   error,
   type: RESOLVE_ATTACK_FAILURE
 });
+
+export const pollOpponentDecision = (delay: number) => (
+  dispatch: ThunkDispatch<{}, {}, any>
+): NodeJS.Timeout => {
+  return setInterval(fetchCombatNoLoading, delay, dispatch);
+};

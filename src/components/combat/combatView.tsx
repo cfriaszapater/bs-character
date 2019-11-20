@@ -16,6 +16,7 @@ interface CombatViewProps {
   loading: boolean;
   error: Error | null;
   fetchCombat: (...args: any) => any;
+  pollOpponentDecision: (delay: number) => NodeJS.Timeout;
   updateCharacteristics: typeof characterActions.updateCharacteristics;
   updateEquipment: typeof characterActions.updateEquipment;
   resolveAttack: (...args: any) => any;
@@ -34,7 +35,8 @@ class CombatView extends React.Component<CombatViewProps, CombatViewState> {
       loading,
       updateCharacteristics,
       updateEquipment,
-      resolveAttack
+      resolveAttack,
+      pollOpponentDecision
     } = this.props;
 
     if (loading) {
@@ -67,9 +69,7 @@ class CombatView extends React.Component<CombatViewProps, CombatViewState> {
                   turn={turn}
                   className="col"
                   resolveAttack={resolveAttack}
-                  fetchCombat={() => {
-                    console.log("TODO fetchCombatNoLoading?");
-                  }}
+                  pollOpponentDecision={pollOpponentDecision}
                 />
               )}
               {opponent && (
@@ -95,6 +95,7 @@ const mapStateToProps = (state: AppState) => ({
 
 export default connect(mapStateToProps, {
   fetchCombat: combatActions.fetchCombat,
+  pollOpponentDecision: combatActions.pollOpponentDecision,
   resolveAttack: combatActions.resolveAttack,
   updateCharacteristics: characterActions.updateCharacteristics,
   updateEquipment: characterActions.updateEquipment

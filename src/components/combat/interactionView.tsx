@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { clearInterval } from "timers";
 import { Character } from "../../store/character/types";
 import { AttackStamina, DefendStamina, Turn } from "../../store/combat/types";
 import { decodeTurn } from "./decodeTurn";
@@ -8,8 +9,7 @@ interface InteractionViewProps {
   turn: Turn;
   className?: string;
   resolveAttack: (stamina: AttackStamina | DefendStamina) => any;
-  // TODO fetchCombatNoLoading?
-  fetchCombat: (...args: any) => any;
+  pollOpponentDecision: (delay: number) => NodeJS.Timeout;
 }
 
 export function InteractionView(props: InteractionViewProps) {
@@ -26,7 +26,13 @@ export function InteractionView(props: InteractionViewProps) {
 }
 
 function AttackInteraction(props: InteractionViewProps) {
-  const { turn, character, className, resolveAttack, fetchCombat } = props;
+  const {
+    turn,
+    character,
+    className,
+    resolveAttack,
+    pollOpponentDecision
+  } = props;
   const attack = turn.attacks[turn.attacks.length - 1];
   const { myCurrentDecision } = decodeTurn(character, turn);
   return (
@@ -40,7 +46,7 @@ function AttackInteraction(props: InteractionViewProps) {
             turn={turn}
           />
         ) : (
-          <AttackWait fetchCombat={fetchCombat} turn={turn} />
+          <AttackWait pollOpponentDecision={pollOpponentDecision} turn={turn} />
         )}
         {attack.attackResult && <div>{explainAttackResult(turn)}</div>}
       </div>
@@ -48,10 +54,15 @@ function AttackInteraction(props: InteractionViewProps) {
   );
 }
 
-function AttackWait(props: { turn: Turn; fetchCombat: (...args: any) => any }) {
+function AttackWait(props: {
+  turn: Turn;
+  pollOpponentDecision: (delay: number) => NodeJS.Timeout;
+}) {
+  const { pollOpponentDecision } = props;
   useEffect(() => {
-    const timeout = setInterval(props.fetchCombat, 1000);
+    const timeout = pollOpponentDecision(1000);
     return () => {
+      console.log("clearPoll");
       clearInterval(timeout);
     };
   });
