@@ -309,7 +309,6 @@ function givenAttackResult(): AttackResult {
 }
 
 export function givenTurnAttackResolved(): Turn {
-  const previousTurn = givenTurnDecideStaminaHigherIni();
   return {
     step: "AttackResolved",
     attacker: givenTestCharacter(),
