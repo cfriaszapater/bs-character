@@ -50,7 +50,10 @@ function AttackInteraction(props: InteractionViewProps) {
 
 function AttackWait(props: { turn: Turn; fetchCombat: (...args: any) => any }) {
   useEffect(() => {
-    setInterval(props.fetchCombat, 1000);
+    const timeout = setInterval(props.fetchCombat, 1000);
+    return () => {
+      clearInterval(timeout);
+    };
   });
 
   return <span>Attack. Waiting for opponent decision.</span>;
