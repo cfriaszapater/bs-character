@@ -5,35 +5,50 @@ Feature: Combat frontend
     Given participants is "[C1, C2]"
     When combat starts
     Then charactersToAct = "[C1, C2]"
+    And combat.events is []
+    And start turn
 
   Scenario Outline: turn starts for pending character with higher Ini
     Given character C1 with Ini 7
     And character C2 with Ini 6
     And charactersToAct = <givenCharactersToAct>
     And turn is undefined
-    When turn starts
+    And combat.events is []
+    # XXX start turn could be an automatic event (eg: right after combat start), or a scheduled one (eg: a few seconds after turn end)
+    When start turn
     Then turn is <thenTurn>
     And charactersToAct = <thenCharactersToAct>
     And turn.step is "SelectOpponent"
+    And combat.events is ["C1 turn started"]
     Examples:
       | <givenCharactersToAct> | <thenTurn>       | <thenCharactersToAct> |
       | "[C1, C2]"             | "{attacker: C1}" | "[C2]"                |
       | "[C2, C1]"             | "{attacker: C1}" | "[C2]"                |
       | "[C2]"                 | "{attacker: C2}" | "[]"                  |
 
-  Scenario: start turn - select opponent
+  Scenario Outline: start turn - select opponent
     Given turn.step is "SelectOpponent"
-    And turn.attacker is C1
+    And combat.events is ["C1 turn started"]
+    And turn.attacker is C1 with Ini 7
+    And C2 has Ini <opponentIni>
     When C1 selects opponent C2
     Then turn.defender is C2
     And turn.step is "DecideStaminaLowerIni"
+    And currentDecision is <currentDecision>
+    And combat.events is ["C1 turn started", "C1 selects opponent C2"]
+    Examples:
+      | <opponentIni> | <currentDecision> |
+      | "6"           | "defender"        |
+      | "8"           | "attacker"        |
 
-  Scenario: lower Ini defender invests stamina
+  Scenario: lower Ini defender declares defense, attack not resolved
     Given turn.step is "DecideStaminaLowerIni"
+    And combat.events is ["C1 turn started", "C1 selects opponent C2"]
     And turn.attacker is C1 with Ini 7
     And turn.defender is C2 with Ini 6, Sta 9
     And turn.defenderStamina is undefined (not yet decided)
     And turn.attackerStamina is undefined (not yet decided)
+    And currentDecision is "defender"
     When C2 invests stamina in Dodge
     And C2 invests stamina in Block
     And C2 decides defense combat options "DCO1, DCO2"
@@ -41,14 +56,18 @@ Feature: Combat frontend
     And turn.defenderStamina is "{Dodge=1, Block=1}"
     And turn.defenderCombatOptions is "[DCO1, DCO2]"
     And turn.step is "DecideStaminaHigherIni"
-    And C2 waits until "AttackResolved"
+    And currentDecision is "attacker"
+    And combat.events is ["C1 turn started", "C1 selects opponent C2", "C2 declares defense"]
+    And C2 waits until turn[0].attacks[0].attackResult is not undefined
 
-  Scenario: higher Ini attacker invests stamina, confirms attack (causes damage)
+  Scenario: higher Ini attacker declares attack, attack resolved (causes damage)
     Given turn.step is "DecideStaminaHigherIni"
+    And combat.events is ["C1 turn started", "C1 selects opponent C2", "C2 declares defense"]
     And turn.attacker is C1 with Ini 7, Sta 10
     And turn.defender is C2 with Ini 6, Wil 2
     And turn.defenderStamina is not undefined (already decided)
     And turn.attackerStamina is undefined (not yet decided)
+    And currentDecision is "attacker"
     And attack will cause final damage "5"
     When C1 invests stamina in Impact
     And C1 invests stamina in Damage
@@ -61,9 +80,12 @@ Feature: Combat frontend
     And defender health is reduced by final damage "5"
     And defender is stunned for 2 turns
     And turn.step is "AttackResolved"
+    And currentDecision is undefined
+    And combat.events is ["C1 turn started", "C1 selects opponent C2", "C2 declares defense", "C1 attacks C2 and causes damage!"]
 
   Scenario: post-attack actions (IncreaseInitiative) and end turn
     Given turn.step is "AttackResolved"
+    And combat.events is ["C1 turn started", "C1 selects opponent C2", "C2 declares defense", "C1 attacks C2 and causes damage!"]
     And turn.attacker is C1 with Int 3, Ini 7, Sta 8
     And turn.attackerCombatOptions is "[opportunist]"
     And combat option "opportunist" allows post-attack action "IncreaseInitiative"
@@ -72,8 +94,10 @@ Feature: Combat frontend
     And ends turn
     Then C1 Sta is 7
     And C1 Ini is 10
+    And turns is "[turn]"
     And turn is undefined
-    And turns is "[turn]" (attacker turn ends)
+    And combat.events is ["C1 turn started", "C1 selects opponent C2", "C2 declares defense", "C1 attacks C2 and causes damage!", "C1 increases initiative"]
+    And wait until start turn
 
   Scenario: throw attack and defense runes
     And turn.attacker is C1 with Agi 2, Str 3

@@ -114,7 +114,7 @@ async function postResolveAttack(
   stamina: AttackStamina | DefendStamina
 ): Promise<Turn> {
   // TODO POST /attack, /defense or PATCH /turn with stamina. Eg:
-  // return await post(backendUrl() + "/combats/{id}/turn/{id}/attack");
+  // return await post(backendUrl() + "/combats/{id}/turn/attacks/{attackNumber}/attackerStamina");
   return new Promise(resolve => {
     resolve(givenTurnAttackResolved());
   });
