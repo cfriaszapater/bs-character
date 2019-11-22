@@ -1,12 +1,18 @@
 Feature: Combat frontend
   "A clash between participant characters, divided in turns, in which each character acts in order of initiative"
 
-  Scenario: combat starts
-    Given participants is "[C1, C2]"
-    When combat starts
-    Then charactersToAct = "[C1, C2]"
+  Scenario: combat starts, first turn starts
+    Given character C1 with Ini 7
+    And character C2 with Ini 6
+    And combat.participants is [C1, C2]
+    And combat.rounds is []
     And combat.events is []
-    And start turn
+    And turn is undefined
+    When combat starts
+    Then turn is "{attacker: C1}"
+    And charactersToAct = [C2]
+    And turn.step is "SelectOpponent"
+    And combat.events is ["C1 turn started"]
 
   Scenario Outline: turn starts for pending character with higher Ini
     Given character C1 with Ini 7
@@ -23,6 +29,7 @@ Feature: Combat frontend
     Examples:
       | <givenCharactersToAct> | <thenTurn>       | <thenCharactersToAct> |
       | "[C1, C2]"             | "{attacker: C1}" | "[C2]"                |
+      # givenCharactersToAct order does not matter, the Ini does
       | "[C2, C1]"             | "{attacker: C1}" | "[C2]"                |
       | "[C2]"                 | "{attacker: C2}" | "[]"                  |
 
