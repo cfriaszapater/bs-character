@@ -9,7 +9,7 @@ Feature: Combat frontend
     And combat.events is []
     And turn is undefined
     When combat starts
-    Then turn is "{attacker: C1}"
+    Then turn.attacker.id is "C1"
     And charactersToAct = [C2]
     And turn.step is "SelectOpponent"
     And combat.events is ["C1 turn started"]
@@ -22,16 +22,16 @@ Feature: Combat frontend
     And combat.events is []
     # XXX start turn could be an automatic event (eg: right after combat start), or a scheduled one (eg: a few seconds after turn end)
     When start turn
-    Then turn is <thenTurn>
+    Then turn.attacker.id is <thenTurnAttacker>
     And charactersToAct = <thenCharactersToAct>
     And turn.step is "SelectOpponent"
     And combat.events is ["C1 turn started"]
     Examples:
-      | <givenCharactersToAct> | <thenTurn>       | <thenCharactersToAct> |
-      | "[C1, C2]"             | "{attacker: C1}" | "[C2]"                |
+      | <givenCharactersToAct> | <thenTurnAttacker> | <thenCharactersToAct> |
+      | "[C1, C2]"             | "C1"               | "[C2]"                |
       # givenCharactersToAct order does not matter, the Ini does
-      | "[C2, C1]"             | "{attacker: C1}" | "[C2]"                |
-      | "[C2]"                 | "{attacker: C2}" | "[]"                  |
+      | "[C2, C1]"             | "C1"               | "[C2]"                |
+      | "[C2]"                 | "C2"               | "[]"                  |
 
   Scenario Outline: start turn - select opponent
     Given turn.step is "SelectOpponent"
