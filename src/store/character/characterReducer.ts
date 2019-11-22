@@ -74,6 +74,7 @@ export function characterReducer(
 function emptyCharacter(): Character {
   return {
     name: "",
+    id: "",
     attributes: {
       endurance: 0,
       agility: 0,

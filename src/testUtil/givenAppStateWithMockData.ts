@@ -40,6 +40,7 @@ export function givenAppStateWithMockData(): AppState {
 export function givenTestCharacter(): Character {
   return {
     name: "Jarl",
+    id: "ppiykj",
     attributes: {
       endurance: 2,
       agility: 2,
@@ -177,6 +178,7 @@ export function givenTestCharacter(): Character {
 function givenTestOpponent(): Character {
   return {
     name: "Argh",
+    id: "asfdklh",
     attributes: {
       endurance: 2,
       agility: 3,
@@ -289,7 +291,7 @@ function givenTestOpponent(): Character {
 export function givenTestCombatDecideStaminaHigherIni(): Combat {
   return {
     turn: givenTurnDecideStaminaHigherIni(),
-    participants: [givenTestCharacter(), givenTestOpponent()],
+    participants: [givenTestCharacter().id, givenTestOpponent().id],
     rounds: []
   };
 }

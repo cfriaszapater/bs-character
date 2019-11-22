@@ -10,7 +10,10 @@ export interface Attributes {
   extension: number;
 }
 
+export type CharacterId = string;
+
 export interface Character {
+  id: CharacterId;
   name: string;
   attributes: Attributes;
   equipment: Equipment;

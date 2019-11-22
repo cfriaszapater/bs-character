@@ -1,4 +1,4 @@
-import { Character } from "../character/types";
+import { Character, CharacterId } from "../character/types";
 
 export interface CombatViewState {
   combat: Combat;
@@ -8,7 +8,7 @@ export interface CombatViewState {
 
 export interface Combat {
   turn?: Turn;
-  participants: Character[];
+  participants: CharacterId[];
   rounds: Round[];
 }
 
