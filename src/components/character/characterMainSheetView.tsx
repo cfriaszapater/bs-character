@@ -18,7 +18,8 @@ export function CharacterMainSheetView(props: {
   } = props;
 
   const [editing, setEditing] = useState(false);
-  function handleClickEdit() {
+  function handleClickEdit(e: React.SyntheticEvent) {
+    e.preventDefault();
     setEditing(true);
   }
 
@@ -27,7 +28,7 @@ export function CharacterMainSheetView(props: {
       {/* Combat sheet */}
       <div id="personal-info" className="row justify-content-between">
         <div>Name: {character.name}</div>
-        <a href="?edit=true" onClick={handleClickEdit}>
+        <a href="?edit" onClick={handleClickEdit}>
           <i style={{ fontSize: 12 }} className="fas">
             &#xf303;
           </i>
