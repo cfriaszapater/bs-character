@@ -25,42 +25,51 @@ export function AttributesView(props: {
       />
       <Agility
         value={attributes.agility}
-        // attributes={attributes}
-        // editing={editing}
+        attributes={attributes}
+        editing={editing}
+        updateAttributes={updateAttributes}
       />
       <Strength
         value={attributes.strength}
-        // attributes={attributes}
-        // editing={editing}
+        attributes={attributes}
+        editing={editing}
+        updateAttributes={updateAttributes}
       />
       <Will
         value={attributes.will}
-        // attributes={attributes} editing={editing}
+        attributes={attributes}
+        editing={editing}
+        updateAttributes={updateAttributes}
       />
       <Intelligence
         value={attributes.intelligence}
-        // attributes={attributes}
-        // editing={editing}
+        attributes={attributes}
+        editing={editing}
+        updateAttributes={updateAttributes}
       />
       <Leadership
         value={attributes.leadership}
-        // attributes={attributes}
-        // editing={editing}
+        attributes={attributes}
+        editing={editing}
+        updateAttributes={updateAttributes}
       />
       <Power
         value={attributes.power}
-        // attributes={attributes}
-        // editing={editing}
+        attributes={attributes}
+        editing={editing}
+        updateAttributes={updateAttributes}
       />
       <Defense
         value={attributes.defense}
-        // attributes={attributes}
-        // editing={editing}
+        attributes={attributes}
+        editing={editing}
+        updateAttributes={updateAttributes}
       />
       <Extension
         value={attributes.extension}
-        // attributes={attributes}
-        // editing={editing}
+        attributes={attributes}
+        editing={editing}
+        updateAttributes={updateAttributes}
       />
     </div>
   );
@@ -72,18 +81,21 @@ function Endurance(props: {
   editing: boolean;
   updateAttributes?: (...c: any) => any;
 }) {
-  return Attribute(props, "endurance", "End");
+  return Attribute(props, "endurance", "End", defaultColor);
+}
+
+interface AttributeProps {
+  value: number;
+  attributes: Attributes;
+  editing: boolean;
+  updateAttributes?: (...c: any) => any;
 }
 
 function Attribute(
-  props: {
-    value: number;
-    attributes: Attributes;
-    editing: boolean;
-    updateAttributes?: (...c: any) => any;
-  },
+  props: AttributeProps,
   attributeProperty: string,
-  attributeName: string
+  attributeName: string,
+  color: string
 ) {
   const { value, attributes, editing, updateAttributes } = props;
   if (editing && typeof updateAttributes === "function") {
@@ -94,42 +106,42 @@ function Attribute(
       };
       updateAttributes(updatedAttributes);
     };
-    return EditableAttribute(attributeName, value, defaultColor, handleChange);
+    return EditableAttribute(attributeName, value, color, handleChange);
   } else {
-    return StaticAttribute(attributeName, value, defaultColor);
+    return StaticAttribute(attributeName, value, color);
   }
 }
 
-function Agility(props: { value: number }) {
-  return StaticAttribute("Agi", props.value, agilityColor);
+function Agility(props: AttributeProps) {
+  return Attribute(props, "agility", "Agi", agilityColor);
 }
 
-function Strength(props: { value: number }) {
-  return StaticAttribute("Str", props.value, strengthColor);
+function Strength(props: AttributeProps) {
+  return Attribute(props, "strength", "Str", strengthColor);
 }
 
-function Will(props: { value: number }) {
-  return StaticAttribute("Wil", props.value, willColor);
+function Will(props: AttributeProps) {
+  return Attribute(props, "will", "Wil", willColor);
 }
 
-function Intelligence(props: { value: number }) {
-  return StaticAttribute("Int", props.value, defaultColor);
+function Intelligence(props: AttributeProps) {
+  return Attribute(props, "intelligence", "Int", defaultColor);
 }
 
-function Leadership(props: { value: number }) {
-  return StaticAttribute("Lea", props.value, defaultColor);
+function Leadership(props: AttributeProps) {
+  return Attribute(props, "leadership", "Lea", defaultColor);
 }
 
-function Power(props: { value: number }) {
-  return StaticAttribute("Pow", props.value, defaultColor);
+function Power(props: AttributeProps) {
+  return Attribute(props, "power", "Pow", defaultColor);
 }
 
-function Defense(props: { value: number }) {
-  return StaticAttribute("Def", props.value, defaultColor);
+function Defense(props: AttributeProps) {
+  return Attribute(props, "defense", "Def", defaultColor);
 }
 
-function Extension(props: { value: number }) {
-  return StaticAttribute("Ext", props.value, defaultColor);
+function Extension(props: AttributeProps) {
+  return Attribute(props, "extension", "Ext", defaultColor);
 }
 
 function StaticAttribute(name: string, value: number, color: string) {
