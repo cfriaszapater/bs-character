@@ -1,20 +1,27 @@
 import React from "react";
 import { Attributes } from "../../store/character/types";
 import { agilityColor, defaultColor, strengthColor, willColor } from "./colors";
+import { EditableInput } from "./editableInput";
 import { EmptyRow } from "./emptyRow";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
 import { cellNumStyle, cellStyle } from "./styles";
+import { updateAttributes } from "../../store/character/characterActions";
 
 export function AttributesView(props: {
   attributes: Attributes;
   className?: string;
+  editing: boolean;
 }) {
-  const { attributes, className } = props;
+  const { attributes, className, editing } = props;
   return (
     <div id="attributes" className={className}>
       <EmptyRow />
       <EmptyRow />
-      <Endurance value={attributes.endurance} />
+      <Endurance
+        value={attributes.endurance}
+        attributes={attributes}
+        editing={editing}
+      />
       <Agility value={attributes.agility} />
       <Strength value={attributes.strength} />
       <Will value={attributes.will} />
@@ -27,8 +34,21 @@ export function AttributesView(props: {
   );
 }
 
-function Endurance(props: { value: number }) {
-  return Attribute("End", props.value, defaultColor);
+function Endurance(props: {
+  value: number;
+  attributes: Attributes;
+  editing: boolean;
+}) {
+  const handleChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    const updatedAttributes: Attributes = {
+      ...props.attributes,
+      endurance: Number(e.currentTarget.value)
+    };
+    updateAttributes(updatedAttributes);
+  };
+  return props.editing
+    ? EditableAttribute("End", props.value, defaultColor, handleChange)
+    : Attribute("End", props.value, defaultColor);
 }
 
 function Agility(props: { value: number }) {
@@ -68,6 +88,26 @@ function Attribute(name: string, value: number, color: string) {
     <div id={name} className="row innergrid">
       <div className={cellStyle()}>{name} </div>
       <div className={cellNumStyle()}>{value}</div>
+      <HorizontalPercentageBar
+        widthFraction={percentageForAttribute(value)}
+        backgroundColor={color}
+      />
+    </div>
+  );
+}
+
+function EditableAttribute(
+  name: string,
+  value: number,
+  color: string,
+  handleChange: (e: React.SyntheticEvent<HTMLInputElement>) => void
+) {
+  return (
+    <div id={name} className="row innergrid">
+      <div className={cellStyle()}>{name} </div>
+      <div className={cellNumStyle()}>
+        {EditableInput(name, value, 5, handleChange)}
+      </div>
       <HorizontalPercentageBar
         widthFraction={percentageForAttribute(value)}
         backgroundColor={color}

@@ -3,6 +3,7 @@ import {
   FETCH_CHARACTER_BEGIN,
   FETCH_CHARACTER_FAILURE,
   FETCH_CHARACTER_SUCCESS,
+  UPDATE_ATTRIBUTES_BEGIN,
   UPDATE_CHARACTERISTICS_BEGIN,
   UPDATE_EQUIPMENT_BEGIN
 } from "./characterActions";
@@ -62,6 +63,15 @@ export function characterReducer(
         character: {
           ...state.character,
           equipment: action.equipment
+        }
+      };
+
+    case UPDATE_ATTRIBUTES_BEGIN:
+      return {
+        ...state,
+        character: {
+          ...state.character,
+          attributes: action.attributes
         }
       };
 

@@ -1,4 +1,5 @@
 import { ThunkDispatch } from "redux-thunk";
+import { Attributes } from "../../store/character/types";
 import { givenTestCharacter } from "../../testUtil/givenAppStateWithMockData";
 import { Character, Characteristics, Equipment } from "./types";
 
@@ -7,6 +8,7 @@ export const FETCH_CHARACTER_SUCCESS = "FETCH_CHARACTER_SUCCESS";
 export const FETCH_CHARACTER_FAILURE = "FETCH_CHARACTER_FAILURE";
 export const UPDATE_CHARACTERISTICS_BEGIN = "UPDATE_CHARACTERISTICS_BEGIN";
 export const UPDATE_EQUIPMENT_BEGIN = "UPDATE_EQUIPMENT_BEGIN";
+export const UPDATE_ATTRIBUTES_BEGIN = "UPDATE_ATTRIBUTES_BEGIN";
 
 export interface FetchCharacterBeginAction {
   type: typeof FETCH_CHARACTER_BEGIN;
@@ -32,12 +34,18 @@ export interface UpdateEquipmentBeginAction {
   equipment: Equipment;
 }
 
+export interface UpdateAttributesBeginAction {
+  type: typeof UPDATE_ATTRIBUTES_BEGIN;
+  attributes: Attributes;
+}
+
 export type CharacterActions =
   | FetchCharacterBeginAction
   | FetchCharacterFailureAction
   | FetchCharacterSuccessAction
   | UpdateCharacteristicsBeginAction
-  | UpdateEquipmentBeginAction;
+  | UpdateEquipmentBeginAction
+  | UpdateAttributesBeginAction;
 
 export const fetchCharacter = () => async (
   dispatch: ThunkDispatch<{}, {}, any>
@@ -91,5 +99,14 @@ export function updateEquipment(
   return {
     equipment,
     type: UPDATE_EQUIPMENT_BEGIN
+  };
+}
+
+export function updateAttributes(
+  attributes: Attributes
+): UpdateAttributesBeginAction {
+  return {
+    attributes,
+    type: UPDATE_ATTRIBUTES_BEGIN
   };
 }
