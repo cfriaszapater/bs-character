@@ -10,6 +10,9 @@ export function MenuView() {
       <Link to="/character" className="list-group-item list-group-item-action">
         -character-
       </Link>
+      <Link to="/combat" className="list-group-item list-group-item-action">
+        -combat-
+      </Link>
     </div>
   );
 }

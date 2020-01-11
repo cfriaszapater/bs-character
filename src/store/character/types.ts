@@ -10,7 +10,10 @@ export interface Attributes {
   extension: number;
 }
 
+export type CharacterId = string;
+
 export interface Character {
+  id: CharacterId;
   name: string;
   attributes: Attributes;
   equipment: Equipment;
@@ -26,6 +29,7 @@ export interface AttackCharacteristics {
   stamina: Stamina;
   impact: number;
   damage: number;
+  reach: number;
 }
 
 export type Initiative = VariableCharacteristic;

@@ -3,14 +3,15 @@ import { connect } from "react-redux";
 import { Route, Router } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import CharacterView from "./components/character/characterView";
+import CombatView from "./components/combat/combatView"
 import { LoginPage } from "./components/login/loginPage";
 import { MenuView } from "./components/menu/MenuView";
 import { PrivateRoute } from "./components/privateRoute";
 import { RegisterPage } from "./components/register/registerPage";
-import { AppState } from "./store";
 import { alertActions } from "./store/alert/alertActions";
 import { Alert } from "./store/alert/types";
 import { Character } from "./store/character/types";
+import { AppState } from "./store/rootReducer";
 import { history } from "./util/history";
 
 class App extends React.Component<AppProps> {
@@ -34,6 +35,7 @@ class App extends React.Component<AppProps> {
           <div>
             <PrivateRoute exact path="/" component={MenuView} />
             <PrivateRoute exact path="/character" component={CharacterView} />
+            <PrivateRoute exact path="/combat" component={CombatView} />
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
           </div>

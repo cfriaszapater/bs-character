@@ -3,6 +3,7 @@ import {
   FETCH_CHARACTER_BEGIN,
   FETCH_CHARACTER_FAILURE,
   FETCH_CHARACTER_SUCCESS,
+  UPDATE_ATTRIBUTES_BEGIN,
   UPDATE_CHARACTERISTICS_BEGIN,
   UPDATE_EQUIPMENT_BEGIN
 } from "./characterActions";
@@ -65,6 +66,15 @@ export function characterReducer(
         }
       };
 
+    case UPDATE_ATTRIBUTES_BEGIN:
+      return {
+        ...state,
+        character: {
+          ...state.character,
+          attributes: action.attributes
+        }
+      };
+
     default:
       // ALWAYS have a default case in a reducer
       return state;
@@ -74,6 +84,7 @@ export function characterReducer(
 function emptyCharacter(): Character {
   return {
     name: "",
+    id: "",
     attributes: {
       endurance: 0,
       agility: 0,
@@ -115,7 +126,8 @@ function emptyCharacter(): Character {
       },
       blunt: 0,
       cut: 0,
-      penetrating: 0
+      penetrating: 0,
+      reach: 0
     }
   };
 }

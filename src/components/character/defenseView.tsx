@@ -1,31 +1,45 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import * as characterActions from "../../store/character/characterActions";
-import { Characteristics } from "../../store/character/types";
+import { Characteristics, Equipment } from "../../store/character/types";
 import { agilityColor, strengthColor, willColor } from "./colors";
 import { EditableInput } from "./editableInput";
+import { EmptyCol } from "./emptyCol";
 import { EmptyRow } from "./emptyRow";
 import { fractionForCharacteristic } from "./fractionForCharacteristic";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
 import BodyView from "./itemsEquipped/bodyView";
 import SecondaryHandView from "./itemsEquipped/secondaryHandView";
 import { cellNumStyle, cellStyle } from "./styles";
-import { EmptyCol } from "./emptyCol";
 
 interface CharacteristicsViewProps {
   characteristics: Characteristics;
-  updateCharacteristics: typeof characterActions.updateCharacteristics;
+  equipment: Equipment;
+  updateCharacteristics?: typeof characterActions.updateCharacteristics;
+  updateEquipment?: (...c: any) => any;
   className?: string;
 }
 
-function DefenseView(props: CharacteristicsViewProps) {
-  const { characteristics, updateCharacteristics, className } = props;
+export default function DefenseView(props: CharacteristicsViewProps) {
+  const {
+    characteristics,
+    equipment,
+    updateCharacteristics,
+    updateEquipment,
+    className
+  } = props;
   return (
     <div id="defense" className={className}>
-      <BodyView className="row innergrid-with-bottom" id="equipped-in-body" />
+      <BodyView
+        className="row innergrid-with-bottom"
+        id="equipped-in-body"
+        equipment={equipment}
+        updateEquipment={updateEquipment}
+      />
       <SecondaryHandView
         className="row innergrid-with-bottom"
         id="equipped-in-secondary-hand"
+        equipment={equipment}
+        updateEquipment={updateEquipment}
       />
       <EmptyRow />
       <div className="row">
@@ -59,7 +73,7 @@ function DefenseView(props: CharacteristicsViewProps) {
 }
 
 function Dodge(props: { value: number }) {
-  return DefenseCharacteristic(
+  return StaticDefenseCharacteristic(
     "Dod",
     props.value,
     fractionForCharacteristic(props.value, 0, 3),
@@ -71,32 +85,42 @@ function Coverage(props: {
   currentValue: number;
   value: number;
   characteristics: Characteristics;
-  updateCharacteristics: typeof characterActions.updateCharacteristics;
+  updateCharacteristics?: typeof characterActions.updateCharacteristics;
 }) {
-  function handleChange(e: React.SyntheticEvent<HTMLInputElement>) {
-    const updatedCharacteristics = {
-      ...props.characteristics,
-      coverage: {
-        ...props.characteristics.coverage,
-        current: Number(e.currentTarget.value)
-      }
-    };
-    props.updateCharacteristics(updatedCharacteristics);
-  }
+  const name = "Cov";
+  const min = 3;
+  const max = 9;
+  const color = agilityColor;
+  const { updateCharacteristics, value, currentValue, characteristics } = props;
 
-  return VariableDefenseCharacteristic(
-    "Cov",
-    props.currentValue,
-    fractionForCharacteristic(props.currentValue, 3, 9),
-    props.value,
-    agilityColor,
+  const handleChange =
+    typeof updateCharacteristics === "function"
+      ? (e: React.SyntheticEvent<HTMLInputElement>) => {
+          const updatedCharacteristics = {
+            ...props.characteristics,
+            coverage: {
+              ...props.characteristics.coverage,
+              current: Number(e.currentTarget.value)
+            }
+          };
+          updateCharacteristics(updatedCharacteristics);
+        }
+      : undefined;
+
+  return DefenseCharacteristicView(
     handleChange,
-    props.characteristics.dodge
+    name,
+    currentValue,
+    min,
+    max,
+    value,
+    color,
+    characteristics.dodge
   );
 }
 
 function Blunt(props: { value: number }) {
-  return DefenseCharacteristic(
+  return StaticDefenseCharacteristic(
     "Blu",
     props.value,
     fractionForCharacteristic(props.value, 0, 6),
@@ -105,7 +129,7 @@ function Blunt(props: { value: number }) {
 }
 
 function Cut(props: { value: number }) {
-  return DefenseCharacteristic(
+  return StaticDefenseCharacteristic(
     "Cut",
     props.value,
     fractionForCharacteristic(props.value, 0, 6),
@@ -114,7 +138,7 @@ function Cut(props: { value: number }) {
 }
 
 function Penetrating(props: { value: number }) {
-  return DefenseCharacteristic(
+  return StaticDefenseCharacteristic(
     "Pen",
     props.value,
     fractionForCharacteristic(props.value, 0, 6),
@@ -126,30 +150,75 @@ function HealthView(props: {
   currentValue: number;
   value: number;
   characteristics: Characteristics;
-  updateCharacteristics: typeof characterActions.updateCharacteristics;
+  updateCharacteristics?: typeof characterActions.updateCharacteristics;
 }) {
-  function handleHealthChange(e: React.SyntheticEvent<HTMLInputElement>) {
-    const updatedCharacteristics = {
-      ...props.characteristics,
-      health: {
-        ...props.characteristics.health,
-        current: Number(e.currentTarget.value)
-      }
-    };
-    props.updateCharacteristics(updatedCharacteristics);
-  }
+  const name = "HP";
+  const min = 0;
+  const max = 20;
+  const color = willColor;
+  const { updateCharacteristics, value, currentValue, characteristics } = props;
 
-  return VariableDefenseCharacteristic(
-    "HP",
-    props.currentValue,
-    fractionForCharacteristic(props.currentValue, 0, 20),
-    props.value,
-    willColor,
-    handleHealthChange
+  const handleChange =
+    typeof updateCharacteristics === "function"
+      ? (e: React.SyntheticEvent<HTMLInputElement>) => {
+          const updatedCharacteristics = {
+            ...props.characteristics,
+            health: {
+              ...props.characteristics.health,
+              current: Number(e.currentTarget.value)
+            }
+          };
+          updateCharacteristics(updatedCharacteristics);
+        }
+      : undefined;
+
+  return DefenseCharacteristicView(
+    handleChange,
+    name,
+    currentValue,
+    min,
+    max,
+    value,
+    color,
+    characteristics.dodge
   );
 }
 
-function DefenseCharacteristic(
+function DefenseCharacteristicView(
+  handleChange:
+    | ((e: React.SyntheticEvent<HTMLInputElement, Event>) => void)
+    | undefined,
+  name: string,
+  currentValue: number,
+  min: number,
+  max: number,
+  value: number,
+  color: string,
+  minValue?: number
+) {
+  let resul;
+  if (typeof handleChange === "function") {
+    resul = VariableDefenseCharacteristic(
+      name,
+      currentValue,
+      fractionForCharacteristic(currentValue, min, max),
+      value,
+      color,
+      handleChange,
+      minValue
+    );
+  } else {
+    resul = StaticDefenseCharacteristic(
+      name,
+      value,
+      fractionForCharacteristic(value, min, max),
+      color
+    );
+  }
+  return resul;
+}
+
+function StaticDefenseCharacteristic(
   name: string,
   value: number,
   fractionValue: number,
@@ -209,8 +278,3 @@ function VariableDefenseCharacteristic(
     </div>
   );
 }
-
-export default connect(
-  null,
-  { updateCharacteristics: characterActions.updateCharacteristics }
-)(DefenseView);
