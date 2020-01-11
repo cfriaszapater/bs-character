@@ -105,6 +105,7 @@ export function updateEquipment(
 export function updateAttributes(
   attributes: Attributes
 ): UpdateAttributesBeginAction {
+  console.log("updateAttributes", JSON.stringify(attributes));
   return {
     attributes,
     type: UPDATE_ATTRIBUTES_BEGIN

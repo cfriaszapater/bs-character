@@ -8,12 +8,14 @@ export function CharacterMainSheetView(props: {
   character: Character;
   updateCharacteristics?: (...c: any) => any;
   updateEquipment?: (...c: any) => any;
+  updateAttributes?: (...c: any) => any;
   className?: string;
 }) {
   const {
     character,
     updateCharacteristics,
     updateEquipment,
+    updateAttributes,
     className
   } = props;
 
@@ -39,6 +41,7 @@ export function CharacterMainSheetView(props: {
           attributes={character.attributes}
           className="col-3 grouped-container"
           editing={editing}
+          updateAttributes={updateAttributes}
         />
         <AttackView
           characteristics={character.characteristics}

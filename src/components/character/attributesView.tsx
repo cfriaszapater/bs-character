@@ -5,14 +5,14 @@ import { EditableInput } from "./editableInput";
 import { EmptyRow } from "./emptyRow";
 import HorizontalPercentageBar from "./horizontalPercentageBar";
 import { cellNumStyle, cellStyle } from "./styles";
-import { updateAttributes } from "../../store/character/characterActions";
 
 export function AttributesView(props: {
   attributes: Attributes;
   className?: string;
   editing: boolean;
+  updateAttributes?: (...c: any) => any;
 }) {
-  const { attributes, className, editing } = props;
+  const { attributes, className, editing, updateAttributes } = props;
   return (
     <div id="attributes" className={className}>
       <EmptyRow />
@@ -21,15 +21,47 @@ export function AttributesView(props: {
         value={attributes.endurance}
         attributes={attributes}
         editing={editing}
+        updateAttributes={updateAttributes}
       />
-      <Agility value={attributes.agility} />
-      <Strength value={attributes.strength} />
-      <Will value={attributes.will} />
-      <Intelligence value={attributes.intelligence} />
-      <Leadership value={attributes.leadership} />
-      <Power value={attributes.power} />
-      <Defense value={attributes.defense} />
-      <Extension value={attributes.extension} />
+      <Agility
+        value={attributes.agility}
+        // attributes={attributes}
+        // editing={editing}
+      />
+      <Strength
+        value={attributes.strength}
+        // attributes={attributes}
+        // editing={editing}
+      />
+      <Will
+        value={attributes.will}
+        // attributes={attributes} editing={editing}
+      />
+      <Intelligence
+        value={attributes.intelligence}
+        // attributes={attributes}
+        // editing={editing}
+      />
+      <Leadership
+        value={attributes.leadership}
+        // attributes={attributes}
+        // editing={editing}
+      />
+      <Power
+        value={attributes.power}
+        // attributes={attributes}
+        // editing={editing}
+      />
+      <Defense
+        value={attributes.defense}
+        // attributes={attributes}
+        // editing={editing}
+      />
+      <Extension
+        value={attributes.extension}
+        // attributes={attributes}
+        // editing={editing}
+      />
     </div>
   );
 }
@@ -38,17 +70,21 @@ function Endurance(props: {
   value: number;
   attributes: Attributes;
   editing: boolean;
+  updateAttributes?: (...c: any) => any;
 }) {
-  const handleChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-    const updatedAttributes: Attributes = {
-      ...props.attributes,
-      endurance: Number(e.currentTarget.value)
+  const { editing, updateAttributes } = props;
+  if (editing && typeof updateAttributes === "function") {
+    const handleChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+      const updatedAttributes: Attributes = {
+        ...props.attributes,
+        endurance: Number(e.currentTarget.value)
+      };
+      updateAttributes(updatedAttributes);
     };
-    updateAttributes(updatedAttributes);
-  };
-  return props.editing
-    ? EditableAttribute("End", props.value, defaultColor, handleChange)
-    : Attribute("End", props.value, defaultColor);
+    return EditableAttribute("End", props.value, defaultColor, handleChange);
+  } else {
+    return Attribute("End", props.value, defaultColor);
+  }
 }
 
 function Agility(props: { value: number }) {
