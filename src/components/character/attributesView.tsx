@@ -72,54 +72,67 @@ function Endurance(props: {
   editing: boolean;
   updateAttributes?: (...c: any) => any;
 }) {
-  const { editing, updateAttributes } = props;
+  return Attribute(props, "endurance", "End");
+}
+
+function Attribute(
+  props: {
+    value: number;
+    attributes: Attributes;
+    editing: boolean;
+    updateAttributes?: (...c: any) => any;
+  },
+  attributeProperty: string,
+  attributeName: string
+) {
+  const { value, attributes, editing, updateAttributes } = props;
   if (editing && typeof updateAttributes === "function") {
     const handleChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
       const updatedAttributes: Attributes = {
-        ...props.attributes,
-        endurance: Number(e.currentTarget.value)
+        ...attributes,
+        [attributeProperty]: Number(e.currentTarget.value)
       };
       updateAttributes(updatedAttributes);
     };
-    return EditableAttribute("End", props.value, defaultColor, handleChange);
+    return EditableAttribute(attributeName, value, defaultColor, handleChange);
   } else {
-    return Attribute("End", props.value, defaultColor);
+    return StaticAttribute(attributeName, value, defaultColor);
   }
 }
 
 function Agility(props: { value: number }) {
-  return Attribute("Agi", props.value, agilityColor);
+  return StaticAttribute("Agi", props.value, agilityColor);
 }
 
 function Strength(props: { value: number }) {
-  return Attribute("Str", props.value, strengthColor);
+  return StaticAttribute("Str", props.value, strengthColor);
 }
 
 function Will(props: { value: number }) {
-  return Attribute("Wil", props.value, willColor);
+  return StaticAttribute("Wil", props.value, willColor);
 }
 
 function Intelligence(props: { value: number }) {
-  return Attribute("Int", props.value, defaultColor);
+  return StaticAttribute("Int", props.value, defaultColor);
 }
 
 function Leadership(props: { value: number }) {
-  return Attribute("Lea", props.value, defaultColor);
+  return StaticAttribute("Lea", props.value, defaultColor);
 }
 
 function Power(props: { value: number }) {
-  return Attribute("Pow", props.value, defaultColor);
+  return StaticAttribute("Pow", props.value, defaultColor);
 }
 
 function Defense(props: { value: number }) {
-  return Attribute("Def", props.value, defaultColor);
+  return StaticAttribute("Def", props.value, defaultColor);
 }
 
 function Extension(props: { value: number }) {
-  return Attribute("Ext", props.value, defaultColor);
+  return StaticAttribute("Ext", props.value, defaultColor);
 }
 
-function Attribute(name: string, value: number, color: string) {
+function StaticAttribute(name: string, value: number, color: string) {
   return (
     <div id={name} className="row innergrid">
       <div className={cellStyle()}>{name} </div>
