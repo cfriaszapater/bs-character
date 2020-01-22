@@ -1,8 +1,29 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { createCharacter } from "../../store/character/characterActions";
+import { AppState } from "../../store/rootReducer";
 import { history } from "../../util/history";
 
-export function MenuView() {
+function MenuView(props: {
+  loading: boolean;
+  createCharacter: (...c: any) => any;
+}) {
+  async function handleClickCreateCharacter(e: React.SyntheticEvent) {
+    e.preventDefault();
+
+    const character = await props.createCharacter();
+    console.log("created character = " + JSON.stringify(character));
+    // TODO on SUCCESS:
+    // history.push("/characters/{id}")
+    history.push("/character");
+  }
+
+  const { loading } = props;
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="list-group">
       <Link to="/login" className="list-group-item list-group-item-action">
@@ -21,13 +42,10 @@ export function MenuView() {
   );
 }
 
-function handleClickCreateCharacter(e: React.SyntheticEvent) {
-  e.preventDefault();
-  // TODO call characterActions.createCharacther, that will:
-  // - CREATE_CHARACTER_BEGIN action (see fetchCharacter):
-  // - Create character (POST), obtain id
+const mapStateToProps = (state: AppState) => ({
+  loading: state.character.loading
+});
 
-  // TODO then, on SUCCESS:
-  // history.push("/character/{id}")
-  history.push("/character");
-}
+export default connect(mapStateToProps, {
+  createCharacter
+})(MenuView);

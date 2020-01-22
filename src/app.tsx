@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { Route, Router } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import CharacterView from "./components/character/characterView";
-import CombatView from "./components/combat/combatView"
+import CombatView from "./components/combat/combatView";
 import { LoginPage } from "./components/login/loginPage";
-import { MenuView } from "./components/menu/MenuView";
+import MenuView from "./components/menu/MenuView";
 import { PrivateRoute } from "./components/privateRoute";
 import { RegisterPage } from "./components/register/registerPage";
 import { alertActions } from "./store/alert/alertActions";

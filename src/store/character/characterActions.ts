@@ -9,6 +9,9 @@ export const FETCH_CHARACTER_FAILURE = "FETCH_CHARACTER_FAILURE";
 export const UPDATE_CHARACTERISTICS_BEGIN = "UPDATE_CHARACTERISTICS_BEGIN";
 export const UPDATE_EQUIPMENT_BEGIN = "UPDATE_EQUIPMENT_BEGIN";
 export const UPDATE_ATTRIBUTES_BEGIN = "UPDATE_ATTRIBUTES_BEGIN";
+export const CREATE_CHARACTER_BEGIN = "CREATE_CHARACTER_BEGIN";
+export const CREATE_CHARACTER_SUCCESS = "CREATE_CHARACTER_SUCCESS";
+export const CREATE_CHARACTER_FAILURE = "CREATE_CHARACTER_FAILURE";
 
 export interface FetchCharacterBeginAction {
   type: typeof FETCH_CHARACTER_BEGIN;
@@ -39,13 +42,30 @@ export interface UpdateAttributesBeginAction {
   attributes: Attributes;
 }
 
+export interface CreateCharacterBeginAction {
+  type: typeof CREATE_CHARACTER_BEGIN;
+}
+
+export interface CreateCharacterSuccessAction {
+  type: typeof CREATE_CHARACTER_SUCCESS;
+  character: Character;
+}
+
+export interface CreateCharacterFailureAction {
+  type: typeof CREATE_CHARACTER_FAILURE;
+  error: Error | null;
+}
+
 export type CharacterActions =
   | FetchCharacterBeginAction
   | FetchCharacterFailureAction
   | FetchCharacterSuccessAction
   | UpdateCharacteristicsBeginAction
   | UpdateEquipmentBeginAction
-  | UpdateAttributesBeginAction;
+  | UpdateAttributesBeginAction
+  | CreateCharacterBeginAction
+  | CreateCharacterFailureAction
+  | CreateCharacterSuccessAction;
 
 export const fetchCharacter = () => async (
   dispatch: ThunkDispatch<{}, {}, any>
@@ -111,3 +131,40 @@ export function updateAttributes(
     type: UPDATE_ATTRIBUTES_BEGIN
   };
 }
+
+export const createCharacter = () => async (
+  dispatch: ThunkDispatch<{}, {}, any>
+): Promise<CreateCharacterSuccessAction | CreateCharacterFailureAction> => {
+  dispatch(createCharacterBegin());
+  try {
+    const character: Character = await postCharacter();
+    return dispatch(createCharacterSuccess(character));
+  } catch (error) {
+    return dispatch(createCharacterFailure(error));
+  }
+};
+
+export const createCharacterBegin = (): CreateCharacterBeginAction => ({
+  type: CREATE_CHARACTER_BEGIN
+});
+
+async function postCharacter(): Promise<Character> {
+  // TODO return await post(backendUrl() + "/characters");
+  return new Promise(resolve => {
+    resolve(givenTestCharacter());
+  });
+}
+
+export const createCharacterSuccess = (
+  character: Character
+): CreateCharacterSuccessAction => ({
+  character,
+  type: CREATE_CHARACTER_SUCCESS
+});
+
+export const createCharacterFailure = (
+  error: Error
+): CreateCharacterFailureAction => ({
+  error,
+  type: CREATE_CHARACTER_FAILURE
+});
