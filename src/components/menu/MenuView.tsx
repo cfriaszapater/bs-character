@@ -14,8 +14,6 @@ function MenuView(props: {
 
     const character = await props.createCharacter();
     console.log("created character = " + JSON.stringify(character));
-    // TODO on SUCCESS:
-    // history.push("/characters/{id}")
     history.push("/character");
   }
 

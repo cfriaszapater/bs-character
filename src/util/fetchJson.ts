@@ -63,7 +63,13 @@ function headers(): Headers {
 
 export async function errorMessage(res: Response) {
   const body = await res.text();
-  const data: any = body && JSON.parse(body);
-  const errorMsg: string = (data && data.message) || res.statusText;
+  let jsonError: any;
+  try {
+    jsonError = body && JSON.parse(body);
+  } catch (e) {
+    jsonError = null;
+  }
+  const errorMsg: string =
+    (jsonError && jsonError.message) || body || res.statusText;
   return errorMsg;
 }

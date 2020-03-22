@@ -1,6 +1,8 @@
 import { ThunkDispatch } from "redux-thunk";
 import { Attributes } from "../../store/character/types";
 import { givenTestCharacter } from "../../testUtil/givenAppStateWithMockData";
+import { backendUrl } from "../../util/backendUrl";
+import { post } from "../../util/fetchJson";
 import { Character, Characteristics, Equipment } from "./types";
 
 export const FETCH_CHARACTER_BEGIN = "FETCH_CHARACTER_BEGIN";
@@ -125,7 +127,6 @@ export function updateEquipment(
 export function updateAttributes(
   attributes: Attributes
 ): UpdateAttributesBeginAction {
-  console.log("updateAttributes", JSON.stringify(attributes));
   return {
     attributes,
     type: UPDATE_ATTRIBUTES_BEGIN
@@ -140,7 +141,8 @@ export const createCharacter = () => async (
     const character: Character = await postCharacter();
     return dispatch(createCharacterSuccess(character));
   } catch (error) {
-    return dispatch(createCharacterFailure(error));
+    dispatch(createCharacterFailure(error));
+    throw error;
   }
 };
 
@@ -149,10 +151,7 @@ export const createCharacterBegin = (): CreateCharacterBeginAction => ({
 });
 
 async function postCharacter(): Promise<Character> {
-  // TODO return await post(backendUrl() + "/characters");
-  return new Promise(resolve => {
-    resolve(givenTestCharacter());
-  });
+  return await post(backendUrl() + "/characters", {});
 }
 
 export const createCharacterSuccess = (
