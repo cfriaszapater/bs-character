@@ -14,7 +14,7 @@ export async function get(url: string): Promise<any> {
 
 export async function post(url: string, body: any): Promise<any> {
   const req = new Request(url, {
-    body: JSON.stringify(body),
+    body: body && JSON.stringify(body),
     headers: headers(),
     method: "POST"
   });

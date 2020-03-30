@@ -151,7 +151,7 @@ export const createCharacterBegin = (): CreateCharacterBeginAction => ({
 });
 
 async function postCharacter(): Promise<Character> {
-  return await post(backendUrl() + "/characters", {});
+  return await post(backendUrl() + "/characters", null);
 }
 
 export const createCharacterSuccess = (
