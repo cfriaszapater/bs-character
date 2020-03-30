@@ -30,11 +30,13 @@ export function CharacterMainSheetView(props: {
       {/* Combat sheet */}
       <div id="personal-info" className="row justify-content-between">
         <div>Name: {character.name}</div>
-        <a href="?edit" onClick={handleClickEdit}>
-          <i style={{ fontSize: 12 }} className="fas">
-            &#xf303;
-          </i>
-        </a>
+        {updateAttributes && (
+          <a href="?edit" onClick={handleClickEdit}>
+            <i style={{ fontSize: 12 }} className="fas">
+              &#xf303;
+            </i>
+          </a>
+        )}
       </div>
       <div id="main" className="row">
         <AttributesView
