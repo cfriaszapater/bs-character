@@ -27,7 +27,11 @@ function MenuView(props: {
       <Link to="/login" className="list-group-item list-group-item-action">
         Logout
       </Link>
-      <a href="/character" onClick={handleClickCreateCharacter}>
+      <a
+        href="/character"
+        className="list-group-item list-group-item-action"
+        onClick={handleClickCreateCharacter}
+      >
         Create character
       </a>
       <Link to="/character" className="list-group-item list-group-item-action">
