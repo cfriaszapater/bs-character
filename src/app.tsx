@@ -34,7 +34,16 @@ class App extends React.Component<AppProps> {
         <Router history={history}>
           <div>
             <PrivateRoute exact path="/" component={MenuView} />
-            <PrivateRoute exact path="/character" component={CharacterView} />
+            <PrivateRoute
+              exact
+              path="/characters/:characterId"
+              component={CharacterView}
+            />
+            <PrivateRoute
+              exact
+              path="/characters"
+              component={CharactersListView}
+            />
             <PrivateRoute exact path="/combat" component={CombatView} />
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
@@ -61,3 +70,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 export default connect(mapStateToProps)(App);
+
+function CharactersListView() {
+  return <div>This will be the list of characters</div>;
+}

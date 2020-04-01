@@ -25,7 +25,11 @@ export async function post(url: string, body: any): Promise<any> {
   return await res.json();
 }
 
-export async function put(url: string, body: any): Promise<Response> {
+export async function put(url: string, body: any): Promise<any> {
+  if (!body) {
+    throw new Error("Body cannot be null");
+  }
+
   const req = new Request(url, {
     body: JSON.stringify(body),
     headers: headers(),
@@ -35,7 +39,7 @@ export async function put(url: string, body: any): Promise<Response> {
   if (!res.ok) {
     throw new Error(await errorMessage(res));
   }
-  return res;
+  return await res.json();
 }
 
 export async function del(url: string): Promise<Response> {

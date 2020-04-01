@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { useParams } from "react-router-dom";
 import {
   fetchCharacter,
   updateAttributes,
@@ -15,65 +16,62 @@ interface CharacterViewProps {
   character: Character;
   loading: boolean;
   error: Error | null;
-  fetchCharacter: () => any;
+  fetchCharacter: (id: string) => any;
   updateCharacteristics: (...args: any) => any;
   updateEquipment: (...args: any) => any;
   updateAttributes: (...args: any) => any;
 }
 
-class CharacterView extends React.Component<
-  CharacterViewProps,
-  CharacterViewState
-> {
-  public componentDidMount() {
-    this.props.fetchCharacter();
+function CharacterView(props: CharacterViewProps) {
+  const { characterId } = useParams();
+  const { character, error, loading, fetchCharacter: fetchCharacterF } = props;
+
+  useEffect(() => {
+    if (characterId) {
+      fetchCharacterF(characterId);
+    }
+  }, [characterId, fetchCharacterF]);
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  public render() {
-    const { character, error, loading } = this.props;
-
-    if (loading) {
-      return <div>Loading...</div>;
-    }
-
-    return (
-      <div>
-        <NavBar />
-        {error && (
-          <div className="alert alert-danger">
-            {error.message +
-              " Please check your network connection and refresh."}
-          </div>
-        )}
-        {
-          <div id="character-view" className="container-fluid">
-            <div className="row">
-              <CharacterMainSheetView
-                character={character}
-                updateCharacteristics={this.props.updateCharacteristics}
-                updateEquipment={this.props.updateEquipment}
-                updateAttributes={this.props.updateAttributes}
-                className="col"
-              />
-              <div id="secondary-sheet" className="col">
-                {/* Non-combat sheet */}
-                <div id="notes" className="row grouped-container h-100">
-                  <div className="col">
-                    <div>note 1</div>
-                    <div>note 2</div>
-                    <div>note ...</div>
-                  </div>
+  return (
+    <div>
+      <NavBar />
+      {error && (
+        <div className="alert alert-danger">
+          {error.message + " Please check your network connection and refresh."}
+        </div>
+      )}
+      {
+        <div id="character-view" className="container-fluid">
+          <div className="row">
+            <CharacterMainSheetView
+              character={character}
+              updateCharacteristics={props.updateCharacteristics}
+              updateEquipment={props.updateEquipment}
+              updateAttributes={props.updateAttributes}
+              className="col"
+            />
+            <div id="secondary-sheet" className="col">
+              {/* Non-combat sheet */}
+              <div id="notes" className="row grouped-container h-100">
+                <div className="col">
+                  <div>note 1</div>
+                  <div>note 2</div>
+                  <div>note ...</div>
                 </div>
               </div>
             </div>
           </div>
-        }
-      </div>
-    );
-  }
+        </div>
+      }
+    </div>
+  );
 }
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: AppState): CharacterViewState => ({
   character: state.character.character,
   error: state.character.error,
   loading: state.character.loading

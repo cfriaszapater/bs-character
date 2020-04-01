@@ -1,5 +1,7 @@
 import {
   CharacterActions,
+  CREATE_CHARACTER_BEGIN,
+  CREATE_CHARACTER_FAILURE,
   CREATE_CHARACTER_SUCCESS,
   FETCH_CHARACTER_BEGIN,
   FETCH_CHARACTER_FAILURE,
@@ -7,8 +9,8 @@ import {
   UPDATE_ATTRIBUTES_BEGIN,
   UPDATE_CHARACTERISTICS_BEGIN,
   UPDATE_EQUIPMENT_BEGIN,
-  CREATE_CHARACTER_FAILURE,
-  CREATE_CHARACTER_BEGIN
+  UPDATE_ATTRIBUTES_SUCCESS,
+  UPDATE_ATTRIBUTES_FAILURE
 } from "./characterActions";
 import { Character, CharacterViewState } from "./types";
 
@@ -35,6 +37,7 @@ export function characterReducer(
 
     case FETCH_CHARACTER_SUCCESS:
     case CREATE_CHARACTER_SUCCESS:
+    case UPDATE_ATTRIBUTES_SUCCESS:
       // All done: set loading "false".
       // Also, replace the items with the ones from the server
       return {
@@ -45,6 +48,7 @@ export function characterReducer(
 
     case FETCH_CHARACTER_FAILURE:
     case CREATE_CHARACTER_FAILURE:
+    case UPDATE_ATTRIBUTES_FAILURE:
       // The request failed, but it did stop, so set loading to "false".
       // Save the error, and we can display it somewhere
       // Since it failed, we don't have items to display anymore, so set it empty.
@@ -87,6 +91,7 @@ export function characterReducer(
   }
 }
 
+// TODO remove this one and keep the domain one?
 function emptyCharacter(): Character {
   return {
     name: "",
