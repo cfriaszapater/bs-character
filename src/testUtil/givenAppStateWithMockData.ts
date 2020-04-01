@@ -288,18 +288,23 @@ function givenTestOpponent(): Character {
   };
 }
 
-export function givenTestCombatDecideStaminaHigherIni(): Combat {
+export function givenTestCombatDecideStaminaHigherIni(
+  character?: Character
+): Combat {
   return {
-    turn: givenTurnDecideStaminaHigherIni(),
-    participants: [givenTestCharacter().id, givenTestOpponent().id],
+    turn: givenTurnDecideStaminaHigherIni(character),
+    participants: [
+      character ? character.id : givenTestCharacter().id,
+      givenTestOpponent().id
+    ],
     rounds: []
   };
 }
 
-function givenTurnDecideStaminaHigherIni(): Turn {
+function givenTurnDecideStaminaHigherIni(character?: Character): Turn {
   return {
     step: "DecideStaminaHigherIni",
-    attacker: givenTestCharacter(),
+    attacker: character ? character : givenTestCharacter(),
     defender: givenTestOpponent(),
     attacks: [{ defenderStamina: { dodge: 1, block: 0 } }],
     currentDecision: "attacker"
@@ -310,10 +315,10 @@ function givenAttackResult(): AttackResult {
   return { isHit: true, damage: 5, coverageDamage: 0, stunned: 2 };
 }
 
-export function givenTurnAttackResolved(): Turn {
+export function givenTurnAttackResolved(character?: Character): Turn {
   return {
     step: "AttackResolved",
-    attacker: givenTestCharacter(),
+    attacker: character ? character : givenTestCharacter(),
     defender: givenTestOpponent(),
     attacks: [
       {

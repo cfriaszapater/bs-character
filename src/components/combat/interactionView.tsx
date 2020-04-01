@@ -60,7 +60,7 @@ function AttackWait(props: {
 }) {
   const { pollOpponentDecision } = props;
   useEffect(() => {
-    const timeout = pollOpponentDecision(1000);
+    const timeout = pollOpponentDecision(10000);
     return () => {
       console.log("clearPoll");
       clearInterval(timeout);

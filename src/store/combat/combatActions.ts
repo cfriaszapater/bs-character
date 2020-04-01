@@ -5,6 +5,8 @@ import {
 } from "../../testUtil/givenAppStateWithMockData";
 import { AttackStamina, Combat, DefendStamina, Turn } from "./types";
 import { setInterval } from "timers";
+import { AppState } from "../rootReducer";
+import { Character } from "../character/types";
 
 export const FETCH_COMBAT_BEGIN = "FETCH_COMBAT_BEGIN";
 export const FETCH_COMBAT_SUCCESS = "FETCH_COMBAT_SUCCESS";
@@ -51,27 +53,42 @@ export type CombatActions =
   | ResolveAttackSuccessAction;
 
 export const fetchCombat = () => async (
-  dispatch: ThunkDispatch<{}, {}, any>
+  dispatch: ThunkDispatch<{}, {}, any>,
+  getState: () => AppState
 ): Promise<FetchCombatSuccessAction | FetchCombatFailureAction> => {
   dispatch(fetchCombatBegin());
   try {
-    return await fetchCombatNoLoading(dispatch);
+    console.log("state on fetchCombat = " + JSON.stringify(getState()));
+    return await fetchCombatNoLoading(dispatch, getState().character.character);
   } catch (error) {
     return dispatch(fetchCombatFailure(error));
   }
 };
 
-async function fetchCombatNoLoading(dispatch: ThunkDispatch<{}, {}, any>) {
-  console.log("fetchCombatNoLoading called");
+// TODO mock implementation until integration with backend
+async function fetchCombatNoLoading(
+  dispatch: ThunkDispatch<{}, {}, any>,
+  character?: Character
+) {
+  if (character) {
+    console.log(
+      "fetchCombatNoLoading called with character " +
+        character.id +
+        ", " +
+        character.name
+    );
+  } else {
+    console.log("fetchCombatNoLoading without character !!!");
+  }
   await timeout(300);
-  const combat = await getCombat();
+  const combat = await getCombat(character);
   return dispatch(fetchCombatSuccess(combat));
 }
 
-async function getCombat(): Promise<Combat> {
+async function getCombat(character?: Character): Promise<Combat> {
   // TODO return await get(backendUrl() + "/combats/{id}");
   return new Promise(resolve => {
-    resolve(givenTestCombatDecideStaminaHigherIni());
+    resolve(givenTestCombatDecideStaminaHigherIni(character));
   });
 }
 
@@ -96,12 +113,18 @@ function timeout(ms: number) {
 }
 
 export const resolveAttack = (stamina: AttackStamina | DefendStamina) => async (
-  dispatch: ThunkDispatch<{}, {}, any>
+  dispatch: ThunkDispatch<{}, {}, any>,
+  getState: () => AppState
 ): Promise<ResolveAttackSuccessAction | ResolveAttackFailureAction> => {
-  console.log("resolveAttack with stamina", JSON.stringify(stamina));
+  const character = getState().character.character;
+  console.log(
+    "resolveAttack with stamina, character",
+    JSON.stringify(stamina),
+    JSON.stringify(character)
+  );
   dispatch(resolveAttackBegin());
   try {
-    const turn = await postResolveAttack(stamina);
+    const turn = await postResolveAttack(stamina, character);
     return dispatch(resolveAttackSuccess(turn));
     // TODO fetchCombat() and then fetchCombatSuccess()?
     // const combat = await fetchCombat();
@@ -111,12 +134,16 @@ export const resolveAttack = (stamina: AttackStamina | DefendStamina) => async (
 };
 
 async function postResolveAttack(
-  stamina: AttackStamina | DefendStamina
+  stamina: AttackStamina | DefendStamina,
+  character: Character
 ): Promise<Turn> {
+  console.log(
+    "postResolveAttack with character = " + JSON.stringify(character)
+  );
   // TODO POST /attack, /defense or PATCH /turn with stamina. Eg:
   // return await post(backendUrl() + "/combats/{id}/turn/attacks/{attackNumber}/attackerStamina");
   return new Promise(resolve => {
-    resolve(givenTurnAttackResolved());
+    resolve(givenTurnAttackResolved(character));
   });
 }
 
@@ -139,7 +166,12 @@ export const resolveAttackFailure = (
 });
 
 export const pollOpponentDecision = (delay: number) => (
-  dispatch: ThunkDispatch<{}, {}, any>
+  dispatch: ThunkDispatch<{}, {}, any>,
+  getState: () => AppState
 ): NodeJS.Timeout => {
-  return setInterval(fetchCombatNoLoading, delay, dispatch);
+  return setInterval(
+    () => fetchCombatNoLoading(dispatch, getState().character.character),
+    delay,
+    dispatch
+  );
 };
