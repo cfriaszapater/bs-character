@@ -91,7 +91,6 @@ export function characterReducer(
   }
 }
 
-// TODO remove this one and keep the domain one?
 function emptyCharacter(): Character {
   return {
     name: "",
